@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-gray-50;
+}
+
+@layer components {
+    .btn {
+        @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm text-white;
+    }
+
+    .card {
+        @apply p-3 rounded-md bg-white shadow-md h-full;
+    }
+}
+
+:root {
+    --primary-color: #240A34;
+    --secondary-color: #6c757d;
+    --third-color: #ffff;
+}
+
+.input-form{
+    padding: 0.5rem ;
+    border: 2px solid var(--primary-color);
+    border-radius: 0.5rem;
+    width: 100%;
+}
+.v-pagination .v-btn {
+    background: #ccc9c9 !important;
+    color: #000000;
+}
+
+.v-pagination__item--is-active .v-btn {
+    background: var(--primary-color) !important;
+    color: #ffff;
+}
+
+.primary-btn{
+    background: #000;
+    color: #FFFFFF;
+    font-weight: 600;
+    padding:0.5rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.router-link-active{
+    background: #ffffff7e;
+    width: 100%;
+}
