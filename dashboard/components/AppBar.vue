@@ -1,6 +1,6 @@
 <template>
     <div class="app-bar flex flex-row">
-        <div class="side-bar-left bg-black">
+        <div class="side-bar-left">
             <div class="das-header flex flex-col items-center gap-2">
                 <div class=" flex flex-row justify-center items-center gap-2">
                     <span class="material-symbols-outlined">
@@ -37,7 +37,8 @@
                         </span>
                         <span>Lucky draw</span>
                     </div>
-                    <NuxtLink to="/campaigns" :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new'?'router-link-active':''">
+                    <NuxtLink to="/campaigns"
+                        :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
@@ -56,17 +57,40 @@
                         <span>Prizes pool</span>
                     </NuxtLink>
                 </div>
-                <NuxtLink to="/analitics">
+                <NuxtLink to="/analytics">
                     <span class="material-symbols-outlined">
                         trending_up
                     </span>
-                    <span>Analitics</span>
+                    <span>Analytics</span>
                 </NuxtLink>
             </div>
 
         </div>
         <div class="side-bar-right bg-blue">
-            <div class="nav-bar">vdsvg</div>
+            <div class="nav-bar flex flex-row justify-between items-center text-black">
+                <div class="nav-left">
+                    <h1>Welcome Hera system management</h1>
+                </div>
+                <div class="nav-right flex flex-row justify-center items-center gap-10">
+                        <span class="material-symbols-outlined">
+                            sms
+                        </span>
+                        <span class="material-symbols-outlined">
+                            notifications
+                        </span>
+                        <Profile></Profile>
+                        <!-- <div class="flex flex-row items-center gap-5">
+                            <span>Darath</span>
+                            <div>
+                                <img id="profile-image" src="/profile.png" alt="">
+                            </div>
+                            <span class="material-symbols-outlined">
+                                arrow_drop_down
+                            </span>
+                        </div> -->
+            
+                </div>
+            </div>
             <div class="main">
 
                 <NuxtPage></NuxtPage>
@@ -76,6 +100,9 @@
         </div>
     </div>
 </template>
+<script setup lang="ts">
+import Profile from "~/components/dialogs/Profile.vue"
+</script>
 
 <style scoped>
 .app-bar {
@@ -86,6 +113,8 @@
     position: fixed;
     width: 18rem;
     height: 100%;
+    background: #1B1811;
+    color: #FFFFFF;
 }
 
 .nav-bar {
@@ -95,6 +124,19 @@
     width: calc(100% - 18rem);
     background: #FFFFFF;
     height: 4rem;
+    padding: 0rem 3rem;
+}
+
+.nav-left h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+#profile-image{
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    background: #838181;
+    object-fit: cover;
 }
 
 .main {

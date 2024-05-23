@@ -1,15 +1,16 @@
 <template>
-    <div class="prize-setting">
-        <h1>Prizes Pool Setting</h1>
-        <p class="desc">
+    <div class="prize-setting page-bg">
+        <h1 class="page-title">Prizes Pool Setting</h1>
+        <p class="desc page-description">
             Prize setting involves determining the value or amount of a prize for a competition or event, considering
             factors such as objectives, budget, target audience, and perceived value.
         </p>
-        <div class="flex flex-row justify-between mt-15 items-center">
-            <h2>Prizes pool management</h2>
+        <div class="flex flex-row justify-between mt-10 items-center">
             <div class="flex flex-row justify-between gap-2 items-center">
-                <button class="primary-btn"> Save</button>
+                <button class="secondary-btn"> Save</button>
                 <DeleteItem :itemName="'prize pool'"></DeleteItem>
+            </div>
+            <div class="flex flex-row justify-between gap-2 items-center">
                 <AddPrizePool></AddPrizePool>
             </div>
         </div>
@@ -18,7 +19,7 @@
                 <tr>
                     <th>
                         <div class="flex flex-row justify-center gap-2">
-                            <span>No.</span>
+                        
                             <input id="checkbox" type="checkbox">
                         </div>
                     </th>
@@ -31,10 +32,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="i in 10">
+                <tr v-for="i in 5">
                     <td>
                         <div class="flex flex-row justify-center gap-2">
-                            <span>{{ i }}</span>
+                
                             <input id="checkbox" type="checkbox">
                         </div>
                     </td>
@@ -79,34 +80,9 @@ const showEditQty = (isEditQty:bool, item:number)=>{
 }
 </script>
 <style scoped>
-.prize-setting {
-    background: #FFFFFF;
-    width: 100%;
-    color: #000000;
-    padding: 3rem 2rem;
-    border-radius: 10px;
+.prize-setting{
+    padding: 3rem 0rem !important;
 }
-
-.prize-setting h1 {
-    color: #000000;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.prize-setting .desc {
-    width: 50%;
-    margin: auto;
-}
-
-.prize-setting .desc,
-h2 {
-    color: #000000;
-    font-size: 18px;
-    text-align: center;
-}
-
 table {
     width: 100%;
     background: #FFFFFF;
@@ -148,8 +124,8 @@ td:nth-child(1) {
     border-bottom-left-radius: 15px;
 }
 
-th:nth-child(7),
-td:nth-child(7) {
+th:nth-child(6),
+td:nth-child(6) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 }

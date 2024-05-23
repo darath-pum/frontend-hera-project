@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize flex flex-row">
-        <button v-if="itemName == 'prize pool'" class="primary-btn" @click="isShow = true">Delete</button>
+        <button v-if="itemName == 'prize pool'" class="secondary-btn" @click="isShow = true">Delete</button>
         <div v-else  class="add-prize flex flex-row cursor-pointer"  @click="isShow = true">
             <span class="material-symbols-outlined">
                 delete
@@ -15,7 +15,7 @@
                 <p class="  ">Do you want to delete this {{itemName}}?</p>
                 <div class="btn-save flex flex-row gap-2 justify-center">
                     <button class="primary-btn">No</button>
-                    <button class="primary-btn">Yes</button>
+                    <button class="secondary-btn">Yes</button>
                 </div>
             </form>
         </div>

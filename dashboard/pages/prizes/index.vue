@@ -1,12 +1,11 @@
 <template>
-    <div class="prize-setting">
-        <h1>Prizes Setting</h1>
-        <p class="desc">
+    <div class="prize-setting page-bg">
+        <h1 class="page-title">Prizes Setting</h1>
+        <p class="desc page-description">
             Prize setting involves determining the value or amount of a prize for a competition or event, considering
             factors such as objectives, budget, target audience, and perceived value.
         </p>
-        <div class="flex flex-row justify-between mt-15 items-center">
-            <h2>Prizes management</h2>
+        <div class="flex flex-row justify-end mt-15 items-center">
             <div>
                 <AddPrize></AddPrize>
             </div>
@@ -53,31 +52,7 @@ import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 </script>
 <style scoped>
-.prize-setting {
-    background: #FFFFFF;
-    width: 100%;
-    color: #000000;
-    padding: 3rem 2rem;
-    border-radius: 10px;
-}
 
-.prize-setting h1 {
-    color: #000000;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.prize-setting .desc {
-    width: 50%;
-    margin: auto;
-}
-.prize-setting .desc, h2 {
-    color: #000000;
-    font-size: 18px;
-    text-align: center;
-}
 
 table {
     width: 100%;

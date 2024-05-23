@@ -1,12 +1,11 @@
 <template>
-    <div class="prize-setting">
-        <h1>Campaigns Setting</h1>
-        <p class="desc">
+    <div class="prize-setting page-bg">
+        <h1 class="page-title">Campaigns Setting</h1>
+        <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.
         </p>
-        <div class="flex flex-row justify-between mt-15 items-center">
-            <h2>Campaigns management</h2>
+        <div class="flex flex-row justify-end mt-15 items-center">
             <div>
                 <NuxtLink to="/campaigns/new">
                     <button class="primary-btn">Add campaign</button>
@@ -83,33 +82,6 @@
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 </script>
 <style scoped>
-.prize-setting {
-    background: #FFFFFF;
-    width: 100%;
-    color: #000000;
-    padding: 3rem 2rem;
-    border-radius: 10px;
-}
-
-.prize-setting h1 {
-    color: #000000;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.prize-setting .desc {
-    width: 50%;
-    margin: auto;
-}
-
-.prize-setting .desc,
-h2 {
-    color: #000000;
-    font-size: 18px;
-    text-align: center;
-}
 
 table {
     width: 100%;
