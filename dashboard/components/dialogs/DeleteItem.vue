@@ -1,5 +1,5 @@
 <template>
-    <div class="add-prize flex flex-row">
+    <div class="add-prize flex flex-row"    >
         <button v-if="itemName == 'prize pool'" class="secondary-btn" @click="isShow = true">Delete</button>
         <div v-else  class="add-prize flex flex-row cursor-pointer"  @click="isShow = true">
             <span class="material-symbols-outlined">
@@ -8,8 +8,8 @@
             <span>Delete</span>
 
         </div>
-        <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4">
+        <div :class="isShow?'prize-dialog':'prize-hide'"  @click="isShow = false">
+            <form action="" :class="isShow?'form-dialog':'form-hide'" @click.stop class="flex flex-col gap-4">
 
                 <h1>Delete</h1>
                 <p class="  ">Do you want to delete this {{itemName}}?</p>
@@ -31,9 +31,10 @@ const isShow = ref(false)
 </script>
 
 <style scoped>
-.prize-dialog {
+
+.prize-hide, .prize-dialog {
     position: fixed;
-    background: #0000005e;
+    background: #00000059;
     width: 100%;
     height: 100%;
     z-index: 10 !important;
@@ -43,6 +44,18 @@ const isShow = ref(false)
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.prize-hide {
+    transform: translateY(100px);
+    visibility: hidden;
+}
+.prize-dialog {
+    transition: 1s;
+    transform: translateY(0px);
+}
+.prize-dialog{
+    transition: 0.1s;
+    transform: translateY(0px);
 }
 
 form {
@@ -54,8 +67,15 @@ form {
     text-align: center;
 }
 
+
+
 form h1 {
     font-size: 24px;
     font-weight: 600;
+}
+@media (max-width: 67.5rem) {
+    .material-symbols-outlined{
+        font-size: 1rem;
+    }
 }
 </style>

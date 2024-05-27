@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="i in 5">
+                <tr v-for="i in 2">
                     <td>
                         <div class="flex flex-row justify-center gap-2">
                 
@@ -133,5 +133,23 @@ td:nth-child(6) {
 th:nth-child(5),
 td:nth-child(5) {
     width: 25%;
+}
+@media (max-width: 67.5rem) {
+    .campaign-btn{
+        margin-top: -2rem !important;
+    }
+    .p-image img {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    th,
+    td {
+        font-size: 0.7rem;
+        padding: 0.3rem;
+    }
+    .material-symbols-outlined{
+        font-size: 1rem;
+    }
 }
 </style>

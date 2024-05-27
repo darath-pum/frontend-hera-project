@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row">
-        <div class="flex flex-row items-center gap-5">
+        <div class="pf-g flex flex-row items-center gap-5">
             <span>Nika</span>
             <div @click="showPopup" class="cursor-pointer">
                 <img id="profile-image" src="/profile.png" alt="">
@@ -46,6 +46,7 @@ const showPopup = () => {
     align-items: center;
     justify-content: center;
     position: absolute;
+    
 }
 
 
@@ -65,15 +66,18 @@ const showPopup = () => {
 }
 
 .pf-popup {
-    /* position: absolute; */
+    position: absolute;
     width: 20rem;
     /* height: 14rem; */
-    z-index: 11 !important;
+    margin-top: 22rem;
+    margin-left: -20rem;
+    z-index: 2 !important;
     background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: black;
 }
 /* .pf-popup::before{
     position: absolute;
@@ -89,5 +93,16 @@ const showPopup = () => {
 .pf-popup h1 {
     font-size: 1.5rem;
     font-weight: 600;
+}
+@media (max-width: 67.5rem) {
+    #profile-image{
+    width: 35px;
+}
+.pf-g{
+    gap: 0.5rem;
+}
+.pf-g span:nth-child(1){
+    font-size: 0.7rem;
+}
 }
 </style>

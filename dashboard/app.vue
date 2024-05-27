@@ -4,7 +4,6 @@
 </template>
 <style scoped>
 *{
-  background: #F2F6F6;
-  font-family: "Battambang", system-ui;
+  background: #000000 !important;
 }
 </style>

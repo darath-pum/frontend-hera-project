@@ -17,9 +17,10 @@ body {
 }
 
 :root {
-    --primary-color: #240A34;
+    --primary-color: #303031;
     --secondary-color: #6c757d;
     --third-color: #ffff;
+    --radius:10px;
 }
 
 .input-form{
@@ -39,7 +40,7 @@ body {
 }
 
 .primary-btn{
-    background: #000;
+    background:var(--primary-color);
     color: #FFFFFF;
     font-weight: 600;
     padding:0.5rem 1.5rem;
@@ -67,7 +68,9 @@ body {
 }
 .router-link-active{
     background: #ffffff7e;
-    width: 100%;
+    /* width: 100%; */
+    border-radius: var(--radius);
+    margin: 0rem 1rem 0rem 1rem;
 }
 /* ==================================== */
 .page-bg {
@@ -92,4 +95,24 @@ body {
     color: #000000;
     font-size: 18px;
     text-align: center;
+}
+
+
+@media (max-width:67.5rem) {
+    .page-description{
+        font-size: 0.7rem;
+    }
+    .page-bg {
+        padding: 2rem 1rem;
+        border-radius: 10px;
+    }
+    .page-title{
+
+        font-size: 18px;
+    }
+    .primary-btn, .secondary-btn{
+        padding:0.5rem 1.5rem;
+        height: 2rem;
+        font-size: 0.7rem;
+    }
 }

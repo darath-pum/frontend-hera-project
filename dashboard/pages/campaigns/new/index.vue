@@ -45,8 +45,7 @@
                     <input type="file">
                     <div class="select-image">
                         <span class="material-symbols-outlined">
-                            add_circle
-                        </span>
+                            add_circle </span>
                         <img src="/image-icon.png" alt="">
                     </div>
                 </div>
@@ -55,7 +54,6 @@
                     <textarea name="" id=""></textarea>
                 </div>
             </div>
-
         </form>
         <ManagePrizePool></ManagePrizePool>
         <div class="flex flex-row justify-end gap-2 -mt-7">
@@ -72,14 +70,14 @@ const genres = ref<string[]>([]);
 const genreList = ref('Select Game');
 const isSelectGame = ref(false)
 const nameGenres = ref([
-    { name: "All", id: 1 },
-    { name: "2Players", id: 2 },
-    { name: "Action", id: 3 },
-    { name: "Adventure", id: 4 },
+    { name: "Car", id: 1 },
+    { name: "Bike", id: 2 },
+    { name: "Fish", id: 3 },
+    { name: "Fruit", id: 4 },
     { name: "Basketball", id: 5 },
     { name: "Beauty", id: 6 },
     { name: "Bike", id: 7 },
-    { name: "Car", id: 8 },
+    { name: "Cat", id: 8 },
     { name: "Casual", id: 9 },
     { name: "Clicker", id: 10 },
     { name: "Controller", id: 11 },
@@ -168,23 +166,26 @@ textarea,
     height: 2.7rem;
     margin-top: -2.7rem;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    border: none;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    border: none !important;
+
 }
 
 textarea,
 .image input {
     height: 5rem;
 }
-.image input{
+
+.image input {
     z-index: 10;
     cursor: pointer;
     opacity: 0;
-    
+
 }
 
-.select-image{
+.select-image {
     height: 5rem;
     border: #000000 solid 2px;
     border-radius: 10px;
@@ -194,11 +195,13 @@ textarea,
     align-items: center;
     margin-top: -5rem;
 }
-.select-image img{
+
+.select-image img {
     position: absolute;
     width: 5rem;
 }
-.select-image span{
+
+.select-image span {
     z-index: 1;
     color: #a5a4a4;
     position: absolute;
@@ -217,5 +220,51 @@ textarea,
     border: 2rem solid #FFFFFF;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 
+}
+@media (max-width:67.5rem) {
+    form{
+        margin-top: 2rem;
+        gap: 1rem;
+    }
+    input,
+.select-game,
+textarea,
+.select-icon {
+    padding: 0.5rem;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+.select-icon {
+    height: 2.3rem;
+    margin-top: -2.3rem;
+   
+}
+textarea,
+.image input,.select-image {
+    height: 4rem;
+
+}
+.select-image{
+    margin-top: -4rem;
+}
+.select-image img {
+    width: 4rem;
+}
+label {
+    font-size: 0.7rem;
+}
+.g-one,
+.g-two,
+.g-three {
+    gap: 2rem;
+}
+.choose-select{
+    margin-top: 3.4rem;
+    width: 17.8rem;
+    border: 1rem solid #FFFFFF;
+    gap: 1rem;
+
+}
 }
 </style>

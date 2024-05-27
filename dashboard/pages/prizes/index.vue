@@ -6,7 +6,7 @@
             factors such as objectives, budget, target audience, and perceived value.
         </p>
         <div class="flex flex-row justify-end mt-15 items-center">
-            <div>
+            <div class="prize-btn">
                 <AddPrize></AddPrize>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="i in 10">
+                <tr v-for="i in 5">
                     <td>{{ i }}</td>
                     <td>អាវយឺត</td>
                     <td>T-shirt</td>
@@ -38,7 +38,7 @@
                                 </span>
                                 <span>Edite</span>
                             </div>
-                            
+
                             <DeleteItem :itemName="'Prize'"></DeleteItem>
                         </div>
                     </td>
@@ -52,18 +52,18 @@ import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 </script>
 <style scoped>
-
-
 table {
     width: 100%;
     background: #FFFFFF;
 }
-.p-image img{
+
+.p-image img {
     width: 2rem;
     height: 2rem;
 }
+
 th {
-    background: #000;
+    background: var(--primary-color);
     color: #FFFFFF;
     padding: 0.5rem;
 }
@@ -89,5 +89,24 @@ th:nth-child(5),
 td:nth-child(5) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+@media (max-width: 67.5rem) {
+    .prize-btn{
+        margin-top: -2rem !important;
+    }
+    .p-image img {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    th,
+    td {
+        font-size: 0.7rem;
+        padding: 0.3rem;
+    }
+    .material-symbols-outlined{
+        font-size: 1rem;
+    }
 }
 </style>
