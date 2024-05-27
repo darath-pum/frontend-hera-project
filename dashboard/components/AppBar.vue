@@ -114,6 +114,7 @@ import Profile from "~/components/dialogs/Profile.vue"
 .app-bar {
     width: 100%;
     background: #000;
+    margin: 1rem;
 }
 
 .side-bar-left {
@@ -122,17 +123,16 @@ import Profile from "~/components/dialogs/Profile.vue"
     height: 96.7%;
     background: var(--primary-color);
     color: #FFFFFF;
-    margin: 1rem 1.5rem;
     border-radius: 10px;
 }
 
 .nav-bar {
-    margin: 1rem;
+    /* margin: 1rem; */
     border-radius: 10px;
     z-index: 1;
     position: fixed;
     left: 20rem;
-    width: calc(100% - 22.5rem);
+    width: calc(100% - 21.5rem);
     background: var(--primary-color);
     height: 4rem;
     padding: 0rem 3rem;
@@ -154,12 +154,12 @@ import Profile from "~/components/dialogs/Profile.vue"
 
 .main {
     position: absolute;
-    left: 19.5rem;
-    width: calc(100% - 19.5rem);
+    left: 20rem;
+    width: calc(100% - 21.5rem);
     top: 4rem;
-    background: #F2F6F6;
+    /* background: #F2F6F6; */
     height: 100%;
-    padding: 3rem 1.5rem;
+    padding: 3rem 1rem;
 }
 
 

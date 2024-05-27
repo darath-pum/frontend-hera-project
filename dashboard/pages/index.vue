@@ -82,7 +82,7 @@ import TopUsers from "~/components/charts/TopUsers.vue"
 
 <style scoped>
     .active-card{
-        gap: 3rem;
+        gap: 1rem;
         margin-top: 0.5rem;
     }
     .card-item{
@@ -120,7 +120,7 @@ import TopUsers from "~/components/charts/TopUsers.vue"
     }
     .charts{
         margin-top: 2.5rem;
-        gap: 3rem;
+        gap: 2rem;
     }
     @media (max-width: 67.5rem) {
         .active-card{

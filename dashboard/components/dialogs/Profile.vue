@@ -1,21 +1,22 @@
 <template>
     <div class="flex flex-row">
-        <div class="pf-g flex flex-row items-center gap-5">
+        <div  @click="showPopup" class="pf-g flex flex-row items-center gap-5 cursor-pointer hover:bg-gray-500 py-1 px-2 rounded-md transition-all">
             <span>Nika</span>
-            <div @click="showPopup" class="cursor-pointer">
+            <div class="cursor-pointer">
                 <img id="profile-image" src="/profile.png" alt="">
             </div>
-            <span @click="showPopup" class="material-symbols-outlined cursor-pointer">
+            <span class="material-symbols-outlined cursor-pointer select-none">
                 arrow_drop_down
             </span>
         </div>
-
-        <div v-if="isShow" class="profile-dialog" @click="isShow = false">
+        
+        <div v-if="isShow" class="dialog-backdrop" @click="isShow = false" :class="[isShow ? 'active': '']"></div>
+        <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false" :class="[isShow ? 'active': '']">
             <div @click.stop class="flex pf-popup flex-col gap-2">
                 <img src="/profile.png" alt="">
 
                 <h1>Nika</h1>
-                <p class="  ">nika@gmail.com</p>
+                <p class="">nika@gmail.com</p>
                 <div class="btn-save flex flex-col gap-5 justify-center">
                     <button class="primary-btn">Your Account</button>
                     <button class="primary-btn">Logout</button>
@@ -30,9 +31,17 @@ import { ref } from "vue"
 
 
 const isShow = ref(false)
+
 const showPopup = () => {
     isShow.value = !isShow.value
 }
+
+window.onscroll = function (e) {  
+    if (isShow.value) {
+        isShow.value = false
+    }
+}
+
 </script>
 
 <style scoped>
@@ -46,14 +55,35 @@ const showPopup = () => {
     align-items: center;
     justify-content: center;
     position: absolute;
-    
+    opacity: 0;
+    transition: all 4s ease;
+}
+
+.profile-dialog.active {
+    opacity: 1;
+    transition: all 4s ease;
+}
+
+.dialog-backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #00000000;
+    z-index: 9 !important;
+    display: none;
+}
+
+.dialog-backdrop.active {
+    display: block;
 }
 
 
 
 #profile-image,
 .pf-popup img {
-    width: 50px;
+    width: 40px;
     /* height: 50px; */
     border-radius: 100px;
     background: #838181;
@@ -71,7 +101,7 @@ const showPopup = () => {
     /* height: 14rem; */
     margin-top: 22rem;
     margin-left: -20rem;
-    z-index: 2 !important;
+    z-index: 10 !important;
     background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
