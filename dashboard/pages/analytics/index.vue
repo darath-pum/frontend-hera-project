@@ -2,14 +2,13 @@
     <div>
         <label for="pet-select" class="text-black">Choose a game:</label><br>
         <select name="pets" id="pet-select">
-        <option value="">--Please choose an game--</option>
-        <option value="dog">Portal Outbreak</option>
-        <option value="cat">Racing Car</option>
-        <option value="hamster">Oxygen War</option>
-        <option value="hamster">Heart</option>
-        <option value="hamster">Fish</option>
+            <option value="">--Please choose an game--</option>
+            <option value="dog">Portal Outbreak</option>
+            <option value="cat">Racing Car</option>
+            <option value="hamster">Oxygen War</option>
+            <option value="hamster">Heart</option>
+            <option value="hamster">Fish</option>
         </select>
-
     </div>
     <div class="charts flex flex-row justify-between ">
         <CustomerDAP />
@@ -25,7 +24,6 @@
             <AdminMAC />
         </div>
     </div> -->
-
 
 </template>
 
@@ -59,5 +57,4 @@
         border-radius: var(--radius);
         box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
 }
-
 </style>

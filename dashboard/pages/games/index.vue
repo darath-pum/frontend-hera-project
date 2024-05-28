@@ -18,9 +18,9 @@
                 </div>
                 <div class="flex flex-row items-center justify-between -mt-7">
                     <div class="btn-en-dis flex flex-row gap-1">
-                        <span class="font-semibold">Enable</span>
+                        <span @click="enable(i)" :class="isEnable == true && index == i? 'font-semibold':''">Enable</span>
                         <span>/</span>
-                        <span>Disable</span>
+                        <span @click="disable(i)" :class="isEnable == false && index == i? 'font-semibold':''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
@@ -32,6 +32,21 @@
         </div>
     </div>
 </template>
+<script setup lang="ts">
+import {ref} from "vue";
+
+const isEnable = ref(false);
+const index = ref();
+const enable = (inde)=>{
+    isEnable.value = true
+    index.value = inde
+    
+}
+const disable = (inde)=>{
+    isEnable.value = false
+    index.value = inde
+}
+</script>
 <style scoped>
 
 
@@ -66,5 +81,8 @@
 }
 .btn-view-detail button{
     border-radius: 100px;
+}
+.btn-en-dis span{
+    cursor: pointer;
 }
 </style>

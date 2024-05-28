@@ -1,5 +1,5 @@
 <template>
-    <div class="prize-setting page-bg">
+    <div class="prize-setting page-bg"  @wheel="handleScroll">
         <h1 class="page-title">Campaigns Setting</h1>
         <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
@@ -88,6 +88,7 @@
 import { ref } from "vue"
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import { onMounted } from 'vue';
 
 const isBtn = ref(false)
 const index = ref()
@@ -95,6 +96,26 @@ const showBtnAction = (idx) => {
     index.value = idx
     isBtn.value = !isBtn.value
 }
+
+  
+  const handleScroll = (event) => {
+    // Check the direction of the scroll
+    if (event.wheelDelta < 0) {
+      // Scrolling down
+      isBtn.value = false
+    } else {
+        // Scrolling up
+        isBtn.value = false
+    }
+  
+    // Prevent the default scroll behavior
+    event.preventDefault();
+  };
+  
+  onMounted(() => {
+    // Attach the event listener to the root element
+    document.addEventListener('wheel', handleScroll);
+  });
 </script>
 <style scoped>
 table {
