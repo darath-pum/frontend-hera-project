@@ -1,0 +1,1 @@
+export { default } from "file:///C:/Users/DXPDarath-Web/frontend-hera-project/client/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"

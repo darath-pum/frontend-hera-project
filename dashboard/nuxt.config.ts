@@ -1,5 +1,5 @@
 
-// import { backendURL } from "./configs";
+import { backendURL } from "./composables/configs";
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -57,10 +57,10 @@ export default defineNuxtConfig({
       ],
     },
   },
-  // nitro: {
-  //   routeRules: {
-  //     "/api/**": { proxy: backendURL + "/**" },
-  //   },
-  // },
+  nitro: {
+    routeRules: {
+      "/api/**": { proxy: backendURL + "/**" },
+    },
+  },
   extends: ['nuxt-emoji'],
 });

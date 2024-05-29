@@ -36,7 +36,7 @@
                                 <span class="material-symbols-outlined">
                                     edit
                                 </span>
-                                <span>Edite</span>
+                                <span>Edit</span>
                             </div>
 
                             <DeleteItem :itemName="'Prize'"></DeleteItem>

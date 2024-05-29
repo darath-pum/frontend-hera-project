@@ -36,11 +36,11 @@ const showPopup = () => {
     isShow.value = !isShow.value
 }
 
-window.onscroll = function (e) {  
-    if (isShow.value) {
-        isShow.value = false
-    }
-}
+// window.onscroll = function (e) {  
+//     if (isShow.value) {
+//         isShow.value = false
+//     }
+// }
 
 </script>
 

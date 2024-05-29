@@ -30,32 +30,58 @@
                     </span>
                     <span>Users</span>
                 </NuxtLink>
-                <div class="lucky-draw ">
-                    <div class="main-tool">
+                <div class="lucky-draw">
+                    <div class="main-tool cursor-pointer flex flex-row justify-between" @click="showGame">
+                        <div class="flex flex-row items-center gap-2">
+                            <span class="material-symbols-outlined">
+                                draw
+                            </span>
+                            <span>Game admin</span>
+
+                        </div>
                         <span class="material-symbols-outlined">
-                            draw
+                            arrow_drop_down
                         </span>
-                        <span>Lucky draw</span>
                     </div>
-                    <NuxtLink to="/campaigns"
+                    <NuxtLink to="/game-admin" v-if="isGame"
+                        :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
+                        <span class="material-symbols-outlined">
+                            campaign
+                        </span>
+                        <span>Games</span>
+                    </NuxtLink>
+                    <NuxtLink to="/user's-game" v-if="isGame">
+                        <span class="material-symbols-outlined">
+                            rewarded_ads
+                        </span>
+                        <span>User's game</span>
+                    </NuxtLink>
+                </div>
+                <div class="lucky-draw ">
+                    <div class="main-tool cursor-pointer  cursor-pointer flex flex-row justify-between" @click="showLd">
+                        <div class="flex flex-row items-center gap-2">
+                            <span class="material-symbols-outlined">
+                                draw
+                            </span>
+                            <span>Lucky draw</span>
+                        </div>
+                        <span class="material-symbols-outlined">
+                            arrow_drop_down
+                        </span>
+                    </div>
+                    <NuxtLink to="/campaigns" v-if="isLd"
                         :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
                         <span>Campaign</span>
                     </NuxtLink>
-                    <NuxtLink to="/prizes">
+                    <NuxtLink to="/prizes" v-if="isLd">
                         <span class="material-symbols-outlined">
                             rewarded_ads
                         </span>
                         <span>Prizes</span>
                     </NuxtLink>
-                    <!-- <NuxtLink to="/prizes-pool">
-                        <span class="material-symbols-outlined">
-                            rewarded_ads
-                        </span>
-                        <span>Prizes pool</span>
-                    </NuxtLink> -->
                 </div>
                 <NuxtLink to="/analytics">
                     <span class="material-symbols-outlined">
@@ -108,6 +134,18 @@
 </template>
 <script setup lang="ts">
 import Profile from "~/components/dialogs/Profile.vue"
+import { ref } from "vue";
+
+const isLd = ref(false);
+
+const showLd = () => {
+    isLd.value = !isLd.value
+}
+const isGame = ref(false);
+
+const showGame = () => {
+    isGame.value = !isGame.value
+}
 </script>
 
 <style scoped>
@@ -129,10 +167,10 @@ import Profile from "~/components/dialogs/Profile.vue"
 .nav-bar {
     /* margin: 1rem; */
     border-radius: 10px;
-    z-index: 1;
+    z-index: 100;
     position: fixed;
     left: 20rem;
-    width: calc(100% - 21.5rem);
+    width: calc(100% - 21rem);
     background: var(--primary-color);
     height: 4rem;
     padding: 0rem 3rem;
@@ -155,7 +193,7 @@ import Profile from "~/components/dialogs/Profile.vue"
 .main {
     position: absolute;
     left: 20rem;
-    width: calc(100% - 21.5rem);
+    width: calc(100% - 21rem);
     top: 4rem;
     /* background: #F2F6F6; */
     height: 100%;
@@ -258,7 +296,7 @@ import Profile from "~/components/dialogs/Profile.vue"
 
     a span:nth-child(2),
     .main-tool span:nth-child(2) {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
     }
 
     a span:nth-child(1),
@@ -269,7 +307,7 @@ import Profile from "~/components/dialogs/Profile.vue"
     }
 
     .nav-bar {
-        left: 11rem;
+        left: 12rem;
         width: calc(100% - 13rem);
         height: 3rem;
         padding: 1rem 1rem;

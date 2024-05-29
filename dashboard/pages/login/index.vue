@@ -1,6 +1,6 @@
 <template>
     <div class="fixed h-screen w-screen flex justify-center bg-gray-300 items-center">
-      <form action=""class="">
+      <form action=""class="" @submit.prevent="login">
           <div class="flex">
               <div class="bg-white p-[30px] pb-[8rem] pt-[3rem] shadow-md">
                   <h2 class="text-center text-[2.1rem] font-bold select-none">Admin</h2>
@@ -11,7 +11,7 @@
                       <input type="password" placeholder="Password" v-model="password"/>
                   </div>
                   <div>
-                      <button class="bg-black text-white" @click="loginPlayer">Login</button>
+                      <button class="bg-black text-white" @click="login">Login</button>
                   </div>
               </div>
               <div class="bg-black p-[10px] w-[19rem] pt-[3rem]  shadow-md">
@@ -40,6 +40,15 @@
           else {
               alert("Email or Password invalid")
           }
+      }
+
+      const login = async() => {
+        let data = {
+            email:email.value,
+            password:password.value
+        }
+        const res = await callAPI('/dashboard/user/login', 'POST',data);
+        console.log(res)
       }
   </script>
   
