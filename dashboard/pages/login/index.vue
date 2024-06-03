@@ -2,18 +2,20 @@
     <div class="fixed h-screen w-screen flex justify-center bg-gray-300 items-center">
       <form action=""class="" @submit.prevent="login">
           <div class="flex">
-              <div class="bg-white p-[30px] pb-[8rem] pt-[3rem] shadow-md">
+              <div class="bg-white p-[30px] pb-[8rem] w-[28rem] pt-[3rem] shadow-md">
                   <h2 class="text-center text-[2.1rem] font-bold select-none">Sign In</h2>
-                  <div>
-                    <label class="ml-3 font-bold" for="">Email</label><br>
-                    <input type="email" placeholder="Email" v-model="email" />
-                  </div>
-                  <div>
-                    <label class="ml-3 font-bold" for="">Password</label><br>
-                    <input type="password" placeholder="Password" v-model="password"/>
-                  </div>
-                  <div>
-                      <button class="bg-black text-white" @click="login">Login</button>
+                  <div class="flex flex-col gap-7">
+                      <div>
+                        <label class="font-bold" for="">Email</label><br>
+                        <input type="email" placeholder="Email" v-model="email" />
+                      </div>
+                      <div>
+                        <label class=" font-bold" for="">Password</label><br>
+                        <input type="password" placeholder="Password" v-model="password"/>
+                      </div>
+                      <div>
+                          <button class="primary-btn" @click="login">Login</button>
+                      </div>
                   </div>
               </div>
               <div class="bg-black p-[10px] w-[23rem] pt-[3rem]  shadow-md">
@@ -29,8 +31,6 @@
   <script setup lang="ts">
       import Swal from 'sweetalert2'
       import { ref} from 'vue';
-      import { useRouter } from 'vue-router'
-      const router = useRouter();
       const email = ref('');
       const password = ref('');
       const login = async() => {
@@ -38,7 +38,6 @@
             email:email.value,
             password:password.value
         }
-    
             const token = useCookie('token');
             const res = await callAPI('/dashboard/user/login', 'POST',data);
             console.log(res.status)
@@ -64,18 +63,14 @@
                 })
             }
             token.value = res.data.token
-
-        }
-        
-        
-      
+        } 
   </script>
   
   <style scoped>
+
   input,button {
       padding: 0.5rem;
-      margin:15px;
-      width: 23rem;
+      width: 100%;
       border-radius:10px;
       border:2px solid;
   }
