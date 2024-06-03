@@ -201,11 +201,11 @@ const addCampaign = async () => {
     }
     formData.set("start_date", '2023-01-20T00:00:00+07:00');
     formData.set("end_date", '2023-01-20T00:00:00+07:00');
-    formData.set("user_game_id)", JSON.stringify(user_game_id.value))
+    formData.set("user_game_id", JSON.stringify(user_game_id.value))
     console.log("formData", formData);
 
     const res = await callAPI('/dashboard/campaign/createCampaign', 'POST', formData);
-    console.log(res.data);
+    console.log(res.message);
 
 }
 onMounted(() => {

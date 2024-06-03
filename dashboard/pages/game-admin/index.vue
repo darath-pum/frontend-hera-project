@@ -33,8 +33,8 @@
                         </div>
                     </td>
                     <td>
-                    <span v-for="(name, i) in item.categories">
-                        {{ name}}, </span>
+                    <span>
+                        {{ item.categories.join(', ')}} </span>
                     </td>
                     <td>{{ item.created_at.substring(0, 10)}}</td>
                     <td>
