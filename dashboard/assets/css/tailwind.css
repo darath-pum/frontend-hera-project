@@ -1,119 +1,135 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 body {
-    /* @apply bg-gray-50; */
-    background: #eaeef0;
+  /* @apply bg-gray-50; */
+  background: #eaeef0;
+  font-family: "Inter", sans-serif;
 }
 
 @layer components {
-    .btn {
-        @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm text-white;
-    }
+  .btn {
+    @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm text-white;
+  }
 
-    .card {
-        @apply p-3 rounded-md bg-white shadow-md h-full;
-    }
+  .card {
+    @apply p-3 rounded-md bg-white shadow-md h-full;
+  }
 }
 
 :root {
-    --primary-color: #000000;
-    --secondary-color: #6c757d;
-    --third-color: #ffff;
-    --radius:10px;
+  --primary-color: #000000;
+  --secondary-color: #6c757d;
+  --third-color: #ffff;
+  --radius: 10px;
 }
 
-.input-form{
-    padding: 0.5rem ;
-    border: 2px solid var(--primary-color);
-    border-radius: 0.5rem;
-    width: 100%;
+.input-form {
+  padding: 0.5rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 0.5rem;
+  width: 100%;
 }
 .v-pagination .v-btn {
-    background: #ccc9c9 !important;
-    color: #000000;
+  background: #ccc9c9 !important;
+  color: #000000;
 }
 
 .v-pagination__item--is-active .v-btn {
-    background: var(--primary-color) !important;
-    color: #ffff;
+  background: var(--primary-color) !important;
+  color: #ffff;
 }
 
-.primary-btn{
-    background:var(--primary-color);
-    color: #FFFFFF;
-    font-weight: 600;
-    padding:0.5rem 1.5rem;
-    border-radius: 10px;
-    cursor: pointer;
-    height: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.primary-btn {
+  background: var(--primary-color);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
 }
-.secondary-btn{
-    background: #ffffff;
-    color: #000000;
-    font-weight: 600;
-    padding:0.5rem 1.5rem;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 2px solid #000000;
-    height: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+.primary-btn:hover {
+  background: #424242;
+  transition: all 0.3s ease-in-out;
 }
-.router-link-active{
-    background: #ffffff7e;
-    /* width: 100%; */
-    border-radius: var(--radius);
-    margin: 0rem 1rem 0rem 1rem;
+
+.secondary-btn {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid #000000;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.router-link-active {
+  background: #ffffff7e;
+  /* width: 100%; */
+  border-radius: var(--radius);
+  margin: 0rem 1rem 0rem 1rem;
 }
 /* ==================================== */
 .page-bg {
-    background: #FFFFFF;    
-    width: 100%;
-    color: #000000;
-    padding: 3rem 2rem;
+  background: #ffffff;
+  width: 100%;
+  color: #000000;
+  padding: 3rem 2rem;
+  border-radius: 10px;
+}
+
+.page-title {
+  color: #000000;
+  font-weight: 600;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-description {
+  width: 50%;
+  margin: auto;
+  color: #000000;
+  font-size: 18px;
+  text-align: center;
+}
+
+.main {
+  @apply bg-gray-50 w-auto absolute inset-0 md:left-[14rem] lg:left-[18rem] top-[4rem];
+}
+
+.container {
+  @apply p-5 space-y-3 md:space-y-5 mx-auto max-w-[1800px] bg-white min-h-[100vh];
+}
+
+@media (max-width: 67.5rem) {
+  .page-description {
+    font-size: 0.7rem;
+  }
+  .page-bg {
+    padding: 2rem 1rem;
     border-radius: 10px;
-}
-
-.page-title{
-    color: #000000;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.page-description{
-    width: 50%;
-    margin: auto;
-    color: #000000;
+  }
+  .page-title {
     font-size: 18px;
-    text-align: center;
-}
-
-
-@media (max-width:67.5rem) {
-    .page-description{
-        font-size: 0.7rem;
-    }
-    .page-bg {
-        padding: 2rem 1rem;
-        border-radius: 10px;
-    }
-    .page-title{
-
-        font-size: 18px;
-    }
-    .primary-btn, .secondary-btn{
-        padding:0.5rem 1.5rem;
-        height: 2rem;
-        font-size: 0.7rem;
-    }
+  }
+  .primary-btn,
+  .secondary-btn {
+    padding: 0.5rem 1.5rem;
+    height: 2rem;
+    font-size: 0.7rem;
+  }
 }

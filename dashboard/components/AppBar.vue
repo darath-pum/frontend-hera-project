@@ -1,145 +1,135 @@
 <template>
-    <div class="app-bar flex flex-row">
-        <div class="side-bar-left">
-            <div class="das-header flex flex-col items-center gap-2">
-                <div class=" flex flex-row justify-center items-center gap-2">
+    <div class="app-bar flex flex-row relative z-50">
+
+        <div class="sidebar" :class="{ 'block w-[14rem]': isSideBarShow, 'hidden md:block': !isSideBarShow }">
+
+            <div class="-z-1 bg-black absolute top-0 -right-[100vw] w-[100vw] h-full" :class="{
+                'opacity-30 md:opacity-0': isSideBarShow, 'opacity-0 hidden': !isSideBarShow
+            }" @click="toggleSidebar">
+            </div>
+
+            <div class="sidebar-title">
+                <div class="sidebar-title-logo">
                     <span class="material-symbols-outlined">
                         dashboard
                     </span>
-                    <h1>DASHBOARD</h1>
+                    <h1 class="text-xl">DASHBOARD</h1>
                 </div>
-                <p>darathpum@gmail.com</p>
+                <p class="text-sm text-white opacity-60">darathpum@gmail.com</p>
             </div>
-            <div class="tool-list flex flex-col">
-                <h1>Tools</h1>
-                <NuxtLink to="/">
+            <div class="flex flex-col gap-2 p-3">
+                <NuxtLink to="/" class="menu-btn">
                     <span class="material-symbols-outlined">
                         home
                     </span>
-                    <span>Home</span>
+                    <span class="sidebar-hidden">Home</span>
                 </NuxtLink>
-                <NuxtLink to="/games"  v-if="authStore.role == 'customer'">
+                <NuxtLink to="/games" class="menu-btn">
                     <span class="material-symbols-outlined">
                         sports_esports
                     </span>
-                    <span>Games</span>
+                    <span class="sidebar-hidden">Games</span>
                 </NuxtLink>
-                <NuxtLink to="/users"  v-if="authStore.role == 'admin'">
+                <NuxtLink to="/users" class="menu-btn">
                     <span class="material-symbols-outlined">
                         person
                     </span>
-                    <span>Users</span>
+                    <span class="sidebar-hidden">Users</span>
                 </NuxtLink>
-                <div class="game-admin" v-if="authStore.role == 'admin'">
-                    <div class="main-tool cursor-pointer flex flex-row justify-between" @click="showGame">
-                        <div class="flex flex-row items-center gap-2">
+                <div class="dropdown">
+                    <div class="dropdown-btn" @click="showGame">
+                        <div class="menu">
                             <span class="material-symbols-outlined">
                                 draw
                             </span>
-                            <span>Games</span>
-
+                            <span class="sidebar-hidden">Game admin</span>
                         </div>
-                        <span class="material-symbols-outlined">
+                        <span class="material-symbols-outlined" :class="{ 'rotate-180': isGame }">
                             arrow_drop_down
                         </span>
                     </div>
-                    <NuxtLink to="/game-admin" v-if="isGame"
+                    <NuxtLink to="/game-admin" v-if="isGame" class="menu-btn dropdown-item"
                         :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
                         <span>Games</span>
                     </NuxtLink>
-                    <NuxtLink to="/user's-game" v-if="isGame">
+                    <NuxtLink to="/user's-game" v-if="isGame" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
                             rewarded_ads
                         </span>
                         <span>User's game</span>
                     </NuxtLink>
                 </div>
-                <div class="lucky-draw " v-if="authStore.role == 'customer'">
-                    <div class="main-tool cursor-pointer  cursor-pointer flex flex-row justify-between" @click="showLd">
+                <div class="dropdown">
+                    <div class="dropdown-btn cursor-pointer cursor-pointer flex flex-row justify-between"
+                        @click="showLd">
                         <div class="flex flex-row items-center gap-2">
                             <span class="material-symbols-outlined">
                                 draw
                             </span>
-                            <span>Lucky draw</span>
+                            <span class="sidebar-hidden">Lucky draw</span>
                         </div>
-                        <span class="material-symbols-outlined">
+                        <span class="material-symbols-outlined" :class="{ 'rotate-180': isLd }">
                             arrow_drop_down
                         </span>
                     </div>
-                    <NuxtLink to="/campaigns" v-if="isLd"
+                    <NuxtLink to="/campaigns" v-if="isLd" class="menu-btn dropdown-item"
                         :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
-                        <span>Campaign</span>
+                        <span>Campaign asdada dasd asd</span>
                     </NuxtLink>
-                    <NuxtLink to="/prizes" v-if="isLd">
+                    <NuxtLink to="/prizes" v-if="isLd" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
                             rewarded_ads
                         </span>
                         <span>Prizes</span>
                     </NuxtLink>
                 </div>
-                <NuxtLink to="/analytics">
+                <NuxtLink to="/analytics" class="menu-btn">
                     <span class="material-symbols-outlined">
                         trending_up
                     </span>
-                    <span>Analytics</span>
+                    <span class="sidebar-hidden">Analytics</span>
                 </NuxtLink>
             </div>
-
-            <!-- <div class="flex flex-row items-center pl-12 mt-60 gap-2 cursor-pointer">
-                <span class="material-symbols-outlined">
-                    logout
-                </span>
-                <span>Logout</span>
-            </div> -->
         </div>
-        <div class="side-bar-right bg-blue">
-            <div class="nav-bar flex flex-row justify-between items-center text-black">
-                <div class="nav-left">
-                    <h1>Welcome Hera system management</h1>
-                </div>
-                <div class="nav-right flex flex-row justify-center items-center gap-10">
-                    <span class="material-symbols-outlined">
-                        sms
+        <div>
+            <div class="nav-bar">
+                <div class="left">
+                    <span class="material-symbols-outlined" @click="toggleSidebar">
+                        dashboard
                     </span>
-                    <span class="material-symbols-outlined">
-                        notifications
-                    </span>
-                    <Profile></Profile>
-                    <!-- <div class="flex flex-row items-center gap-5">
-                            <span>Darath</span>
-                            <div>
-                                <img id="profile-image" src="/profile.png" alt="">
-                            </div>
-                            <span class="material-symbols-outlined">
-                                arrow_drop_down
-                            </span>
-                        </div> -->
-
+                    <h1>Hera Dashboard</h1>
                 </div>
+                <Profile></Profile>
             </div>
+
             <div class="main">
-
-                <NuxtPage></NuxtPage>
-
-
+                <NuxtPage>
+                </NuxtPage>
             </div>
+
+
+
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import Profile from "~/components/dialogs/Profile.vue"
 import { ref } from "vue";
-import {useAuthStore} from '~/store/auth';
-
-const authStore = useAuthStore()
 
 const isLd = ref(false);
+
+const isSideBarShow = ref(false);
+
+const toggleSidebar = () => {
+    isSideBarShow.value = !isSideBarShow.value
+    console.log(isSideBarShow.value)
+}
 
 const showLd = () => {
     isLd.value = !isLd.value
@@ -149,194 +139,89 @@ const isGame = ref(false);
 const showGame = () => {
     isGame.value = !isGame.value
 }
+
+
 </script>
 
 <style scoped>
 .app-bar {
     width: 100%;
-    background: #bb1010;
-    /* margin: 1rem; */
+    background: #000;
 }
 
-.side-bar-left {
-    position: fixed;
-    width: 18rem;
-    height: 100%;
-    background: var(--primary-color);
-    color: #FFFFFF;
-    /* border-radius: 10px; */
+.sidebar {
+    @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color] z-50;
+}
+
+.sidebar-title {
+    @apply flex flex-col items-center gap-2 border-b py-5;
+}
+
+.sidebar-title-logo {
+    @apply flex flex-row justify-center items-center gap-2;
 }
 
 .nav-bar {
-    /* margin: 1rem; */
-    /* border-radius: 10px; */
-    z-index: 100;
-    position: fixed;
-    left: 18rem;
-    width: calc(100% - 18rem);
-    /* background: var(--primary-color); */
-    background: #FFFFFF;
-    height: 4rem;
-    padding: 0rem 3rem;
-    color: #000000 !important;
-    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    @apply bg-white shadow-sm z-50 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
+    @apply flex justify-between items-center text-black;
+
 }
 
-.nav-left h1 {
-    font-size: 24px;
-    font-weight: 600;
+.nav-bar h1 {
+    @apply font-semibold text-lg md:text-xl lg:text-2xl;
 }
 
-#profile-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    background: #838181;
-    object-fit: cover;
-}
+.nav-bar .left {
+    @apply flex justify-center items-center gap-5;
 
-.main {
-    position: absolute;
-    left: 18rem;
-    width: calc(100% - 18rem);
-    top: 4rem;
-    /* background: #F2F6F6; */
-    height: 100%;
-    padding: 3rem;
+    span {
+        @apply select-none block md:hidden p-2 border rounded-lg bg-slate-100 cursor-pointer hover:bg-slate-200;
+    }
 }
 
 
-/* ================= */
-.das-header {
-    padding: 1rem;
-    border-bottom: #FFFFFF solid 0.1rem;
-}
-
-.das-header span:nth-child(1) {
-    font-size: 1.5rem;
-}
-
-.das-header h1 {
-    font-size: 1.5rem;
-}
-
-.das-header p {
-    font-size: 1.2rem;
-    color: #8f8b8b;
-}
 
 /* ====================== */
-.tool-list {
-    /* gap: 2rem; */
+
+.menu {
+    @apply flex flex-row items-center gap-2;
 }
 
-.tool-list .material-symbols-outlined {
-    font-weight: 600;
+
+.menu-btn,
+.main-tool {
+    @apply flex flex-row items-center gap-3 rounded-lg py-3 px-2 sm:px-5;
+
+    span {
+        @apply select-none truncate;
+    }
 }
 
-.lucky-draw, .game-admin {
-    display: flex;
-    flex-direction: column;
+.menu-btn.router-link-active {
+    @apply bg-[#e5e9f0] text-[--primary-color] mx-0;
 }
 
-.lucky-draw a, .game-admin a {
-    margin-left: 3rem !important;
+.menu-btn .material-symbols-outlined {
+    @apply select-none;
 }
 
-.tool-list h1 {
-    font-size: 1.5rem;
-    color: #8f8b8b;
-    font-weight: 600;
-    padding: 3rem;
-    margin-bottom: -2rem;
+.dropdown {
+    @apply relative;
 }
 
-.tool-list a,
-.tool-list .main-tool {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    margin: 0rem 1rem 0rem 1rem;
+.dropdown .dropdown-btn {
+    @apply flex justify-between items-center gap-3 rounded-lg py-3 px-2 sm:px-5 cursor-pointer;
+
+    span {
+        @apply select-none;
+    }
 }
 
-.tool-list a span:nth-child(1),
-.main-tool span:nth-child(1) {
-    font-size: 1.5rem;
-}
+.dropdown .dropdown-item {
+    @apply ml-8 px-3;
 
-.tool-list a span:nth-child(2),
-.main-tool span:nth-child(2) {
-    font-size: 1.2rem;
-
-}
-
-@media (max-width: 67.5rem) {
-    .side-bar-left {
-        width: 10rem;
-
-    }
-
-    .das-header h1 {
-        font-size: 1rem;
-    }
-
-    .das-header p {
-        font-size: 0.8rem;
-    }
-
-    .tool-list h1 {
-        font-size: 1rem;
-        color: #8f8b8b;
-        font-weight: 600;
-        padding: 1rem 1.5rem 2.5rem 1.5rem;
-        margin-bottom: -2rem;
-    }
-
-    .nav-left h1 {
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    a span:nth-child(2),
-    .main-tool span:nth-child(2) {
-        font-size: 0.7rem !important;
-    }
-
-    a span:nth-child(1),
-    .lucky-draw a span:nth-child(1),
-    .main-tool span:nth-child(1),
-    .nav-right span {
-        font-size: 1rem !important;
-    }
-
-    .nav-bar {
-        left: 10rem;
-        width: calc(100% - 10rem);
-        height: 3rem;
-        padding: 1rem 1rem;
-    }
-
-    .main {
-        left: 10rem;
-        width: calc(100% - 10rem);
-        height: 100%;
-        padding: 2rem 1rem;
-    }
-
-    .tool-list a,
-    .tool-list .main-tool {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 1rem;
-        margin: 0rem 0.5rem 0rem 0.5rem !important;
-    }
-
-    .lucky-draw a {
-        margin-left: 1.5rem !important;
+    span {
+        @apply select-none;
     }
 }
 </style>
