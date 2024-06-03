@@ -2,10 +2,10 @@
     <div class="container">
         <h1 class="page-title">List all games</h1>
         <div class="list-cards">
-            <div class="game-card shadow-sm border-b-2" v-for="i in 8">
+            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item">
                 <div class="flex flex-row items-start">
                     <div class="min-w-24 min-h-24 max-w-24 max-w-24 overflow-hidden rounded-lg">
-                        <img src="/cat.jpg" alt="" class="w-full h-full object-cover">
+                        <img :src="item.img_url" alt="" class="w-full h-full object-cover">
                     </div>
                     <div class="flex flex-col pl-5 gap-1">
                         <h2 class="text-md font-semibold line-clamp-1">Mobile Legend </h2>
@@ -15,10 +15,10 @@
                 </div>
                 <div class="card-footer">
                     <div class="cursor-pointer">
-                        <span @click="enable(i)" class="toggler"
-                            :class="isEnable == true && index == i ? 'active bg-green-500' : ''">Enable</span>
-                        <span @click="disable(i)" class="toggler"
-                            :class="isEnable == false && index == i ? 'active bg-red-500' : ''">Disable</span>
+                        <span @click="enable(item.id)" class="toggler"
+                            :class="isEnable == true && gameId == item.id ? 'active bg-green-500' : ''">Enable</span>
+                        <span @click="disable(item.id)" class="toggler"
+                            :class="isEnable == false && gameId == item.id ? 'active bg-red-500' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
@@ -32,6 +32,18 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+const games = ref()
+const gameId = ref();
+const getAllGames = async () => {
+    const res = await callAPI('/dashboard/game/getAll')
+    if (res.status == 200) {
+        games.value = res.data
+        console.log("all games", games.value);
+    }
+}
+onMounted(() => {
+    getAllGames()
+})
 
 const isEnable = ref(false);
 const index = ref();

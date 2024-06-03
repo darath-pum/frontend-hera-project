@@ -39,13 +39,12 @@
                             audience.</span>
                     </div>
                 </div>
-                <div class="flex flex-row items-center justify-between">
-                    <div class="btn-en-dis flex flex-row gap-1">
-                        <span @click="enable(item.id)"
-                            :class="isEnable == true && gameId == item.id ? 'font-semibold' : ''">Enable</span>
-                        <span>/</span>
-                        <span @click="enable(item.id)"
-                            :class="isEnable == false && gameId == item.id ? 'font-semibold' : ''">Disable</span>
+                <div class="card-footer">
+                    <div class="cursor-pointer">
+                        <span @click="enable(item.id)" class="toggler"
+                            :class="isEnable == true && gameId == item.id ? 'active bg-green-500' : ''">Enable</span>
+                        <span @click="disable(item.id)" class="toggler"
+                            :class="isEnable == false && gameId == item.id ? 'active bg-red-500' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
