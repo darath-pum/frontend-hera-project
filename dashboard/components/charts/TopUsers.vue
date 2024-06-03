@@ -18,7 +18,7 @@
 //   import axios from 'axios';
 import Chart from 'chart.js/auto';
 import { onMounted, ref } from 'vue';
-
+import type { ChartConfiguration } from 'chart.js/auto';
 //   import { getAPIURL } from "@/configs";
 
 const uniqueUsers = ref(0);
@@ -34,19 +34,19 @@ const data = {
         data: counts,
     }]
 }
-const config = {
-    type: "bar",
+const config: ChartConfiguration<'line'> = {
+    type: 'line',
     data: data,
     options: {}
-}
+};
+
 
 onMounted(async () => {
-    // await getDAUUsers();
-    const myChart = new Chart(
-        document.getElementById("myChart1"),
-        config
-    )
-})
+    const canvasElement = document.getElementById("myChart1") as HTMLCanvasElement | null;
+    if (canvasElement) {
+        new Chart(canvasElement, config);
+    }
+});
 
 </script>
 <style scoped>

@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="list-cards  flex flex-row justify-between">
-            <div class="game-card shadow-sm border-b-2" v-for="(item, index) in games" :key="item">
+            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item">
                 <div class="flex flex-row items-start">
                     <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
                         <img :src="item.img_url" alt="" class="w-auto h-full object-cover">
@@ -39,12 +39,13 @@
                             audience.</span>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="cursor-pointer">
-                        <span @click="enable(i)" class="toggler"
-                            :class="isEnable == true && index == i ? 'active bg-green-500' : ''">Enable</span>
-                        <span @click="disable(i)" class="toggler"
-                            :class="isEnable == false && index == i ? 'active bg-red-500' : ''">Disable</span>
+                <div class="flex flex-row items-center justify-between">
+                    <div class="btn-en-dis flex flex-row gap-1">
+                        <span @click="enable(item.id)"
+                            :class="isEnable == true && gameId == item.id ? 'font-semibold' : ''">Enable</span>
+                        <span>/</span>
+                        <span @click="enable(item.id)"
+                            :class="isEnable == false && gameId == item.id ? 'font-semibold' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
@@ -71,15 +72,14 @@ onMounted(() => {
     getAllGames()
 })
 const isEnable = ref(false);
-const index = ref();
+const gameId = ref();
 const enable = (i: any) => {
     isEnable.value = true
-    index.value = i
-
+    gameId.value = i
 }
 const disable = (i: any) => {
     isEnable.value = false
-    index.value = i
+    gameId.value = i
 }
 </script>
 <style scoped>

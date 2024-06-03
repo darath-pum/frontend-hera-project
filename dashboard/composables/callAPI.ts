@@ -1,5 +1,5 @@
 // import { getAPIURL } from "~/configs";
-import type { IAPIResponse } from "~/types";
+// import type { IAPIResponse } from "~/types";
 
 export const callAPI = async (path: string, method?: string, body?: any): Promise<IAPIResponse> => {
   const token = useCookie('token').value || '';

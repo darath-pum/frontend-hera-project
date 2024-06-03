@@ -46,7 +46,7 @@
                         v-if="isSelectGame" @click.stop>
                         <div class="max-h-[300px] overflow-y-auto">
                             <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
-                                @click="addGenre(item.name, item.id)" v-for="(item, index) in nameGenres"
+                                @click="addGenre(item.name)" v-for="(item) in nameGenres"
                                 :key="item.id">
                                 <input type="checkbox" :id="item.name" :name="item.name"
                                     :checked="genres.includes(item.name)" class="border-none" />
@@ -142,7 +142,6 @@ const nameGenres = ref([
 
 const getCampaignById = async() =>{
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
-    console.log("get cp id",res.data);
     campaign.value = res.data
     title.value = res.data.title
     desc.value = res.data.desc
@@ -158,7 +157,6 @@ const addGenre = (genre: string) => {
     const lowercasedGenre = genre;
     if (!genres.value.includes(lowercasedGenre)) {
         genres.value.push(lowercasedGenre);
-        console.log(genres.value);
 
     } else {
         const index = genres.value.indexOf(lowercasedGenre);
