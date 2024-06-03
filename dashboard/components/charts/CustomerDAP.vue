@@ -43,16 +43,16 @@ const config: ChartConfiguration<"line"> = {
 
 //================= DAP customer page ==============//
 const getDAP = async () => {
-    const response = await callAPI(
-      `/dashboard/analytics/customer/getDAP/${gameID}`
-    );
-    const customerDAP = response.data.player_counts;
-    totalPlayer.value = response.data.total_players;
-    for (let i = 0; i < customerDAP.length; i++) {
-      counts.push(customerDAP[i].player_count);
-      var dateTime = new Date(customerDAP[i].time);
-      times.push(dateTime.toLocaleTimeString());
-    }
+  const response = await callAPI(
+    `/dashboard/analytics/customer/getDAP/${gameID}`
+  );
+  const customerDAP = response.data.player_counts;
+  totalPlayer.value = response.data.total_players;
+  for (let i = 0; i < customerDAP.length; i++) {
+    counts.push(customerDAP[i].player_count);
+    var dateTime = new Date(customerDAP[i].time);
+    times.push(dateTime.toLocaleTimeString());
+  }
 }
 
 onMounted(async () => {
@@ -67,12 +67,9 @@ onMounted(async () => {
 </script>
 <style scoped>
 .chart {
-  width: 48.6%;
-  padding: 2rem;
   background: #ffffff;
   border-radius: var(--radius);
-  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
-    rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+  @apply border shadow-sm p-3 sm:p-5;
 }
 
 .title {
@@ -95,14 +92,5 @@ onMounted(async () => {
   width: 200px;
   background: #74c0fc;
   color: #ffff;
-}
-
-@media (max-width: 67.5rem) {
-  .chart {
-    width: 50%;
-  }
-  .title {
-    font-size: 0.7rem;
-  }
 }
 </style>

@@ -1,6 +1,5 @@
-
 <template>
-    <div class="page-bg">
+    <div class="container">
         <h1 class="page-title">Upload New Game</h1>
 
         <form action="" ref="form" @submit.prevent="addGame"
@@ -90,7 +89,7 @@
                 </div>
 
                 <div v-if="gameIconUrl"
-                    class="relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64 border rounded-lg">
+                    class="relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64  rounded-lg">
 
                     <span @click="removeIcon"
                         class="material-symbols-outlined absolute right-3 top-3 p-1 rounded-md h-fit cursor-pointer bg-red-500 hover:bg-red-400 text-white">
@@ -342,4 +341,3 @@ textarea {
     border: 1px solid #000000;
 }
 </style>
-

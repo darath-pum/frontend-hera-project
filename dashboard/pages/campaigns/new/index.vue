@@ -1,5 +1,5 @@
 <template>
-    <div class="add-campaign page-bg">
+    <div class="add-campaign container">
         <h1 class="page-title">Add Campaign</h1>
         <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
             marketing campaigns
@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import ManagePrizePool from "~/components/ManagePrizePool.vue"
-import {useAuthStore} from '~/store/auth'
+import { useAuthStore } from '~/store/auth'
 
 
 const authStore = useAuthStore()
@@ -111,26 +111,15 @@ const desc = ref();
 const image = ref();
 const start_date = ref();
 const end_date = ref();
-const user_game_id = ref([])
+const user_game_id = ref<any[]>([])
 
-
-async function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-}
 
 const handleImage = async (event: any) => {
     const file = event.target.files[0];
     image.value = file
     console.log(image.value);
-    
+
 }
-
-
 
 // const nameGenres = ref([
 //     { name: "Car", id: 1 },
@@ -161,9 +150,7 @@ const handleImage = async (event: any) => {
 //     { name: "Tower Defense", id: 26 },
 // ]);
 
-
-
-const userGames = ref([])
+const userGames = ref<any[]>([])
 
 const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);

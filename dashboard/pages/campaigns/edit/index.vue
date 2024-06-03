@@ -1,5 +1,5 @@
 <template>
-    <div class="add-campaign page-bg">
+    <div class="add-campaign container">
         <h1 class="page-title">Edit Campaign</h1>
         <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
             marketing campaigns
@@ -30,36 +30,35 @@
                 </div> -->
 
                 <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
-                :class="[isSelectGame ? 'active' : '']"></div>
-            <div class="item-center w-full">
-                <label for="game-category" class="col-span-1 my-auto">
-                    <h1>Categories:</h1>
-                </label>
-                <div @click="showSelectGame"
-                    class="relative cursor-pointer select-cat w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
-                    <p class="my-auto text-gray-400 select-none w-fit">{{ genreList }}</p>
-                    <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
-                        :class="{ 'rotate-180': isSelectGame }">
-                        arrow_drop_down
-                    </span>
-                    <div class="absolute left-0 top-[47px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
-                        v-if="isSelectGame" @click.stop>
-                        <div class="max-h-[300px] overflow-y-auto">
-                            <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
-                                @click="addGenre(item.name)" v-for="(item) in nameGenres"
-                                :key="item.id">
-                                <input type="checkbox" :id="item.name" :name="item.name"
-                                    :checked="genres.includes(item.name)" class="border-none" />
+                    :class="[isSelectGame ? 'active' : '']"></div>
+                <div class="item-center w-full">
+                    <label for="game-category" class="col-span-1 my-auto">
+                        <h1>Categories:</h1>
+                    </label>
+                    <div @click="showSelectGame"
+                        class="relative cursor-pointer select-cat w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
+                        <p class="my-auto text-gray-400 select-none w-fit">{{ genreList }}</p>
+                        <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
+                            :class="{ 'rotate-180': isSelectGame }">
+                            arrow_drop_down
+                        </span>
+                        <div class="absolute left-0 top-[47px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
+                            v-if="isSelectGame" @click.stop>
+                            <div class="max-h-[300px] overflow-y-auto">
+                                <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
+                                    @click="addGenre(item.name)" v-for="(item) in nameGenres" :key="item.id">
+                                    <input type="checkbox" :id="item.name" :name="item.name"
+                                        :checked="genres.includes(item.name)" class="border-none" />
 
-                                <p class="h-fit my-auto">{{ item.name }}</p>
+                                    <p class="h-fit my-auto">{{ item.name }}</p>
 
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
-
-            </div>
             </div>
             <div class="g-two">
                 <div class="start-date">
@@ -75,7 +74,7 @@
                 <div class="image">
                     <label for="">Image:</label>
                     <input type="file">
-                    <div class="select-image" >
+                    <div class="select-image">
                         <span class="material-symbols-outlined">
                             add_circle </span>
                         <img src="/image-icon.png" alt="" v-if="!img_url">
@@ -98,7 +97,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import ManagePrizePool from "~/components/ManagePrizePool.vue"
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router"
 
 const campaign = ref()
 const campaignId = useRoute().query.campaign
@@ -140,7 +139,7 @@ const nameGenres = ref([
     { name: "Tower Defense", id: 26 },
 ]);
 
-const getCampaignById = async() =>{
+const getCampaignById = async () => {
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
     campaign.value = res.data
     title.value = res.data.title
@@ -148,7 +147,7 @@ const getCampaignById = async() =>{
     start_date.value = res.data.start_date.substring(0, 10)
     end_date.value = res.data.end_date.substring(0, 10)
     img_url.value = res.data.img_url
-    
+
 }
 const showSelectGame = () => {
     isSelectGame.value = !isSelectGame.value
@@ -166,7 +165,7 @@ const addGenre = (genre: string) => {
     genreList.value = genres.value.join(', ');
 };
 
-onMounted(()=>{
+onMounted(() => {
     getCampaignById()
 })
 
@@ -295,50 +294,60 @@ textarea,
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 
 }
+
 @media (max-width:67.5rem) {
-    form{
+    form {
         margin-top: 2rem;
         gap: 1rem;
     }
+
     input,
-.select-game,
-textarea,
-.select-icon {
-    padding: 0.5rem;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    font-size: 0.7rem;
-}
-.select-icon {
-    height: 2.3rem;
-    margin-top: -2.3rem;
-   
-}
-textarea,
-.image input,.select-image {
-    height: 4rem;
+    .select-game,
+    textarea,
+    .select-icon {
+        padding: 0.5rem;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        font-size: 0.7rem;
+    }
 
-}
-.select-image{
-    margin-top: -4rem;
-}
-.select-image img {
-    width: 4rem;
-}
-label {
-    font-size: 0.7rem;
-}
-.g-one,
-.g-two,
-.g-three {
-    gap: 2rem;
-}
-.choose-select{
-    margin-top: 3.4rem;
-    width: 17.8rem;
-    border: 1rem solid #FFFFFF;
-    gap: 1rem;
+    .select-icon {
+        height: 2.3rem;
+        margin-top: -2.3rem;
 
-}
+    }
+
+    textarea,
+    .image input,
+    .select-image {
+        height: 4rem;
+
+    }
+
+    .select-image {
+        margin-top: -4rem;
+    }
+
+    .select-image img {
+        width: 4rem;
+    }
+
+    label {
+        font-size: 0.7rem;
+    }
+
+    .g-one,
+    .g-two,
+    .g-three {
+        gap: 2rem;
+    }
+
+    .choose-select {
+        margin-top: 3.4rem;
+        width: 17.8rem;
+        border: 1rem solid #FFFFFF;
+        gap: 1rem;
+
+    }
 }
 </style>

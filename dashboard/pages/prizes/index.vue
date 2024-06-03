@@ -1,5 +1,5 @@
 <template>
-    <div class="prize-setting page-bg">
+    <div class="prize-setting container">
         <h1 class="page-title">Prizes Setting</h1>
         <p class="desc page-description">
             Prize setting involves determining the value or amount of a prize for a competition or event, considering
@@ -28,7 +28,7 @@
                             <img :src="item.image" alt="">
                         </div>
                     </td>
-                    <td>{{item.name}}</td>
+                    <td>{{ item.name }}</td>
                     <td>{{ item.name }}</td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
@@ -50,16 +50,16 @@
 <script setup lang="ts">
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
-import {ref, onMounted} from "vue"
+import { ref, onMounted } from "vue"
 
 const prizes = ref()
-const getAllPrizes = async()=>{
+const getAllPrizes = async () => {
     const res = await callAPI('/dashboard/prize/getAllPrizes')
     if (res.status == 200) {
         prizes.value = res.data
     }
 }
-onMounted(()=>{
+onMounted(() => {
     getAllPrizes()
 })
 </script>
@@ -104,9 +104,10 @@ td:nth-child(5) {
 }
 
 @media (max-width: 67.5rem) {
-    .prize-btn{
+    .prize-btn {
         margin-top: -2rem !important;
     }
+
     .p-image img {
         width: 1rem;
         height: 1rem;
@@ -117,7 +118,8 @@ td:nth-child(5) {
         font-size: 0.7rem;
         padding: 0.3rem;
     }
-    .material-symbols-outlined{
+
+    .material-symbols-outlined {
         font-size: 1rem;
     }
 }

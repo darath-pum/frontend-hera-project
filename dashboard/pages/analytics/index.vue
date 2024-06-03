@@ -1,43 +1,30 @@
 <template>
-  <div class="pb-15">
+  <div class="pb-15 container">
     <div v-if="authStore.role === 'customer'">
       <label for="game-select" class="text-black">Choose a game:</label><br />
-      <select
-        name="games"
-        id="game-select"
-        @change.prevent="handleSelect($event)"
-      >
-        <option value="--Please choose a game--" disabled selected>
-          --Please choose a game--
+      <select name="games" id="game-select" @change.prevent="handleSelect($event)" class="border bord">
+        <option value="Select game" disabled selected>
+          Select game
         </option>
-        <option
-          v-for="game in gameLists"
-          :key="game.id"
-          :value="game.id"
-          :selected="
-            typeof $route.query.gameId === 'string' &&
-            parseInt($route.query.gameId) === game.id
-          "
-        >
+        <option v-for="game in gameLists" :key="game.id" :value="game.id" :selected="typeof $route.query.gameId === 'string' &&
+          parseInt($route.query.gameId) === game.id
+          ">
           {{ game.title }}
         </option>
       </select>
     </div>
-    <div v-if="authStore.role === 'customer'">
-      <div class="charts flex flex-row justify-between">
+    <div v-if="authStore.role === 'customer'" class="space-y-3 lg:space-y-5">
+      <div class="chart-container">
         <CustomerDAP />
         <CustomerMAP />
       </div>
-      <div class="charts flex flex-row justify-between">
+      <div class="chart-container">
         <SessionDAP />
         <SessionMAP />
       </div>
     </div>
     <div v-if="authStore.role === 'admin'">
-      <div>
-        <h1 class="text-black text-2xl">Overview</h1>
-      </div>
-      <div class="charts flex flex-row justify-between">
+      <div class="chart-container">
         <AdminDAC />
         <AdminMAC />
       </div>
@@ -68,7 +55,7 @@ const getGame = async () => {
     for (let i = 0; i < games.length; i++) {
       gameLists.value.push(games[i]);
     }
-  } catch {}
+  } catch { }
 };
 
 //====================== select game option ================//
@@ -82,9 +69,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.charts {
-  margin-top: 2.4rem;
+.chart-container {
+  @apply grid grid-cols-1 xl:grid-cols-2 gap-3 md:gap-3 lg:gap-5;
 }
+
 label {
   font-family: sans-serif;
   font-size: 1.5rem;
@@ -99,7 +87,6 @@ select {
   display: flex;
   background: #ffffff;
   border-radius: var(--radius);
-  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
-    rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+  @apply shadow-sm;
 }
 </style>
