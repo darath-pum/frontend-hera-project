@@ -6,7 +6,12 @@ interface IAPIResponse {
     message?:string;
 }
 
-interface Game {
+interface IGame {
     id:number;
     title: string;
+    description:string;
+    categories: string[];
+    img: any;
+    game:any;
+    gameId:number;
 }

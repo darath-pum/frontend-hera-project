@@ -38,7 +38,7 @@
             email:email.value,
             password:password.value
         }
-        try {
+    
             const token = useCookie('token');
             const res = await callAPI('/dashboard/user/login', 'POST',data);
             console.log(res.status)
@@ -46,12 +46,13 @@
                 Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: "You completed successfull",
+                title: "You have logged in successfully.",
                 showConfirmButton: false,
                 timer: 1500
             });
+            
             setTimeout(() => {
-                router.push("/");
+                window.location.href = "/"
         }, 2000);
             }else{
                 Swal.fire({
@@ -64,10 +65,10 @@
             }
             token.value = res.data.token
 
-        }catch{}
+        }
         
         
-      }
+      
   </script>
   
   <style scoped>

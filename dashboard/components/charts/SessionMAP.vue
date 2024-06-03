@@ -19,8 +19,8 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-import { useSharedState } from '../../composables/useShareState'
-const { sharedUserId } = useSharedState()
+import { useRoute } from 'vue-router';
+const gameID = useRoute().query.gameId;
 const avgTotalMAP = ref();
 const avgPlayTime:number[] = [];
 const date:string[] = [];
@@ -42,6 +42,7 @@ const config: ChartConfiguration<'line'> = {
 
 
 onMounted(async () => {
+    await getSessionMAP()
     const canvasElement = document.getElementById("sessionMAP") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
@@ -49,32 +50,18 @@ onMounted(async () => {
     
 });
 
-
-const getSessionMAP = async (newId:any) => {
-  try {
-    const response = await callAPI (`/dashboard/analytics/customer/getMGPS/${newId}`);
-    console.log("hello",response.data);
-    
+//================= session MAP of customer page ==============//
+const getSessionMAP = async () => {
+    const response = await callAPI (`/dashboard/analytics/customer/getMGPS/${gameID}`);
     const sessionMAP = response.data.play_time_counts;
     avgTotalMAP.value = response.data.avg_play_sessions;
-    
     for (let i =0;i<sessionMAP.length;i++) {
         if(i >= 23) {
         avgPlayTime.push(sessionMAP[i].avg_play_time)
         date.push(sessionMAP[i].date)
         }
     }
-  } catch {
-  }
-};
-// onMounted(getSessionMAP);
-watch(sharedUserId, (userId) => {
-    getSessionMAP(userId);
-});
-onMounted(() => {
-      getSessionMAP(sharedUserId.value);
-    });
-
+  } 
 </script>
 <style scoped>
 .chart {

@@ -40,13 +40,15 @@ const config: ChartConfiguration<'line'> = {
 };
 
 onMounted(async () => {
+    await getMAC();
     const canvasElement = document.getElementById("AdminMAC") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
     }
 });
+
+//================= MAP admin page ==============//
 const getMAC = async () => {
-  try {
     const response = await callAPI ("/dashboard/analytics/admin/getMAU");
     const adminMAU = response.data.user_counts;
     totalUser.value = response.data.total_users;
@@ -56,11 +58,8 @@ const getMAC = async () => {
             date.push(adminMAU[i].time);
         }
     }
-  } catch {
-   
-  }
-};
-onMounted(getMAC);
+  } 
+
 </script>
 <style scoped>
 .chart {

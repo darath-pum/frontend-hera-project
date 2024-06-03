@@ -33,23 +33,23 @@
             </div>
         </div>
         <div class="list-cards  flex flex-row justify-between">
-            <div class="game-card" v-for="i in 8">
-                <div class="flex flex-row items-start">
-                    <div class="image">
-                        <img src="/cat.jpg" alt="">
+            <div class="game-card" v-for="(item, index) in games" :key="item">
+                <div class="flex flex-row items-start justify-between ">
+                    <div class="image ">
+                        <img :src="item.img_url" alt="">
                     </div>
                     <div class="title-desc flex flex-col pl-5 gap-1">
-                        <h2>Mobile Legend </h2>
-                        <span>Considering factors such as objectives, budget, target audience.</span>
+                        <h2 class="line-clamp-1">{{ item.title }}</h2>
+                        <span class="line-clamp-3 md:line-clamp-2">{{ item.description }}</span>
                     </div>
                 </div>
-                <div class="flex flex-row items-center justify-between -mt-7">
+                <div class="flex flex-row items-center justify-between">
                     <div class="btn-en-dis flex flex-row gap-1">
-                        <span @click="enable(i)"
-                            :class="isEnable == true && index == i ? 'font-semibold' : ''">Enable</span>
+                        <span @click="enable(item.id)"
+                            :class="isEnable == true && gameId == item.id ? 'font-semibold' : ''">Enable</span>
                         <span>/</span>
-                        <span @click="disable(i)"
-                            :class="isEnable == false && index == i ? 'font-semibold' : ''">Disable</span>
+                        <span @click="enable(item.id)"
+                            :class="isEnable == false && gameId == item.id ? 'font-semibold' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
@@ -62,20 +62,31 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AddUserGame from "~/components/dialogs/AddUserGame.vue"
+const games = ref()
+const getAllGames = async () => {
+    const res = await callAPI('/dashboard/game/getAll')
+    if (res.status == 200) {
+        games.value = res.data
+        console.log("all games", games.value);
 
+    }
+}
+onMounted(() => {
+    getAllGames()
+})
 const isEnable = ref(false);
-const index = ref();
-const enable = (inde) => {
-    isEnable.value = true
-    index.value = inde
+const gameId = ref();
+const enable = (id:number) => {
+    isEnable.value = !isEnable.value
+    gameId.value = id
 
 }
-const disable = (inde) => {
-    isEnable.value = false
-    index.value = inde
-}
+// const disable = (id:number) => {
+//     isEnable.value = false
+//     index.value = id
+// }
 </script>
 <style scoped>
 .select-game,
@@ -114,11 +125,15 @@ const disable = (inde) => {
     background: rgb(240, 240, 240);
     background: linear-gradient(180deg, rgba(240, 240, 240, 1) 0%, rgba(255, 255, 255, 1) 48%);
     width: 20rem;
-    /* height: 14rem; */
+    height: 13rem;
     border-radius: 10px;
     padding: 1rem 1.5rem;
     margin: 1.5rem 0rem;
     box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
 }
 
 .title-desc h2 {
@@ -126,13 +141,22 @@ const disable = (inde) => {
     font-weight: 600;
 }
 
-.image {
-    width: 10rem;
-    height: 10rem;
+.title-desc {
+    width: 70%;
 }
 
+/* .image {
+    width: 30%;
+    background: #000;
+
+} */
+
 .image img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
     border-radius: 10px;
+    border: 1px solid #00000041;
 }
 
 .btn-view-detail button {
@@ -141,5 +165,145 @@ const disable = (inde) => {
 
 .btn-en-dis span {
     cursor: pointer;
+}
+
+@media (max-width: 112.5rem) {
+    .game-card {
+        width: 18rem;
+        height: 11rem;
+        border-radius: 10px;
+        padding: 1rem 1rem;
+        margin: 1.5rem 0rem;
+
+
+    }
+
+    .title-desc h2 {
+        font-size: 1.2rem;
+    }
+
+
+    .image img {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .btn-en-dis span,
+    .btn-view-detail button {
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+}
+
+@media (max-width: 101.875rem) {
+    .game-card {
+        width: 15rem;
+        height: 10rem;
+        border-radius: 10px;
+        padding: 1rem 1rem;
+        margin: 1.5rem 0rem;
+
+
+    }
+
+    .btn-en-dis span,
+    .btn-view-detail button {
+        font-size: 0.7rem;
+    }
+
+    .btn-view-detail button {
+
+        font-size: 0.7rem;
+        height: 2rem;
+        padding: 0.1rem 1rem;
+    }
+}
+
+@media (max-width: 89.375rem) {
+    .game-card {
+        width: 14rem;
+
+
+
+    }
+
+}
+
+@media (max-width: 85.625rem) {
+    .game-card {
+        width: 13rem;
+        height: 9rem;
+
+
+    }
+
+    .title-desc h2 {
+        font-size: 1rem;
+    }
+
+    .title-desc span {
+        font-size: 0.7rem;
+    }
+
+
+    .image img {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .btn-en-dis span,
+    .btn-view-detail button {
+        cursor: pointer;
+        font-size: 0.6rem;
+    }
+
+}
+
+@media (max-width: 81.25rem) {
+    .game-card {
+        width: 12rem;
+        height: 8rem;
+
+
+    }
+
+
+    .image img {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .btn-view-detail button {
+
+        font-size: 0.6rem;
+        height: 1.5rem;
+        padding: 0.1rem 0.5rem;
+    }
+
+}
+@media (max-width: 78.125rem) {
+    .game-card {
+        width: 11rem;
+        height: 7rem;
+        padding: 0.6rem;
+        margin: 1rem 0.5rem;
+
+
+    }
+
+
+    .image img {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .btn-view-detail button {
+
+        font-size: 0.6rem;
+        height: 1.5rem;
+        padding: 0.1rem 0.5rem;
+    }
+
 }
 </style>

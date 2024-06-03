@@ -1,35 +1,50 @@
 <template>
     <div class="prize-setting page-bg">
-        <h1 class="page-title">Prizes Setting</h1>
+        <h1 class="page-title">Users</h1>
         <p class="desc page-description">
-            Prize setting involves determining the value or amount of a prize for a competition or event, considering
+            Game setting involves determining the value or amount of a prize for a competition or event, considering
             factors such as objectives, budget, target audience, and perceived value.
         </p>
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="prize-btn">
-                <AddPrize></AddPrize>
+                <AddUser></AddUser>
             </div>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Name(Khmer)</th>
-                    <th>Name(English)</th>
-                    <th>Image</th>
+                    <!-- <th>Image</th> -->
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in prizes" :key="item">
+                <tr v-for="(item,index) in users" :key="item">
                     <td>{{ index + 1 }}</td>
+                    <!-- <td>
+                        
+                    </td> -->
                     <td>
-                        <div class="p-image flex flex-row justify-center">
-                            <img :src="item.image" alt="">
+                        <div class="flex flex-row justify-center items-center gap-2">
+                            <div class="image-profile flex flex-rowjustify-center">
+                                <img src="/profile_image.png" alt="">
+                                
+                            </div>
+
+                            <span class="flex flex-row justify-start w-36">
+    
+                                {{ item.first_name }} {{ item.last_name }} 
+                            </span>
                         </div>
                     </td>
-                    <td>{{item.name}}</td>
-                    <td>{{ item.name }}</td>
+                   
+                  
+                  
+                    <td>{{ item.email }}</td>
+                    <td :class="item.role =='admin'?'text-red capitalize':'text-green capitalize'">{{ item.role }}</td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
                             <div class="flex flex-row items-center gap-1 cursor-pointer">
@@ -39,7 +54,7 @@
                                 <span>Edit</span>
                             </div>
 
-                            <DeleteItem :itemName="'Prize'"></DeleteItem>
+                            <DeleteItem :itemName="'User'"></DeleteItem>
                         </div>
                     </td>
                 </tr>
@@ -48,19 +63,24 @@
     </div>
 </template>
 <script setup lang="ts">
-import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import AddUser from "~/components/dialogs/AddUser.vue"
 import {ref, onMounted} from "vue"
 
-const prizes = ref()
-const getAllPrizes = async()=>{
-    const res = await callAPI('/dashboard/prize/getAllPrizes')
-    if (res.status == 200) {
-        prizes.value = res.data
+const users = ref()
+
+const getAllUsers = async()=>{
+    const res = await callAPI('/dashboard/user/getUsers')
+    console.log(res.data);
+    
+    if(res.status == 200){
+        users.value = res.data
+
+        
     }
 }
 onMounted(()=>{
-    getAllPrizes()
+    getAllUsers()
 })
 </script>
 <style scoped>
@@ -69,15 +89,13 @@ table {
     background: #FFFFFF;
 }
 
-.p-image img {
-    width: 2rem;
-    height: 2rem;
-}
+
 
 th {
     background: var(--primary-color);
     color: #FFFFFF;
     padding: 0.5rem;
+    
 }
 
 tr {
@@ -102,6 +120,12 @@ td:nth-child(5) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 }
+.image-profile img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100px;
+    object-fit: cover;
+}
 
 @media (max-width: 67.5rem) {
     .prize-btn{
@@ -120,5 +144,11 @@ td:nth-child(5) {
     .material-symbols-outlined{
         font-size: 1rem;
     }
+    .image-profile img{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100px;
+    object-fit: cover;
+}
 }
 </style>

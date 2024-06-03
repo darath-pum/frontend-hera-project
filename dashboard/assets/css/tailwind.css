@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 body {
-    @apply bg-gray-50;
+    /* @apply bg-gray-50; */
+    background: #eaeef0;
 }
 
 @layer components {
@@ -17,7 +18,7 @@ body {
 }
 
 :root {
-    --primary-color: #303031;
+    --primary-color: #000000;
     --secondary-color: #6c757d;
     --third-color: #ffff;
     --radius:10px;
@@ -74,7 +75,7 @@ body {
 }
 /* ==================================== */
 .page-bg {
-    background: #FFFFFF;
+    background: #FFFFFF;    
     width: 100%;
     color: #000000;
     padding: 3rem 2rem;

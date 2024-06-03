@@ -37,12 +37,12 @@ import {ref} from "vue";
 
 const isEnable = ref(false);
 const index = ref();
-const enable = (inde)=>{
+const enable = (inde:number)=>{
     isEnable.value = true
     index.value = inde
     
 }
-const disable = (inde)=>{
+const disable = (inde:number)=>{
     isEnable.value = false
     index.value = inde
 }

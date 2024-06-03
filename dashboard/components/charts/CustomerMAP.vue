@@ -20,7 +20,8 @@ import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
 import { useSharedState } from '../../composables/useShareState'
-const { sharedUserId } = useSharedState()
+import { useRoute } from 'vue-router';
+const gameID = useRoute().query.gameId
 const totalPlayer = ref();
 const counts:number[] = [];
 const date:string[] = [];
@@ -42,15 +43,17 @@ const config: ChartConfiguration<'line'> = {
 };
 
 onMounted(async () => {
+    await getMAP();
+
     const canvasElement = document.getElementById("customerMAP") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
     }
 });
 
-const getMAP = async (newId:any) => {
-  try {
-    const response = await callAPI (`/dashboard/analytics/customer/getMAP/${newId}`);
+//================= MAP customer page ==============//
+const getMAP = async () => {
+    const response = await callAPI (`/dashboard/analytics/customer/getMAP/${gameID}`);
     const customerMAP = response.data.player_counts;
     totalPlayer.value = response.data.total_players;
     for (let i =0;i<customerMAP.length;i++) {
@@ -59,17 +62,7 @@ const getMAP = async (newId:any) => {
         date.push(customerMAP[i].time)
         }
     }
-
-  } catch {
-   
-  }
-};
-// onMounted(getDAP);
-watch(sharedUserId, (userId) => {
-    getMAP(userId);
-});
-
-
+  } 
 </script>
 <style scoped>
 .chart {

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row">
         <div  @click="showPopup" class="pf-g flex flex-row items-center gap-5 cursor-pointer hover:bg-gray-500 py-1 px-2 rounded-md transition-all">
-            <span>Nika</span>
+            <span>{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
                 <img id="profile-image" src="/profile.png" alt="">
             </div>
@@ -15,11 +15,11 @@
             <div @click.stop class="flex pf-popup flex-col gap-2">
                 <img src="/profile.png" alt="">
 
-                <h1>Nika</h1>
-                <p class="">nika@gmail.com</p>
+                <h1>{{authStore.first_name}}</h1>
+                <p class="">{{ authStore.email }}</p>
                 <div class="btn-save flex flex-col gap-5 justify-center">
                     <button class="primary-btn">Your Account</button>
-                    <button class="primary-btn">Logout</button>
+                    <button class="primary-btn" @click="logout">Logout</button>
                 </div>
             </div>
         </div>
@@ -28,12 +28,22 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
+import { useAuthStore } from "~/store/auth";
 
+const authStore = useAuthStore()
 
 const isShow = ref(false)
+const token = useCookie('token')
 
 const showPopup = () => {
     isShow.value = !isShow.value
+}
+
+const logout = ()=>{
+    console.log('fdwsgrew');
+    
+    token.value = ""
+    window.location.href = ('/login')
 }
 
 // window.onscroll = function (e) {  
