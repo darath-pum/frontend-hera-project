@@ -1,5 +1,5 @@
 <template>
-    <div class="prize-setting page-bg"  @wheel="handleScroll">
+    <div class="prize-setting container" @wheel="handleScroll">
         <h1 class="page-title">Campaigns Setting</h1>
         <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
@@ -56,7 +56,7 @@
                             </span>
                             <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
                                 <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`'>
-                                <div class="cursor-pointer">
+                                    <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined cursor-pointer">
                                             edit
@@ -71,7 +71,7 @@
                                     <span>delete</span>
 
                                 </div> -->
-                            <DeleteItem :itemName="'Campaign'"></DeleteItem>
+                                <DeleteItem :itemName="'Campaign'"></DeleteItem>
 
 
                             </div>
@@ -88,44 +88,44 @@
 import { ref, onMounted } from "vue"
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
-import {useAuthStore} from '~/store/auth';
+import { useAuthStore } from '~/store/auth';
 
 const authStore = useAuthStore()
 const campaigns = ref()
 const isBtn = ref(false)
 const campaignId = ref()
-const showBtnAction = (id) => {
+const showBtnAction = (id: any) => {
     console.log(id);
-    
+
     campaignId.value = id
     isBtn.value = !isBtn.value
 }
-const getAllCampaigns = async()=>{
+const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
     if (res.status == 200) {
         campaigns.value = res.data
     }
 }
-  
-  const handleScroll = (event) => {
+
+const handleScroll = (event: any) => {
     // Check the direction of the scroll
     if (event.wheelDelta < 0) {
-      // Scrolling down
-      isBtn.value = false
+        // Scrolling down
+        isBtn.value = false
     } else {
         // Scrolling up
         isBtn.value = false
     }
-  
+
     // Prevent the default scroll behavior
     event.preventDefault();
-  };
-  
-  onMounted(() => {
+};
+
+onMounted(() => {
     // Attach the event listener to the root element
     document.addEventListener('wheel', handleScroll);
     getAllCampaigns()
-  });
+});
 </script>
 <style scoped>
 table {
@@ -184,17 +184,17 @@ td:nth-child(1) {
     gap: 0.2rem;
 }
 
-#more-action:hover #action-menu {}
-
 th:nth-child(6),
 td:nth-child(6) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 }
+
 @media (max-width: 67.5rem) {
-    .campaign-btn{
+    .campaign-btn {
         margin-top: -2rem !important;
     }
+
     .p-image img {
         width: 1rem;
         height: 1rem;
@@ -205,7 +205,8 @@ td:nth-child(6) {
         font-size: 0.7rem;
         padding: 0.3rem;
     }
-    .material-symbols-outlined{
+
+    .material-symbols-outlined {
         font-size: 1rem;
     }
 }

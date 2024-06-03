@@ -1,5 +1,5 @@
 <template>
-    <div class="app-bar flex flex-row relative z-50">
+    <div class="app-bar flex flex-row relative">
 
         <div class="sidebar" :class="{ 'block w-[14rem]': isSideBarShow, 'hidden md:block': !isSideBarShow }">
 
@@ -24,19 +24,19 @@
                     </span>
                     <span class="sidebar-hidden">Home</span>
                 </NuxtLink>
-                <NuxtLink to="/games" class="menu-btn">
+                <NuxtLink to="/games" class="menu-btn" v-if="authStore.role == 'customer'">
                     <span class="material-symbols-outlined">
                         sports_esports
                     </span>
                     <span class="sidebar-hidden">Games</span>
                 </NuxtLink>
-                <NuxtLink to="/users" class="menu-btn">
+                <NuxtLink to="/users" class="menu-btn" v-if="authStore.role == 'admin'">
                     <span class="material-symbols-outlined">
                         person
                     </span>
                     <span class="sidebar-hidden">Users</span>
                 </NuxtLink>
-                <div class="dropdown">
+                <div class="dropdown" v-if="authStore.role == 'admin'">
                     <div class="dropdown-btn" @click="showGame">
                         <div class="menu">
                             <span class="material-symbols-outlined">
@@ -62,7 +62,7 @@
                         <span>User's game</span>
                     </NuxtLink>
                 </div>
-                <div class="dropdown">
+                <div class="dropdown" v-if="authStore.role == 'customer'">
                     <div class="dropdown-btn cursor-pointer cursor-pointer flex flex-row justify-between"
                         @click="showLd">
                         <div class="flex flex-row items-center gap-2">
@@ -80,7 +80,7 @@
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
-                        <span>Campaign asdada dasd asd</span>
+                        <span>Campaign</span>
                     </NuxtLink>
                     <NuxtLink to="/prizes" v-if="isLd" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
@@ -121,6 +121,11 @@
 <script setup lang="ts">
 import Profile from "~/components/dialogs/Profile.vue"
 import { ref } from "vue";
+import { useAuthStore } from '~/store/auth';
+
+const authStore = useAuthStore()
+
+console.log(authStore.role)
 
 const isLd = ref(false);
 
@@ -162,7 +167,7 @@ const showGame = () => {
 }
 
 .nav-bar {
-    @apply bg-white shadow-sm z-50 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
+    @apply bg-white shadow-sm border-b z-40 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
     @apply flex justify-between items-center text-black;
 
 }

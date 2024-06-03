@@ -47,10 +47,9 @@ onMounted(async () => {
 </script>
 <style scoped>
 .chart {
-    padding: 2rem;
     background: #ffffff;
     border-radius: var(--radius);
-    @apply border shadow-sm;
+    @apply border shadow-sm p-3 sm:p-5;
 }
 
 .title {

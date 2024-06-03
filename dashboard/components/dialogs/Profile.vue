@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row">
         <div @click="showPopup"
-            class="pf-g flex flex-row items-center gap-3 md:gap-5 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
+            class="pf-g flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
             <span class="hidden md:block">{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
                 <img id="profile-image" src="/profile.png" alt="">
@@ -50,11 +50,6 @@ const logout = async () => {
 
 }
 
-// window.onscroll = function (e) {  
-//     if (isShow.value) {
-//         isShow.value = false
-//     }
-// }
 
 </script>
 
@@ -120,8 +115,8 @@ const logout = async () => {
     padding: 2rem 2rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: black;
+    @apply shadow-lg border;
 }
 
 /* .pf-popup::before{

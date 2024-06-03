@@ -92,23 +92,19 @@ import TopUsers from "~/components/charts/TopUsers.vue"
 }
 
 .card-item {
-    /* border-left: 0.3rem solid blue; */
-    @apply p-3 bg-white rounded-lg border shadow-sm space-y-2;
+    @apply p-3 bg-white rounded-lg border shadow-sm space-y-2 border-l-4 border-l-blue-500;
 }
 
 .item2 {
-    border-left: 0.3rem solid green;
-
+    @apply border-l-green-500;
 }
 
 .item3 {
-    border-left: 0.3rem solid #E800D1;
-
+    @apply border-l-pink-500;
 }
 
 .item4 {
-    border-left: 0.3rem solid #DC8401;
-
+    @apply border-l-orange-500;
 }
 
 .title-image {

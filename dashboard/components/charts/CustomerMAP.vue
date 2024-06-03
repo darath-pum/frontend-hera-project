@@ -23,8 +23,8 @@ import { useSharedState } from '../../composables/useShareState'
 import { useRoute } from 'vue-router';
 const gameID = useRoute().query.gameId
 const totalPlayer = ref();
-const counts:number[] = [];
-const date:string[] = [];
+const counts: number[] = [];
+const date: string[] = [];
 
 const data = {
     labels: date,
@@ -53,24 +53,22 @@ onMounted(async () => {
 
 //================= MAP customer page ==============//
 const getMAP = async () => {
-    const response = await callAPI (`/dashboard/analytics/customer/getMAP/${gameID}`);
+    const response = await callAPI(`/dashboard/analytics/customer/getMAP/${gameID}`);
     const customerMAP = response.data.player_counts;
     totalPlayer.value = response.data.total_players;
-    for (let i =0;i<customerMAP.length;i++) {
-        if(i >= 23) {
-        counts.push(customerMAP[i].player_count)
-        date.push(customerMAP[i].time)
+    for (let i = 0; i < customerMAP.length; i++) {
+        if (i >= 23) {
+            counts.push(customerMAP[i].player_count)
+            date.push(customerMAP[i].time)
         }
     }
-  } 
+} 
 </script>
 <style scoped>
 .chart {
-    width:48.6%;
-    padding: 2rem 1rem 2rem 2.2rem;
     background: #ffffff;
     border-radius: var(--radius);
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    @apply border shadow-sm p-3 sm:p-5;
 }
 
 .title {
@@ -80,6 +78,7 @@ const getMAP = async () => {
 .header {
     padding: 5px;
 }
+
 .input-date {
     display: flex;
     flex-direction: row;
@@ -92,14 +91,5 @@ const getMAP = async () => {
     width: 200px;
     background: #74C0FC;
     color: #ffff;
-}
-
-@media (max-width:67.5rem) {
-    .chart {
-        width: 50%;
-    }
-    .title {
-        font-size: 0.7rem;
-    }
 }
 </style>

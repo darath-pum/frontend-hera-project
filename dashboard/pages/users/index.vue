@@ -1,11 +1,7 @@
 <template>
-    <div class="prize-setting page-bg">
+    <div class="prize-setting container">
         <h1 class="page-title">Users</h1>
-        <p class="desc page-description">
-            Game setting involves determining the value or amount of a prize for a competition or event, considering
-            factors such as objectives, budget, target audience, and perceived value.
-        </p>
-        <div class="flex flex-row justify-end mt-15 items-center">
+        <div class="flex flex-row justify-end mt-5 items-center">
             <div class="prize-btn">
                 <AddUser></AddUser>
             </div>
@@ -22,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item,index) in users" :key="item">
+                <tr v-for="(item, index) in users" :key="item">
                     <td>{{ index + 1 }}</td>
                     <!-- <td>
                         
@@ -31,20 +27,21 @@
                         <div class="flex flex-row justify-center items-center gap-2">
                             <div class="image-profile flex flex-rowjustify-center">
                                 <img src="/profile_image.png" alt="">
-                                
+
                             </div>
 
                             <span class="flex flex-row justify-start w-36">
-    
-                                {{ item.first_name }} {{ item.last_name }} 
+
+                                {{ item.first_name }} {{ item.last_name }}
                             </span>
                         </div>
                     </td>
-                   
-                  
-                  
+
+
+
                     <td>{{ item.email }}</td>
-                    <td :class="item.role =='admin'?'text-red capitalize':'text-green capitalize'">{{ item.role }}</td>
+                    <td :class="item.role == 'admin' ? 'text-red capitalize' : 'text-green capitalize'">{{ item.role }}
+                    </td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
                             <div class="flex flex-row items-center gap-1 cursor-pointer">
@@ -65,21 +62,21 @@
 <script setup lang="ts">
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import AddUser from "~/components/dialogs/AddUser.vue"
-import {ref, onMounted} from "vue"
+import { ref, onMounted } from "vue"
 
 const users = ref()
 
-const getAllUsers = async()=>{
+const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
     console.log(res.data);
-    
-    if(res.status == 200){
+
+    if (res.status == 200) {
         users.value = res.data
 
-        
+
     }
 }
-onMounted(()=>{
+onMounted(() => {
     getAllUsers()
 })
 </script>
@@ -95,7 +92,7 @@ th {
     background: var(--primary-color);
     color: #FFFFFF;
     padding: 0.5rem;
-    
+
 }
 
 tr {
@@ -120,7 +117,8 @@ td:nth-child(5) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 }
-.image-profile img{
+
+.image-profile img {
     width: 3rem;
     height: 3rem;
     border-radius: 100px;
@@ -128,9 +126,10 @@ td:nth-child(5) {
 }
 
 @media (max-width: 67.5rem) {
-    .prize-btn{
+    .prize-btn {
         margin-top: -2rem !important;
     }
+
     .p-image img {
         width: 1rem;
         height: 1rem;
@@ -141,14 +140,16 @@ td:nth-child(5) {
         font-size: 0.7rem;
         padding: 0.3rem;
     }
-    .material-symbols-outlined{
+
+    .material-symbols-outlined {
         font-size: 1rem;
     }
-    .image-profile img{
-    width: 2rem;
-    height: 2rem;
-    border-radius: 100px;
-    object-fit: cover;
-}
+
+    .image-profile img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 100px;
+        object-fit: cover;
+    }
 }
 </style>
