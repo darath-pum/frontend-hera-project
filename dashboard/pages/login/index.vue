@@ -25,7 +25,7 @@
   </template>
   
   <script setup lang="ts">
-      import { ref} from 'vue';
+      import { ref, onMounted} from 'vue';
       import { useRouter } from 'vue-router'
       const router = useRouter();
       const email = ref('');
@@ -47,9 +47,26 @@
             email:email.value,
             password:password.value
         }
+        const token = useCookie('token')
         const res = await callAPI('/dashboard/user/login', 'POST',data);
+        token.value = res.data.token
         console.log(res)
-      }
+        if(res.status == 200){
+            window.location.href = ('/')
+        }
+    }
+    
+
+    //   const getUserSession = async()=>{
+    //     const res = await callAPI('/dashboard/user/getUserSession');
+        
+    //     console.log("userSession",res);
+        
+    //   }
+
+    // onMounted(()=>{
+    //     getUserSession()
+    // })
   </script>
   
   <style scoped>

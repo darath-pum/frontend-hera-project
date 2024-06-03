@@ -18,25 +18,25 @@
                     </span>
                     <span>Home</span>
                 </NuxtLink>
-                <NuxtLink to="/games">
+                <NuxtLink to="/games"  v-if="authStore.role == 'customer'">
                     <span class="material-symbols-outlined">
                         sports_esports
                     </span>
                     <span>Games</span>
                 </NuxtLink>
-                <NuxtLink to="/users">
+                <NuxtLink to="/users"  v-if="authStore.role == 'admin'">
                     <span class="material-symbols-outlined">
                         person
                     </span>
                     <span>Users</span>
                 </NuxtLink>
-                <div class="lucky-draw">
+                <div class="game-admin" v-if="authStore.role == 'admin'">
                     <div class="main-tool cursor-pointer flex flex-row justify-between" @click="showGame">
                         <div class="flex flex-row items-center gap-2">
                             <span class="material-symbols-outlined">
                                 draw
                             </span>
-                            <span>Game admin</span>
+                            <span>Games</span>
 
                         </div>
                         <span class="material-symbols-outlined">
@@ -57,7 +57,7 @@
                         <span>User's game</span>
                     </NuxtLink>
                 </div>
-                <div class="lucky-draw ">
+                <div class="lucky-draw " v-if="authStore.role == 'customer'">
                     <div class="main-tool cursor-pointer  cursor-pointer flex flex-row justify-between" @click="showLd">
                         <div class="flex flex-row items-center gap-2">
                             <span class="material-symbols-outlined">
@@ -135,6 +135,9 @@
 <script setup lang="ts">
 import Profile from "~/components/dialogs/Profile.vue"
 import { ref } from "vue";
+import {useAuthStore} from '~/store/auth';
+
+const authStore = useAuthStore()
 
 const isLd = ref(false);
 
@@ -151,30 +154,32 @@ const showGame = () => {
 <style scoped>
 .app-bar {
     width: 100%;
-    background: #000;
-    margin: 1rem;
+    background: #bb1010;
+    /* margin: 1rem; */
 }
 
 .side-bar-left {
     position: fixed;
     width: 18rem;
-    height: 96.7%;
+    height: 100%;
     background: var(--primary-color);
     color: #FFFFFF;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 
 .nav-bar {
     /* margin: 1rem; */
-    border-radius: 10px;
+    /* border-radius: 10px; */
     z-index: 100;
     position: fixed;
-    left: 20rem;
-    width: calc(100% - 21rem);
-    background: var(--primary-color);
+    left: 18rem;
+    width: calc(100% - 18rem);
+    /* background: var(--primary-color); */
+    background: #FFFFFF;
     height: 4rem;
     padding: 0rem 3rem;
-    color: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
 
 .nav-left h1 {
@@ -192,12 +197,12 @@ const showGame = () => {
 
 .main {
     position: absolute;
-    left: 20rem;
-    width: calc(100% - 21rem);
+    left: 18rem;
+    width: calc(100% - 18rem);
     top: 4rem;
     /* background: #F2F6F6; */
     height: 100%;
-    padding: 3rem 1rem;
+    padding: 3rem;
 }
 
 
@@ -229,12 +234,12 @@ const showGame = () => {
     font-weight: 600;
 }
 
-.lucky-draw {
+.lucky-draw, .game-admin {
     display: flex;
     flex-direction: column;
 }
 
-.lucky-draw a {
+.lucky-draw a, .game-admin a {
     margin-left: 3rem !important;
 }
 
@@ -307,17 +312,17 @@ const showGame = () => {
     }
 
     .nav-bar {
-        left: 12rem;
-        width: calc(100% - 13rem);
+        left: 10rem;
+        width: calc(100% - 10rem);
         height: 3rem;
         padding: 1rem 1rem;
     }
 
     .main {
-        left: 12rem;
-        width: calc(100% - 13rem);
+        left: 10rem;
+        width: calc(100% - 10rem);
         height: 100%;
-        padding: 2rem 0rem !important;
+        padding: 2rem 1rem;
     }
 
     .tool-list a,

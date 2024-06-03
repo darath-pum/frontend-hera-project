@@ -24,16 +24,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="i in 5">
-                    <td>{{ i }}</td>
-                    <td>Mobile Legend</td>
+                <tr v-for="(item,index) in games" :key="item">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.title }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
-                            <img src="/cat.jpg" alt="">
+                            <img :src="item.img_url" alt="">
                         </div>
                     </td>
-                    <td>Action, Horror</td>
-                    <td>2024-06-24</td>
+                    <td>
+                    <span v-for="(name, i) in item.categories">
+                        {{ name}}, </span>
+                    </td>
+                    <td>{{ item.created_at.substring(0, 10)}}</td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
                             <div class="flex flex-row items-center gap-1 cursor-pointer">
@@ -54,6 +57,21 @@
 <script setup lang="ts">
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import {ref, onMounted} from "vue"
+
+const games = ref()
+
+const getAllGames = async()=>{
+    const res = await callAPI('/dashboard/game/getAll')
+    if(res.status == 200){
+        games.value = res.data
+        console.log("all games",games.value);
+        
+    }
+}
+onMounted(()=>{
+    getAllGames()
+})
 </script>
 <style scoped>
 table {

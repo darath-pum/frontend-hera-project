@@ -45,7 +45,7 @@ onMounted(async () => {
 </script>
 <style scoped>
 .chart {
-    width: 45%;
+    /* width: 40%; */
     padding: 2rem;
     background: #ffffff;
     border-radius: var(--radius);
