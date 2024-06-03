@@ -5,6 +5,7 @@
                 <span>DAC</span>
             </div>
             <div class="input-date">
+                <span>{{ totalUser }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -18,12 +19,12 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-
-const counts = [10, 50, 30, 90, 15, 100];
-const date = ['1:00', '2:00', '3:00', '4:00', '5:00', '6:00'];
+const totalUser = ref();
+const counts:number[] = [];
+const times:string[] = [];
 
 const data = {
-    labels: date,
+    labels: times,
     datasets: [{
         label: "Active users",
         backgroundColor: "blue",
@@ -44,6 +45,24 @@ onMounted(async () => {
         new Chart(canvasElement, config);
     }
 });
+
+const getDAP = async () => {
+  try {
+    const response = await callAPI ("/dashboard/analytics/admin/getDAU");
+    const adminDAU = response.data.user_counts;
+    totalUser.value = response.data.total_users;
+    for (let i =0;i<adminDAU.length;i++) {
+        if(i >= 17) {
+            counts.push(adminDAU[i].user_count);
+            var dateTime = new Date(adminDAU[i].time);
+            times.push(dateTime.toLocaleTimeString());
+        }
+    }
+  } catch {
+   
+  }
+};
+onMounted(getDAP);
 
 </script>
 <style scoped>

@@ -5,6 +5,7 @@
                 <span>Session(DAP)</span>
             </div>
             <div class="input-date">
+                <span>{{avgTotalDAP }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -18,17 +19,19 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-
-const counts = [50, 60, 30, 60, 15, 10];
-const date = ['1:00', '2:00', '3:00', '4:00', '5:00', '6:00'];
+import { useSharedState } from '../../composables/useShareState'
+const { sharedUserId } = useSharedState()
+const avgTotalDAP = ref();
+const avgPlayTimes :any[] = [];
+const times:string[] = [];
 
 const data = {
-    labels: date,
+    labels: times,
     datasets: [{
         label: "Active users",
         backgroundColor: "blue",
         borderColor: "blue",
-        data: counts,
+        data: avgPlayTimes,
     }]
 };
 
@@ -43,6 +46,26 @@ onMounted(async () => {
     if (canvasElement) {
         new Chart(canvasElement, config);
     }
+});
+
+const getSessionMAP = async (newId:any) => {
+  try {
+    const response = await callAPI (`/dashboard/analytics/customer/getDGPS/${newId}`);
+    const sessionDAP = response.data.play_time_counts;
+    avgTotalDAP.value = response.data.avg_play_sessions;
+    for (let i =0;i<sessionDAP.length;i++) {
+        avgPlayTimes.push(sessionDAP[i].avg_play_time)
+        var dateTime = new Date(sessionDAP[i].time)
+        times.push(dateTime.toLocaleTimeString())
+    }
+
+  } catch {
+   
+  }
+};
+// onMounted(getSessionMAP);
+watch(sharedUserId, (userId) => {
+    getSessionMAP(userId);
 });
 
 </script>

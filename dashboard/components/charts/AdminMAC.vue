@@ -5,6 +5,7 @@
                 <span>MAC</span>
             </div>
             <div class="input-date">
+                <span>{{ totalUser }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -18,9 +19,9 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-
-const counts = [10, 50, 30, 90, 15, 100];
-const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-05', '2023-02-06'];
+const totalUser = ref();
+const counts:number[] = [];
+const date:string[] = [];
 
 const data = {
     labels: date,
@@ -44,7 +45,22 @@ onMounted(async () => {
         new Chart(canvasElement, config);
     }
 });
-
+const getMAC = async () => {
+  try {
+    const response = await callAPI ("/dashboard/analytics/admin/getMAU");
+    const adminMAU = response.data.user_counts;
+    totalUser.value = response.data.total_users;
+    for (let i =0;i<adminMAU.length;i++) {
+        if(i >= 23) {
+            counts.push(adminMAU[i].user_count);
+            date.push(adminMAU[i].time);
+        }
+    }
+  } catch {
+   
+  }
+};
+onMounted(getMAC);
 </script>
 <style scoped>
 .chart {

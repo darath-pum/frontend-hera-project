@@ -5,6 +5,7 @@
                 <span>MAP</span>
             </div>
             <div class="input-date">
+                <span>{{ totalPlayer }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -18,14 +19,16 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-
-const counts = [30, 50, 30, 80, 15, 10];
-const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-05', '2023-02-06'];
+import { useSharedState } from '../../composables/useShareState'
+const { sharedUserId } = useSharedState()
+const totalPlayer = ref();
+const counts:number[] = [];
+const date:string[] = [];
 
 const data = {
     labels: date,
     datasets: [{
-        label: "Active users",
+        label: "Active players",
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,
@@ -44,6 +47,28 @@ onMounted(async () => {
         new Chart(canvasElement, config);
     }
 });
+
+const getMAP = async (newId:any) => {
+  try {
+    const response = await callAPI (`/dashboard/analytics/customer/getMAP/${newId}`);
+    const customerMAP = response.data.player_counts;
+    totalPlayer.value = response.data.total_players;
+    for (let i =0;i<customerMAP.length;i++) {
+        if(i >= 23) {
+        counts.push(customerMAP[i].player_count)
+        date.push(customerMAP[i].time)
+        }
+    }
+
+  } catch {
+   
+  }
+};
+// onMounted(getDAP);
+watch(sharedUserId, (userId) => {
+    getMAP(userId);
+});
+
 
 </script>
 <style scoped>

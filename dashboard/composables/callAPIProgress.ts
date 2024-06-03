@@ -1,5 +1,5 @@
-import { getAPIURL } from "~/configs";
-import type { IAPIResponse } from "~/types";
+// import { getAPIURL } from "~/configs";
+// import type { IAPIResponse } from "~/types";
 
 export const callAPIProgress = async (
   path: string,

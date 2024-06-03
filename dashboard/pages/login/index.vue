@@ -3,20 +3,22 @@
       <form action=""class="" @submit.prevent="login">
           <div class="flex">
               <div class="bg-white p-[30px] pb-[8rem] pt-[3rem] shadow-md">
-                  <h2 class="text-center text-[2.1rem] font-bold select-none">Admin</h2>
+                  <h2 class="text-center text-[2.1rem] font-bold select-none">Sign In</h2>
                   <div>
-                      <input type="email" placeholder="Email" v-model="email" />
+                    <label class="ml-3 font-bold" for="">Email</label><br>
+                    <input type="email" placeholder="Email" v-model="email" />
                   </div>
                   <div>
-                      <input type="password" placeholder="Password" v-model="password"/>
+                    <label class="ml-3 font-bold" for="">Password</label><br>
+                    <input type="password" placeholder="Password" v-model="password"/>
                   </div>
                   <div>
                       <button class="bg-black text-white" @click="login">Login</button>
                   </div>
               </div>
-              <div class="bg-black p-[10px] w-[19rem] pt-[3rem]  shadow-md">
-                  <span class="material-symbols-outlined flex justify-center text-white select-none"> account_circle </span>
-                  <h2 class="text-[1.4rem] text-center text-white select-none">Admin</h2>
+              <div class="bg-black p-[10px] w-[23rem] pt-[3rem]  shadow-md">
+                  <span class="material-symbols-outlined flex justify-center text-white select-none"> person </span>
+                  <h2 class="text-[1.4rem] text-center text-white select-none font-bold">Welcome to login</h2>
                   <hr class="m-[17px]">
               </div>
           </div>
@@ -25,30 +27,46 @@
   </template>
   
   <script setup lang="ts">
+      import Swal from 'sweetalert2'
       import { ref} from 'vue';
       import { useRouter } from 'vue-router'
       const router = useRouter();
       const email = ref('');
       const password = ref('');
-    
-      const loginPlayer = (event:any) =>{
-          if ( email.value !== '' && password.value != '') {
-              alert("success")
-              router.push('/');
-              event.preventDefault()
-          }
-          else {
-              alert("Email or Password invalid")
-          }
-      }
-
       const login = async() => {
         let data = {
             email:email.value,
             password:password.value
         }
-        const res = await callAPI('/dashboard/user/login', 'POST',data);
-        console.log(res)
+        try {
+            const token = useCookie('token');
+            const res = await callAPI('/dashboard/user/login', 'POST',data);
+            console.log(res.status)
+            if(res.status === 200) {
+                Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "You completed successfull",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setTimeout(() => {
+                router.push("/");
+        }, 2000);
+            }else{
+                Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Email or Password is invalid",
+                showConfirmButton: false,
+                timer: 1500
+                })
+            }
+            token.value = res.data.token
+
+        }catch{}
+        
+        
       }
   </script>
   

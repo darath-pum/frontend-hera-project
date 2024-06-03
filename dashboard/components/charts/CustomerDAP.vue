@@ -5,6 +5,7 @@
                 <span>DAP</span>
             </div>
             <div class="input-date">
+                <span>{{ totalPlayer }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -16,16 +17,19 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted } from 'vue';
+import { onMounted,watch} from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
+import { useSharedState } from '../../composables/useShareState'
+const { sharedUserId } = useSharedState()
+const totalPlayer = ref();
+const counts:number[] = [];
+const times:string[] = [];
 
-const counts = [10, 50, 30, 90, 15, 100];
-const date = ['1:00', '2:00', '3:00', '4:00', '5:00', '6:00'];
 
 const data = {
-    labels: date,
+    labels: times,
     datasets: [{
-        label: "Active users",
+        label: "Active players",
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,
@@ -45,6 +49,27 @@ onMounted(async () => {
     }
 });
 
+
+const getDAP = async (newIdValue:any) => {  
+  try {
+    const response = await callAPI (`/dashboard/analytics/customer/getDAP/${newIdValue}`);
+    const customerDAP = response.data.player_counts;
+    totalPlayer.value = response.data.total_players;
+    for (let i =0;i<customerDAP.length;i++) {
+            counts.push(customerDAP[i].player_count);
+            var dateTime = new Date(customerDAP[i].time);
+            times.push(dateTime.toLocaleTimeString());      
+    }
+
+  } catch {
+   
+  }
+};
+watch(sharedUserId, (userId) => {
+    getDAP(userId);
+});
+
+// onMounted(getDAP);
 </script>
 <style scoped>
 .chart {
