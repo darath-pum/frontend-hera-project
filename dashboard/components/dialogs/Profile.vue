@@ -39,11 +39,13 @@ const showPopup = () => {
     isShow.value = !isShow.value
 }
 
-const logout = ()=>{
-    console.log('fdwsgrew');
+const logout = async()=>{
+    const res = await callAPI('/dashboard/user/logout','POST')
+    if(res.status == 200){
+        token.value = ""
+        window.location.href = ('/login')
+    }
     
-    token.value = ""
-    window.location.href = ('/login')
 }
 
 // window.onscroll = function (e) {  
