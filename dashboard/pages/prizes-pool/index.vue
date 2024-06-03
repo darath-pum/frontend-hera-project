@@ -72,7 +72,7 @@ import {ref} from "vue"
 
 const isEdit = ref(false)
 const index = ref()
-const showEditQty = (isEditQty:bool, item:number)=>{
+const showEditQty = (isEditQty:boolean, item:number)=>{
     isEdit.value = isEditQty
     index.value = item
 

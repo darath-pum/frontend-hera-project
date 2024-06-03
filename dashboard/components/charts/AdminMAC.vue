@@ -5,6 +5,7 @@
                 <span>MAC</span>
             </div>
             <div class="input-date">
+                <span>{{ totalUser }}</span>
                 <span class="material-symbols-outlined">
                     more_horiz
                 </span>
@@ -18,9 +19,9 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-
-const counts = [10, 50, 30, 90, 15, 100];
-const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-05', '2023-02-06'];
+const totalUser = ref();
+const counts: number[] = [];
+const date: string[] = [];
 
 const data = {
     labels: date,
@@ -39,20 +40,32 @@ const config: ChartConfiguration<'line'> = {
 };
 
 onMounted(async () => {
+    await getMAC();
     const canvasElement = document.getElementById("AdminMAC") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
     }
 });
 
+//================= MAP admin page ==============//
+const getMAC = async () => {
+    const response = await callAPI("/dashboard/analytics/admin/getMAU");
+    const adminMAU = response.data.user_counts;
+    totalUser.value = response.data.total_users;
+    for (let i = 0; i < adminMAU.length; i++) {
+        if (i >= 23) {
+            counts.push(adminMAU[i].user_count);
+            date.push(adminMAU[i].time);
+        }
+    }
+}
+
 </script>
 <style scoped>
 .chart {
-    width:48.6%;
-    padding: 2rem 1rem 2rem 2.2rem;
     background: #ffffff;
     border-radius: var(--radius);
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    @apply border shadow-sm p-3 sm:p-5 min-h-[300px];
 }
 
 .title {
@@ -75,14 +88,5 @@ onMounted(async () => {
     width: 200px;
     background: #74C0FC;
     color: #ffff;
-}
-
-@media (max-width:67.5rem) {
-    .chart {
-        width: 50%;
-    }
-    .title {
-        font-size: 0.7rem;
-    }
 }
 </style>

@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import Chart from 'chart.js/auto';
 import { onMounted, ref } from 'vue';;
+import type { ChartConfiguration } from 'chart.js/auto';
 const counts = [200, 50, 100, 10, 15, 100];
 const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-05', '2023-02-06']
 
@@ -29,27 +30,26 @@ const data = {
         data: counts,
     }]
 }
-const config = {
-    type: "line",
+const config: ChartConfiguration<'line'> = {
+    type: 'line',
     data: data,
     options: {}
-}
+};
+
 
 onMounted(async () => {
-   new Chart(
-        document.getElementById("myChart"),
-        config
-    )
-})
+    const canvasElement = document.getElementById("myChart") as HTMLCanvasElement | null;
+    if (canvasElement) {
+        new Chart(canvasElement, config);
+    }
+});
 
 </script>
 <style scoped>
 .chart {
-    /* width: 40%; */
-    padding: 2rem;
     background: #ffffff;
     border-radius: var(--radius);
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    @apply border shadow-sm p-3 sm:p-5;
 }
 
 .title {
@@ -73,24 +73,5 @@ onMounted(async () => {
     width: 200px;
     background: #74C0FC;
     color: #ffff;
-}
-
-@media (max-width:67.5rem) {
-    .chart {
-        width: 50%;
-        /* padding-right: 80px;
-        padding-left: 50px; */
-        /* margin-top: -150px !important; */
-        /* font-size: 0.7rem !important; */
-    }
-
-    /* #myChart{
-        width: 15rem !important;
-        height: 10rem !important;
-    } */
-    .title {
-        font-size: 0.7rem;
-    }
-
 }
 </style>

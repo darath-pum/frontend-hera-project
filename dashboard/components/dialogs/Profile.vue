@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-row">
-        <div  @click="showPopup" class="pf-g flex flex-row items-center gap-5 cursor-pointer hover:bg-gray-500 py-1 px-2 rounded-md transition-all">
-            <span>{{ authStore.first_name }}</span>
+        <div @click="showPopup"
+            class="pf-g flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
+            <span class="hidden md:block">{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
                 <img id="profile-image" src="/profile.png" alt="">
             </div>
@@ -9,13 +10,14 @@
                 arrow_drop_down
             </span>
         </div>
-        
-        <div v-if="isShow" class="dialog-backdrop" @click="isShow = false" :class="[isShow ? 'active': '']"></div>
-        <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false" :class="[isShow ? 'active': '']">
+
+        <div v-if="isShow" class="dialog-backdrop" @click="isShow = false" :class="[isShow ? 'active' : '']"></div>
+        <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false"
+            :class="[isShow ? 'active' : '']">
             <div @click.stop class="flex pf-popup flex-col gap-2">
                 <img src="/profile.png" alt="">
 
-                <h1>{{authStore.first_name}}</h1>
+                <h1>{{ authStore.first_name }}</h1>
                 <p class="">{{ authStore.email }}</p>
                 <div class="btn-save flex flex-col gap-5 justify-center">
                     <button class="primary-btn">Your Account</button>
@@ -24,7 +26,7 @@
             </div>
         </div>
     </div>
-    
+
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
@@ -39,18 +41,15 @@ const showPopup = () => {
     isShow.value = !isShow.value
 }
 
-const logout = ()=>{
-    console.log('fdwsgrew');
-    
-    token.value = ""
-    window.location.href = ('/login')
+const logout = async () => {
+    const res = await callAPI('/dashboard/user/logout', 'POST')
+    if (res.status == 200) {
+        token.value = ""
+        window.location.href = ('/login')
+    }
+
 }
 
-// window.onscroll = function (e) {  
-//     if (isShow.value) {
-//         isShow.value = false
-//     }
-// }
 
 </script>
 
@@ -74,7 +73,7 @@ const logout = ()=>{
     transition: all 4s ease;
 }
 
-.dialog-backdrop{
+.dialog-backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -116,9 +115,10 @@ const logout = ()=>{
     padding: 2rem 2rem;
     border-radius: 10px;
     text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: black;
+    @apply shadow-lg border;
 }
+
 /* .pf-popup::before{
     position: absolute;
     content: "";
@@ -134,15 +134,18 @@ const logout = ()=>{
     font-size: 1.5rem;
     font-weight: 600;
 }
+
 @media (max-width: 67.5rem) {
-    #profile-image{
-    width: 35px;
-}
-.pf-g{
-    gap: 0.5rem;
-}
-.pf-g span:nth-child(1){
-    font-size: 0.7rem;
-}
+    #profile-image {
+        width: 35px;
+    }
+
+    .pf-g {
+        gap: 0.5rem;
+    }
+
+    .pf-g span:nth-child(1) {
+        font-size: 0.7rem;
+    }
 }
 </style>

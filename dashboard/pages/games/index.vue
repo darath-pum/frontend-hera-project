@@ -1,30 +1,28 @@
 <template>
-    <div class="list-games page-bg">
+    <div class="container">
         <h1 class="page-title">List all games</h1>
-        <p class="desc page-description">
-            Games setting involves determining the value or amount of a prize for a competition or event, considering
-            factors such as objectives, budget, target audience, and perceived value.
-        </p>
-        <div class="list-cards  flex flex-row justify-between">
-            <div class="game-card" v-for="i in 8">
+        <div class="list-cards">
+            <div class="game-card shadow-sm border-b-2" v-for="i in 8">
                 <div class="flex flex-row items-start">
-                    <div class="image">
-                        <img src="/cat.jpg" alt="">
+                    <div class="min-w-24 min-h-24 max-w-24 max-w-24 overflow-hidden rounded-lg">
+                        <img src="/cat.jpg" alt="" class="w-full h-full object-cover">
                     </div>
-                    <div class="title-desc flex flex-col pl-5 gap-1">
-                        <h2>Mobile Legend </h2>
-                        <span>Considering factors such as objectives, budget, target audience.</span>
+                    <div class="flex flex-col pl-5 gap-1">
+                        <h2 class="text-md font-semibold line-clamp-1">Mobile Legend </h2>
+                        <span class="text-sm line-clamp-3">Considering factors such as objectives, budget, target
+                            audience.</span>
                     </div>
                 </div>
-                <div class="flex flex-row items-center justify-between -mt-7">
-                    <div class="btn-en-dis flex flex-row gap-1">
-                        <span @click="enable(i)" :class="isEnable == true && index == i? 'font-semibold':''">Enable</span>
-                        <span>/</span>
-                        <span @click="disable(i)" :class="isEnable == false && index == i? 'font-semibold':''">Disable</span>
+                <div class="card-footer">
+                    <div class="cursor-pointer">
+                        <span @click="enable(i)" class="toggler"
+                            :class="isEnable == true && index == i ? 'active bg-green-500' : ''">Enable</span>
+                        <span @click="disable(i)" class="toggler"
+                            :class="isEnable == false && index == i ? 'active bg-red-500' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink to="/games/detail">
-                            <button class="primary-btn">View detail</button>
+                            <button class="primary-btn text-sm px-4 py-2">View detail</button>
                         </NuxtLink>
                     </div>
                 </div>
@@ -33,37 +31,32 @@
     </div>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 const isEnable = ref(false);
 const index = ref();
-const enable = (inde)=>{
+const enable = (i: any) => {
     isEnable.value = true
-    index.value = inde
-    
+    index.value = i
+
 }
-const disable = (inde)=>{
+const disable = (i: any) => {
     isEnable.value = false
-    index.value = inde
+    index.value = i
 }
 </script>
 <style scoped>
-
-
-.list-cards {
+/* .list-cards {
     margin-top: 3rem;
     flex-wrap: wrap;
-}
+} */
 
 .game-card {
     background: rgb(240, 240, 240);
     background: linear-gradient(180deg, rgba(240, 240, 240, 1) 0%, rgba(255, 255, 255, 1) 48%);
-    width: 20rem;
-    /* height: 14rem; */
     border-radius: 10px;
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 1rem;
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    border: 1px solid #e5e5e5;
+    @apply flex flex-col gap-3 p-3;
 }
 
 .title-desc h2 {
@@ -71,18 +64,31 @@ const disable = (inde)=>{
     font-weight: 600;
 }
 
-.image {
-    width: 10rem;
-    height: 10rem;
+.list-cards {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 xl:gap-5;
 }
 
-.image img {
-    border-radius: 10px;
+.card-footer {
+    @apply flex justify-between items-center;
+
+    div {
+        @apply flex flex-row items-center justify-between;
+
+        .toggler {
+            @apply px-2 py-1 rounded-full cursor-pointer text-sm;
+        }
+
+
+    }
 }
-.btn-view-detail button{
+
+.toggler.active {
+    @apply px-3 py-1 rounded-full text-white;
+}
+
+
+
+.btn-view-detail button {
     border-radius: 100px;
-}
-.btn-en-dis span{
-    cursor: pointer;
 }
 </style>

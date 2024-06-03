@@ -18,7 +18,7 @@
 //   import axios from 'axios';
 import Chart from 'chart.js/auto';
 import { onMounted, ref } from 'vue';
-
+import type { ChartConfiguration } from 'chart.js/auto';
 //   import { getAPIURL } from "@/configs";
 
 const uniqueUsers = ref(0);
@@ -34,28 +34,26 @@ const data = {
         data: counts,
     }]
 }
-const config = {
-    type: "bar",
+const config: ChartConfiguration<'line'> = {
+    type: 'line',
     data: data,
     options: {}
-}
+};
+
 
 onMounted(async () => {
-    // await getDAUUsers();
-    const myChart = new Chart(
-        document.getElementById("myChart1"),
-        config
-    )
-})
+    const canvasElement = document.getElementById("myChart1") as HTMLCanvasElement | null;
+    if (canvasElement) {
+        new Chart(canvasElement, config);
+    }
+});
 
 </script>
 <style scoped>
 .chart {
-    /* width: 50%; */
-    padding: 2rem;
     background: #ffffff;
     border-radius: var(--radius);
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    @apply border shadow-sm p-3 sm:p-5;
 }
 
 .title {
@@ -79,19 +77,5 @@ onMounted(async () => {
     width: 200px;
     background: #74C0FC;
     color: #ffff;
-}
-
-@media (max-width:67.5rem) {
-    .chart {
-        width: 50%;
-    }
-
-    #myChart1{
-        width: 15rem !important;
-        height: 10rem !important;
-    }
-    .title {
-        font-size: 0.7rem;
-    }
 }
 </style>
