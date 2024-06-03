@@ -24,16 +24,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="i in 5">
-                    <td>{{ i }}</td>
-                    <td>Sting</td>
+                <tr v-for="(item, index) in campaigns" :key="item">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.title }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
-                            <img src="/sting-event.jpg" alt="">
+                            <img :src="item.img_url" alt="">
                         </div>
                     </td>
-                    <td>2024-06-24</td>
-                    <td>2024-06-30</td>
+                    <td>{{ item.start_date.substring(0, 10) }}</td>
+                    <td>{{ item.end_date.substring(0, 10) }}</td>
                     <td class="flex flex-row justify-center items-center gap-5">
                         <div class="flex flex-row justify-center gap-5">
                             <div class="flex flex-row items-center gap-1 cursor-pointer">
@@ -51,11 +51,11 @@
                         </div>
                         <div id="more-action">
                             <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
-                                @click="showBtnAction(i)">
+                                @click="showBtnAction(item.id)">
                                 more_horiz
                             </span>
-                            <div id="action-menu" v-if="isBtn && index == i" @click.stop>
-                                <NuxtLink to="/campaigns/edit">
+                            <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
+                                <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`'>
                                 <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined cursor-pointer">
@@ -85,18 +85,27 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
-import { onMounted } from 'vue';
+import {useAuthStore} from '~/store/auth';
 
+const authStore = useAuthStore()
+const campaigns = ref()
 const isBtn = ref(false)
-const index = ref()
-const showBtnAction = (idx) => {
-    index.value = idx
+const campaignId = ref()
+const showBtnAction = (id) => {
+    console.log(id);
+    
+    campaignId.value = id
     isBtn.value = !isBtn.value
 }
-
+const getAllCampaigns = async()=>{
+    const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
+    if (res.status == 200) {
+        campaigns.value = res.data
+    }
+}
   
   const handleScroll = (event) => {
     // Check the direction of the scroll
@@ -115,6 +124,7 @@ const showBtnAction = (idx) => {
   onMounted(() => {
     // Attach the event listener to the root element
     document.addEventListener('wheel', handleScroll);
+    getAllCampaigns()
   });
 </script>
 <style scoped>
