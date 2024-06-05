@@ -2,16 +2,13 @@
     <div class="chart">
         <div class="header mb-5 flex flex-row items-center justify-between">
             <div class="title">
-                <span>MAC</span>
+                <span>MAU</span>
             </div>
             <div class="input-date">
-                <span>{{ totalUser }}</span>
-                <span class="material-symbols-outlined">
-                    more_horiz
-                </span>
+                <span>User Total: {{ totalUser }}</span>
             </div>
         </div>
-        <canvas id="AdminMAC"></canvas>
+        <canvas id="AdminMAU"></canvas>
     </div>
 </template>
 
@@ -19,17 +16,19 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
+import { format } from "date-fns";
 const totalUser = ref();
 const counts: number[] = [];
-const date: string[] = [];
+const dates: string[] = [];
 
 const data = {
-    labels: date,
+    labels: dates,
     datasets: [{
         label: "Active users",
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,
+        tension:0.3
     }]
 };
 
@@ -40,23 +39,22 @@ const config: ChartConfiguration<'line'> = {
 };
 
 onMounted(async () => {
-    await getMAC();
-    const canvasElement = document.getElementById("AdminMAC") as HTMLCanvasElement | null;
+    await getMAU();
+    const canvasElement = document.getElementById("AdminMAU") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
     }
 });
 
-//================= MAP admin page ==============//
-const getMAC = async () => {
+//================= MAU admin page ==============//
+const getMAU = async () => {
     const response = await callAPI("/dashboard/analytics/admin/getMAU");
     const adminMAU = response.data.user_counts;
     totalUser.value = response.data.total_users;
     for (let i = 0; i < adminMAU.length; i++) {
-        if (i >= 23) {
-            counts.push(adminMAU[i].user_count);
-            date.push(adminMAU[i].time);
-        }
+        counts.push(adminMAU[i].user_count);
+        const date = format(new Date(adminMAU[i].time), 'dd-MM')
+        dates.push(date);
     }
 }
 

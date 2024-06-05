@@ -4,8 +4,8 @@
             <div class="card-item flex flex-col justify-between">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
-                        <span class="card-title">Active users</span>
-                        <h2>1.999k</h2>
+                        <span class="card-title">User Total:</span>
+                        <h2>{{ userTotal }}</h2>
                     </div>
                     <div>
                         <img src="/active-user.png" alt="">
@@ -15,14 +15,14 @@
                     <span class="material-symbols-outlined text-green">
                         north
                     </span>
-                    <p><span class="text-green">%50</span> of user increase</p>
+                    <p><span class="text-green">%{{ userPercentage }}</span> of new users </p>
                 </div>
             </div>
             <div class="card-item item2 flex flex-col justify-between">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
-                        <span class="card-title">Active users</span>
-                        <h2>1.999k</h2>
+                        <span class="card-title">Game Total:</span>
+                        <h2>{{ gameTotal }}</h2>
                     </div>
                     <div>
                         <img src="/active-user.png" alt="">
@@ -32,7 +32,7 @@
                     <span class="material-symbols-outlined text-green">
                         north
                     </span>
-                    <p><span class="text-green">%50</span> of user increase</p>
+                    <p><span class="text-green">%{{ gamePercentage }}</span> of new games</p>
                 </div>
             </div>
             <div class="card-item item3 flex flex-col justify-between">
@@ -71,14 +71,27 @@
             </div>
         </div>
         <div class="chart-container">
-            <GameMostPlayer></GameMostPlayer>
-            <TopUsers></TopUsers>
+            <AdminDAU />
+            <AdminMAU />
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import GameMostPlayer from "~/components/charts/GameMostPlayer.vue"
-import TopUsers from "~/components/charts/TopUsers.vue"
+import AdminDAU from "~/components/charts/AdminDAU.vue";
+import AdminMAU from "~/components/charts/AdminMAU.vue";
+import { onMounted } from "vue";
+const gamePercentage = ref();
+const  gameTotal = ref();
+const userPercentage = ref();
+const userTotal = ref();
+const getHomeInfo = async() => {
+    const response = await callAPI("/dashboard/analytics/admin/getDashboardSummary");
+    gamePercentage.value = response.data.games.percentage;
+    gameTotal.value = response.data.games.total;
+    userPercentage.value = response.data.users.percentage;
+    userTotal.value = response.data.users.total;
+}
+onMounted(getHomeInfo);
 </script>
 
 <style scoped>

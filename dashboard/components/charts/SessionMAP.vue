@@ -5,10 +5,7 @@
                 <span>Session(MAP)</span>
             </div>
             <div class="input-date">
-                <span>{{ avgTotalMAP }}</span>
-                <span class="material-symbols-outlined">
-                    more_horiz
-                </span>
+                <span>Average Player Session: {{ avgTotalMAP }}</span>
             </div>
         </div>
         <canvas id="sessionMAP"></canvas>
@@ -20,17 +17,19 @@ import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
 import { useRoute } from 'vue-router';
+import { format } from "date-fns";
 const gameID = useRoute().query.gameId;
 const avgTotalMAP = ref();
 const avgPlayTime: number[] = [];
-const date: string[] = [];
+const dates: string[] = [];
 const data = {
-    labels: date,
+    labels: dates,
     datasets: [{
         label: "Active users",
         backgroundColor: "blue",
         borderColor: "blue",
         data: avgPlayTime,
+        tension:0.3
     }]
 };
 
@@ -56,10 +55,9 @@ const getSessionMAP = async () => {
     const sessionMAP = response.data.play_time_counts;
     avgTotalMAP.value = response.data.avg_play_sessions;
     for (let i = 0; i < sessionMAP.length; i++) {
-        if (i >= 23) {
-            avgPlayTime.push(sessionMAP[i].avg_play_time)
-            date.push(sessionMAP[i].date)
-        }
+        avgPlayTime.push(sessionMAP[i].avg_play_time)
+        const date = format(new Date(sessionMAP[i].date), 'dd-MM')
+        dates.push(date);
     }
 } 
 </script>

@@ -5,10 +5,7 @@
                 <span>MAP</span>
             </div>
             <div class="input-date">
-                <span>{{ totalPlayer }}</span>
-                <span class="material-symbols-outlined">
-                    more_horiz
-                </span>
+                <span>Player Total: {{ totalPlayer }}</span>
             </div>
         </div>
         <canvas id="customerMAP"></canvas>
@@ -19,20 +16,21 @@
 import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
-import { useSharedState } from '../../composables/useShareState'
 import { useRoute } from 'vue-router';
+import { format } from "date-fns";
 const gameID = useRoute().query.gameId
 const totalPlayer = ref();
 const counts: number[] = [];
-const date: string[] = [];
+const dates: string[] = [];
 
 const data = {
-    labels: date,
+    labels: dates,
     datasets: [{
         label: "Active players",
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,
+        tension:0.3
     }]
 };
 
@@ -57,10 +55,9 @@ const getMAP = async () => {
     const customerMAP = response.data.player_counts;
     totalPlayer.value = response.data.total_players;
     for (let i = 0; i < customerMAP.length; i++) {
-        if (i >= 23) {
-            counts.push(customerMAP[i].player_count)
-            date.push(customerMAP[i].time)
-        }
+        counts.push(customerMAP[i].player_count) 
+        const date = format(new Date(customerMAP[i].time), 'dd-MM')
+        dates.push(date);
     }
 } 
 </script>
