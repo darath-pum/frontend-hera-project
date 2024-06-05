@@ -5,7 +5,7 @@
 
 body {
   /* @apply bg-gray-50; */
-  background: #eaeef0;
+  background: #fff;
   font-family: "Inter", sans-serif;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 :root {
-  --primary-color: #000000;
+  --primary-color: #161616;
   --secondary-color: #6c757d;
   --third-color: #ffff;
   --radius: 10px;
@@ -112,7 +112,7 @@ body {
 }
 
 .container {
-  @apply p-5 space-y-3 md:space-y-5 mx-auto max-w-[1800px] bg-white min-h-[100vh];
+  @apply p-5 px-5  space-y-3 md:space-y-5 mx-auto max-w-[1800px] bg-white min-h-[80vh];
 }
 
 @media (max-width: 67.5rem) {
