@@ -2,14 +2,13 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>DAC</span>
+        <span>DAU</span>
       </div>
       <div class="input-date">
-        <span>{{ totalUser }}</span>
-        <span class="material-symbols-outlined"> more_horiz </span>
+        <span>User Total: {{ totalUser }}</span>
       </div>
     </div>
-    <canvas id="AdminDAC" class="h-full"></canvas>
+    <canvas id="AdminDAU" class="h-full"></canvas>
   </div>
 </template>
 
@@ -17,6 +16,7 @@
 import { Chart } from "chart.js/auto";
 import { onMounted } from "vue";
 import type { ChartConfiguration } from "chart.js/auto";
+import { format } from "date-fns";
 const totalUser = ref();
 const counts: number[] = [];
 const times: string[] = [];
@@ -29,6 +29,7 @@ const data = {
       backgroundColor: "blue",
       borderColor: "blue",
       data: counts,
+      tension:0.3
     },
   ],
 };
@@ -40,26 +41,24 @@ const config: ChartConfiguration<"line"> = {
 };
 
 onMounted(async () => {
-  await getDAP();
+  await getDAU();
   const canvasElement = document.getElementById(
-    "AdminDAC"
+    "AdminDAU"
   ) as HTMLCanvasElement | null;
   if (canvasElement) {
     new Chart(canvasElement, config);
   }
 });
 
-//================= DAP admin page ==============//
-const getDAP = async () => {
+//================= DAU admin page ==============//
+const getDAU = async () => {
   const response = await callAPI("/dashboard/analytics/admin/getDAU");
   const adminDAU = response.data.user_counts;
   totalUser.value = response.data.total_users;
   for (let i = 0; i < adminDAU.length; i++) {
-    if (i >= 17) {
       counts.push(adminDAU[i].user_count);
-      var dateTime = new Date(adminDAU[i].time);
-      times.push(dateTime.toLocaleTimeString());
-    }
+      const dateTime = format(new Date(adminDAU[i].time), 'p')
+      times.push(dateTime);
   }
 };
 </script>

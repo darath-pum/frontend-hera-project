@@ -6,28 +6,12 @@
             to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.</p>
 
-        <form action="" class="flex flex-col gap-5" ref="form">
+        <form action="" class="flex flex-col gap-7" ref="form">
             <div class="g-one">
                 <div class="title">
                     <label for="">Title:</label>
                     <input type="text" v-model="title">
                 </div>
-                <!-- <div class="select">
-                    <label for="">Games</label>
-                    <div class="select-game" @click="showSelectGame">{{ genreList }}</div>
-                    <div class="select-icon">
-                        <span class="material-symbols-outlined">
-                            arrow_drop_down
-                        </span>
-                    </div>
-                    <div class="choose-select flex flex-col gap-5" v-if="isSelectGame" @click.stop>
-                        <div class="flex flex-row gap-2" v-for="(item, index) in nameGenres" :key="item">
-                            <input id="checkbox" type="checkbox" :id="item.name" :name="item.name"
-                                @click="addGenre(item.name, item.id)" />
-                            <label :for="item.name">{{ item.name }}</label>
-                        </div>
-                    </div>
-                </div> -->
 
                 <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
                     :class="[isSelectGame ? 'active' : '']"></div>
@@ -120,36 +104,6 @@ const handleImage = async (event: any) => {
     console.log(image.value);
 
 }
-
-// const nameGenres = ref([
-//     { name: "Car", id: 1 },
-//     { name: "Bike", id: 2 },
-//     { name: "Fish", id: 3 },
-//     { name: "Fruit", id: 4 },
-//     { name: "Basketball", id: 5 },
-//     { name: "Beauty", id: 6 },
-//     { name: "Bike", id: 7 },
-//     { name: "Cat", id: 8 },
-//     { name: "Casual", id: 9 },
-//     { name: "Clicker", id: 10 },
-//     { name: "Controller", id: 11 },
-//     { name: "Dress Up", id: 12 },
-//     { name: "Driving", id: 13 },
-//     { name: "Escape", id: 14 },
-//     { name: "Flash", id: 15 },
-//     { name: "FPS", id: 16 },
-//     { name: "Horror", id: 17 },
-//     { name: ".io", id: 18 },
-//     { name: "Minecraft", id: 19 },
-//     { name: "Mutiplayer", id: 20 },
-//     { name: "Pool", id: 21 },
-//     { name: "Pozzle", id: 22 },
-//     { name: "Shooting", id: 23 },
-//     { name: "Soccer", id: 24 },
-//     { name: "Sports", id: 25 },
-//     { name: "Tower Defense", id: 26 },
-// ]);
-
 const userGames = ref<any[]>([])
 
 const getAllUserGame = async () => {
@@ -186,13 +140,13 @@ const addCampaign = async () => {
     if (image.value) {
         formData.append("image", image.value);
     }
-    formData.set("start_date", '2023-01-20T00:00:00+07:00');
-    formData.set("end_date", '2023-01-20T00:00:00+07:00');
-    formData.set("user_game_id)", JSON.stringify(user_game_id.value))
+    formData.set("start_date", new Date(start_date.value).toISOString());
+    formData.set("end_date", new Date(end_date.value).toISOString());
+    formData.set("user_game_id", JSON.stringify(user_game_id.value))
     console.log("formData", formData);
 
     const res = await callAPI('/dashboard/campaign/createCampaign', 'POST', formData);
-    console.log(res.data);
+    console.log(res.message);
 
 }
 onMounted(() => {
@@ -202,7 +156,7 @@ onMounted(() => {
 </script>
 <style scoped>
 form {
-    margin-top: 4rem;
+    margin-top: 4rem !important;
 }
 
 .g-one,
@@ -228,6 +182,8 @@ form {
 
 label {
     font-weight: 600;
+    color: #666464;
+    padding-bottom: 0.2rem;
 }
 
 input,
@@ -237,7 +193,7 @@ textarea,
 .select-icon {
     padding: 0.5rem;
     border: 1px solid #000000;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .dialog-backdrop {
@@ -290,7 +246,7 @@ textarea,
 .select-image {
     height: 5rem;
     border: #000000 solid 1px;
-    border-radius: 10px;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -318,7 +274,7 @@ textarea,
     margin-top: 4.3rem;
     height: 20rem;
     overflow-y: scroll;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 2rem solid #FFFFFF;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 
@@ -335,8 +291,6 @@ textarea,
     textarea,
     .select-icon {
         padding: 0.5rem;
-        border: 2px solid #000000;
-        border-radius: 10px;
         font-size: 0.7rem;
     }
 

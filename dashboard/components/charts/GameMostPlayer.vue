@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import Chart from 'chart.js/auto';
-import { onMounted, ref } from 'vue';;
+import { onMounted } from 'vue';;
 import type { ChartConfiguration } from 'chart.js/auto';
 const counts = [200, 50, 100, 10, 15, 100];
 const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-05', '2023-02-06']

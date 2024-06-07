@@ -5,10 +5,7 @@
                 <span>Session(DAP)</span>
             </div>
             <div class="input-date">
-                <span>{{ avgTotalDAP }}</span>
-                <span class="material-symbols-outlined">
-                    more_horiz
-                </span>
+                <span>Average Player Session: {{ avgTotalDAP }}</span>
             </div>
         </div>
         <canvas id="sessionDAP"></canvas>
@@ -20,6 +17,7 @@ import { Chart } from 'chart.js/auto';
 import { onMounted } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
 import { useRoute } from 'vue-router';
+import { format } from "date-fns";
 const gameID = useRoute().query.gameId
 const avgTotalDAP = ref();
 const avgPlayTimes: any[] = [];
@@ -32,6 +30,7 @@ const data = {
         backgroundColor: "blue",
         borderColor: "blue",
         data: avgPlayTimes,
+        tension:0.3
     }]
 };
 
@@ -56,8 +55,8 @@ const getSessionDAP = async () => {
     avgTotalDAP.value = response.data.avg_play_sessions;
     for (let i = 0; i < sessionDAP.length; i++) {
         avgPlayTimes.push(sessionDAP[i].avg_play_time)
-        var dateTime = new Date(sessionDAP[i].time)
-        times.push(dateTime.toLocaleTimeString())
+        const dateTime = format(new Date(sessionDAP[i].time), 'p')
+        times.push(dateTime);
     }
 } 
 </script>

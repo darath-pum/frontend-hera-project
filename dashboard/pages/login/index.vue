@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import Swal from 'sweetalert2'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 const email = ref('');
 const password = ref('');
 const isErrorEmail = ref(false);
@@ -68,7 +68,17 @@ const isErrorPassword = ref(false);
 
 const errEmailMsg = ref("");
 const errPasswordMsg = ref("");
+  onMounted(()=>{
+          const token = localStorage.getItem('token')
 
+          console.log(token);
+          
+          
+          if (token) {
+            
+            window.location.href='/'
+          }
+      })
 const clearErrors = () => {
     isErrorEmail.value = false;
     isErrorPassword.value = false;
@@ -118,6 +128,7 @@ const login = async () => {
         })
     }
     token.value = res.data.token
+    localStorage.setItem("token", res.data.token);
 }
 </script>
 

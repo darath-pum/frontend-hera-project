@@ -1,5 +1,5 @@
 <template>
-    <div class="prize-setting container" @wheel="handleScroll">
+    <div class="prize-setting container">
         <h1 class="page-title">Campaigns Setting</h1>
         <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
@@ -16,22 +16,31 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>title</th>
                     <th>Image</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
+                    <Sorting :data="campaigns" :name="'Title'" :columnName="'title'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <Sorting :data="campaigns" :name="'Start Date'" :columnName="'start_date'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <!-- <th>title</th> -->
+                    <!-- <th>Start Date</th>
+                    <th>End Date</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(item, index) in campaigns" :key="item">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ item.title }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
-                            <img :src="item.img_url" alt="">
+                            <img :src="item.img_url ||campaingDefault" alt="">
                         </div>
                     </td>
+                    <td>{{ item.title }}</td>
                     <td>{{ item.start_date.substring(0, 10) }}</td>
                     <td>{{ item.end_date.substring(0, 10) }}</td>
                     <td class="flex flex-row justify-center items-center gap-5">
@@ -71,7 +80,7 @@
                                     <span>delete</span>
 
                                 </div> -->
-                                <DeleteItem :itemName="'Campaign'"></DeleteItem>
+                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id" :functionName="'deleteCampaign'"></DeleteItem>
 
 
                             </div>
@@ -91,6 +100,7 @@ import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import { useAuthStore } from '~/store/auth';
 
 const authStore = useAuthStore()
+const sortedColumnName = ref("")
 const campaigns = ref()
 const isBtn = ref(false)
 const campaignId = ref()
@@ -102,28 +112,30 @@ const showBtnAction = (id: any) => {
 }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
+    console.log('compaigns',res);
+    
     if (res.status == 200) {
         campaigns.value = res.data
     }
 }
 
-const handleScroll = (event: any) => {
-    // Check the direction of the scroll
-    if (event.wheelDelta < 0) {
-        // Scrolling down
-        isBtn.value = false
-    } else {
-        // Scrolling up
-        isBtn.value = false
-    }
+// const handleScroll = (event: any) => {
+//     // Check the direction of the scroll
+//     if (event.wheelDelta < 0) {
+//         // Scrolling down
+//         isBtn.value = false
+//     } else {
+//         // Scrolling up
+//         isBtn.value = false
+//     }
 
-    // Prevent the default scroll behavior
-    event.preventDefault();
-};
+//     // Prevent the default scroll behavior
+//     event.preventDefault();
+// };
 
 onMounted(() => {
     // Attach the event listener to the root element
-    document.addEventListener('wheel', handleScroll);
+    // document.addEventListener('wheel', handleScroll);
     getAllCampaigns()
 });
 </script>

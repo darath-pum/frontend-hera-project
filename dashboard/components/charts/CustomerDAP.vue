@@ -5,8 +5,7 @@
         <span>DAP</span>
       </div>
       <div class="input-date">
-        <span>{{ totalPlayer }}</span>
-        <span class="material-symbols-outlined"> more_horiz </span>
+        <span>Player Total: {{ totalPlayer }}</span>
       </div>
     </div>
     <canvas id="customerDAP"></canvas>
@@ -18,11 +17,11 @@ import { Chart } from "chart.js/auto";
 import { onMounted } from "vue";
 import type { ChartConfiguration } from "chart.js/auto";
 import { useRoute } from "vue-router";
+import { format } from "date-fns";
 const gameID = useRoute().query.gameId;
 const totalPlayer = ref();
 const counts: number[] = [];
 const times: string[] = [];
-
 const data = {
   labels: times,
   datasets: [
@@ -31,6 +30,7 @@ const data = {
       backgroundColor: "blue",
       borderColor: "blue",
       data: counts,
+      tension:0.3
     },
   ],
 };
@@ -50,8 +50,8 @@ const getDAP = async () => {
   totalPlayer.value = response.data.total_players;
   for (let i = 0; i < customerDAP.length; i++) {
     counts.push(customerDAP[i].player_count);
-    var dateTime = new Date(customerDAP[i].time);
-    times.push(dateTime.toLocaleTimeString());
+    const dateTime = format(new Date(customerDAP[i].time), 'p')
+    times.push(dateTime);
   }
 }
 

@@ -2,7 +2,7 @@
     <div class="add-prize">
         <button class="primary-btn" @click="isShow = true">Add user's game</button>
         <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4">
+            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUsersGame">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
                     <h1>Add user's game</h1>
@@ -12,14 +12,12 @@
                 </div>
                 <!-- <div class="flex flex-row justify-end items-center gap-5"> -->
                     <div>
-                        <label for="">User:</label>
+                        <label for="">Users:</label>
                         <div class="select flex flex-col items-center justify-center">
-                            <select class="select-game" name="" id="">
+                            <select class="select-game" name="" id="" v-model="user_id">
                                 <option value="">Select user</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
+                                <option v-for="(item,index) in users" :key="item" :value="item.id" >{{ item.first_name }} {{ item.last_name }}</option>
+                                
                             </select>
                             <div class="select-icon">
                                 <span class="material-symbols-outlined">
@@ -31,14 +29,12 @@
                     
                     </div>
                     <div>
-                        <label for="">Game:</label>
+                        <label for="">Games:</label>
                         <div class="select flex flex-col items-center justify-center">
-                            <select class="select-game" name="" id="">
+                            <select class="select-game" name="" id="" v-model="game_id">
                                 <option value="">Select game</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
+                                <option v-for="(item,index) in games" :key="item" :value="item.id" >{{ item.title }}</option>
+
                             </select>
                             <div class="select-icon">
                                 <span class="material-symbols-outlined">
@@ -52,16 +48,62 @@
 
                 <!-- </div> -->
                 <div class="btn-save">
-                    <button class="primary-btn">Save</button>
+                    <button class="primary-btn" @click="addUsersGame">Save</button>
                 </div>
             </form>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
-
+import { ref, onMounted } from "vue"
 const isShow = ref(false)
+const game_id = ref()
+const user_id = ref()
+const users = ref()
+const games = ref()
+
+const getAllUsers = async () => {
+    const res = await callAPI('/dashboard/user/getUsers')
+    console.log(res.data);
+
+    if (res.status == 200) {
+        users.value = res.data
+
+
+    }
+}
+const getAllGames = async () => {
+    const res = await callAPI('/dashboard/game/getAll')
+    if (res.status == 200) {
+        games.value = res.data
+        console.log("all games", games.value);
+    }
+}
+
+let isAddUserGameCalled = false;
+const addUsersGame = async()=>{
+    if (isAddUserGameCalled) {
+        return; // Exit the function if it has already been called
+    }
+    isAddUserGameCalled = true;
+    let body = {
+        user_id:user_id.value,
+        game_id:game_id.value
+    }
+    console.log(body);
+    
+    const res = await callAPI('/dashboard/game/user/create','POST',body)
+    console.log(res);
+    isAddUserGameCalled = false
+    
+}
+
+
+onMounted(() => {
+    getAllGames()
+    getAllUsers()
+})
+
 </script>
 
 <style scoped>
@@ -82,7 +124,7 @@ const isShow = ref(false)
 form {
     width: 30rem;
     height: 23rem;
-    background: #D9D9D9;
+    background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
 }
@@ -96,9 +138,11 @@ form h1 {
 
 .select-icon {
     padding: 0.5rem;
-    border: 2px solid #000000;
-    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius:5px;
     width: 100%;
+    background: #ffffff8a;
+    color: #666464;
 }
 
 
@@ -123,8 +167,12 @@ form h1 {
     width: 100%;
     margin-top: 1rem;
 }
-label{
+
+
+label {
     font-weight: 600;
+    color: #666464;
+    padding-bottom: 0.2rem;
 }
 .btn-save button {
     width: 100%;

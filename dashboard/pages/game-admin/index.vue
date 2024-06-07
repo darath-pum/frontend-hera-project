@@ -29,20 +29,23 @@
                         </div>
                     </td>
                     <td>
-                        <span v-for="(name, i) in item.categories">
-                            {{ name }}, </span>
+                    <span>
+                        {{ item.categories.join(', ')}} </span>
                     </td>
                     <td>{{ item.created_at.substring(0, 10) }}</td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
-                            <div class="flex flex-row items-center gap-1 cursor-pointer">
-                                <span class="material-symbols-outlined">
-                                    edit
-                                </span>
-                                <span>Edit</span>
-                            </div>
+                            <NuxtLink :to="`/game-admin/edit?gameID=${item.id}`">
 
-                            <DeleteItem :itemName="'Game'"></DeleteItem>
+                                <div class="flex flex-row items-center gap-1 cursor-pointer">
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                    </span>
+                                    <span>Edit</span>
+                                </div>
+                            </NuxtLink>
+
+                            <DeleteItem :itemName="'Game'" :gameId="item.id" :functionName="'deleteGame'"></DeleteItem>
                         </div>
                     </td>
                 </tr>

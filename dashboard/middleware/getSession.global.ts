@@ -2,15 +2,16 @@
 import { useAuthStore } from "~/store/auth";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  if (process.client) return;
+  if (!process.client) return;
   const authStore = useAuthStore();
-  const token = useCookie('token');
+  const token = localStorage.getItem('token');
+
   if (to.path !== "/login") {
     try {
       const res = await $fetch<any>(getAPIURL("/dashboard/user/getUserSession"), {
         headers: { 
           "Content-Type": "application/json", 
-          "Authorization": "Bearer " + token.value,
+          "Authorization": "Bearer " + token,
         },
         cache: "no-cache",
         ignoreResponseError: true,

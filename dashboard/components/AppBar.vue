@@ -15,7 +15,7 @@
                     </span>
                     <h1 class="text-xl">DASHBOARD</h1>
                 </div>
-                <p class="text-sm text-white opacity-60">darathpum@gmail.com</p>
+                <p class="text-sm text-white opacity-60">{{ authStore.email }}</p>
             </div>
             <div class="flex flex-col gap-2 p-3">
                 <NuxtLink to="/" class="menu-btn">
@@ -170,6 +170,9 @@ const showGame = () => {
     @apply bg-white shadow-sm border-b z-30 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
     @apply flex justify-between items-center text-black;
 
+}
+.nav-bar{
+    z-index: 100;
 }
 
 .nav-bar h1 {

@@ -3,38 +3,49 @@
         <h1 class="page-title">Users</h1>
         <div class="flex flex-row justify-end mt-5 items-center">
             <div class="prize-btn">
-                <AddUser></AddUser>
+                <AddUser :getAllUsers="getAllUsers"></AddUser>
             </div>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>No.</th>
-                    <!-- <th>Image</th> -->
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
+                    <th>Image</th>
+                    <Sorting :data="users" :name="'Name'" :columnName="'first_name'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <Sorting :data="users" :name="'Email'" :columnName="'email'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <Sorting :data="users" :name="'Role'" :columnName="'role'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <!-- <th>Name</th> -->
+                    <!-- <th>Email</th> -->
+                    <!-- <th>Role</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(item, index) in users" :key="item">
                     <td>{{ index + 1 }}</td>
-                    <!-- <td>
-                        
-                    </td> -->
                     <td>
-                        <div class="flex flex-row justify-center items-center gap-2">
-                            <div class="image-profile flex flex-rowjustify-center">
-                                <img src="/profile_image.png" alt="">
+                        <div class="image-profile flex flex-row justify-center">
+                            <img :src="item.pf_img_url || profileDefault" alt="">
 
-                            </div>
 
-                            <span class="flex flex-row justify-start w-36">
 
-                                {{ item.first_name }} {{ item.last_name }}
-                            </span>
                         </div>
+
+                    </td>
+                    <td>
+                        <!-- <div class="flex flex-row justify-center items-center gap-2"> -->
+
+
+
+                        {{ item.first_name }} {{ item.last_name }}
+
+                        <!-- </div> -->
                     </td>
 
 
@@ -44,14 +55,16 @@
                     </td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
-                            <div class="flex flex-row items-center gap-1 cursor-pointer">
+                            <!-- <div class="flex flex-row items-center gap-1 cursor-pointer">
                                 <span class="material-symbols-outlined">
                                     edit
                                 </span>
                                 <span>Edit</span>
-                            </div>
+                            </div> -->
+                            <EditUser :userId="item.id" :getAllUsers="getAllUsers"></EditUser>
 
-                            <DeleteItem :itemName="'User'"></DeleteItem>
+                            <DeleteItem :itemName="'User'" :userId="item.id" :functionName="'deleteUser'"
+                                :getAllUsers="getAllUsers"></DeleteItem>
                         </div>
                     </td>
                 </tr>
@@ -62,10 +75,12 @@
 <script setup lang="ts">
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import AddUser from "~/components/dialogs/AddUser.vue"
+import EditUser from "~/components/dialogs/EditUser.vue"
+import Sorting from "@/components/sorting/Sorting.vue";
 import { ref, onMounted } from "vue"
 
 const users = ref()
-
+const sortedColumnName = ref("");
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
     console.log(res.data);
@@ -92,6 +107,8 @@ th {
     background: var(--primary-color);
     color: #FFFFFF;
     padding: 0.5rem;
+    cursor: pointer;
+    /* border-left: 1px solid #ffffff; */
 
 }
 
@@ -112,15 +129,15 @@ td:nth-child(1) {
     border-bottom-left-radius: 15px;
 }
 
-th:nth-child(5),
-td:nth-child(5) {
+th:nth-child(6),
+td:nth-child(6) {
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 }
 
 .image-profile img {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 100px;
     object-fit: cover;
 }
@@ -146,8 +163,8 @@ td:nth-child(5) {
     }
 
     .image-profile img {
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 100px;
         object-fit: cover;
     }

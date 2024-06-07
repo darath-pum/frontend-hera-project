@@ -7,12 +7,10 @@
             <div class="flex justify-between items-center w-full gap-5">
 
                 <div class="select flex flex-col items-center justify-center">
-                    <select class="select-game" name="" id="">
-                        <option value="">Select user</option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
+                    <select class="select-game" name="" id="" v-model="user_id" @change="getAllGames">
+                        <option value="" disabled>Select user</option>
+                        <option v-for="(item, index) in users" :key="item" :value="item.id">{{ item.first_name }} {{ item.last_name }}</option>
+                      
                     </select>
                     <div class="select-icon">
                         <span class="material-symbols-outlined">
@@ -27,14 +25,17 @@
 
             </div>
         </div>
-        <div class="list-cards  flex flex-row justify-between">
+        <div v-if="games?.length == 0">
+            <h1>No game</h1> 
+       </div>
+        <div v-else class="list-cards  flex flex-row justify-between">
             <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item">
                 <div class="flex flex-row items-start">
                     <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
                         <img :src="item.img_url" alt="" class="w-auto h-full object-cover">
                     </div>
                     <div class="flex flex-col pl-5 gap-1">
-                        <h2 class="text-md font-semibold line-clamp-1">Mobile Legend </h2>
+                        <h2 class="text-md font-semibold line-clamp-1">{{ item.title }}</h2>
                         <span class="text-sm line-clamp-3">Considering factors such as objectives, budget, target
                             audience.</span>
                     </div>
@@ -59,17 +60,44 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import AddUserGame from "~/components/dialogs/AddUserGame.vue"
+
+const user_id = ref()
+const users = ref()
 const games = ref()
 const getAllGames = async () => {
-    const res = await callAPI('/dashboard/game/getAll')
+    const res = await callAPI(`/dashboard/game/user/getUserGames/${user_id.value}`)
     if (res.status == 200) {
         games.value = res.data
         console.log("all games", games.value);
     }
 }
+import { ref, onMounted } from "vue"
+
+
+const getAllUsers = async () => {
+    const res = await callAPI('/dashboard/user/getUsers')
+    console.log(res.data);
+
+    if (res.status == 200) {
+        users.value = res.data
+
+
+    }
+}
 onMounted(() => {
-    getAllGames()
+    getAllUsers()
 })
+// const getAllGames = async () => {
+//     const res = await callAPI('/dashboard/game/getAll')
+//     if (res.status == 200) {
+//         games.value = res.data
+//         console.log("all games", games.value);
+//     }
+// }
+
+// onMounted(() => {
+//     getAllGames()
+// })
 const isEnable = ref(false);
 const gameId = ref();
 const enable = (i: any) => {
@@ -86,8 +114,8 @@ const disable = (i: any) => {
 
 .select-icon {
     padding: 0.5rem;
-    border: 1px solid #000000;
-    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
     width: 20rem;
 }
 
