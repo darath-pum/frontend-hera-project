@@ -24,9 +24,10 @@
       </div>
     </div>
     <div v-if="authStore.role === 'admin'">
+      <h1 class="text-black text-2xl mb-5">Overview</h1>
       <div class="chart-container">
-        <AdminDAC />
-        <AdminMAC />
+        <AdminDAU />
+        <AdminMAU />
       </div>
     </div>
   </div>
@@ -37,8 +38,8 @@ import CustomerDAP from "~/components/charts/CustomerDAP.vue";
 import CustomerMAP from "~/components/charts/CustomerMAP.vue";
 import SessionDAP from "~/components/charts/SessionDAP.vue";
 import SessionMAP from "~/components/charts/SessionMAP.vue";
-import AdminDAC from "~/components/charts/AdminDAC.vue";
-import AdminMAC from "~/components/charts/AdminMAC.vue";
+import AdminDAU from "~/components/charts/AdminDAU.vue";
+import AdminMAU from "~/components/charts/AdminMAU.vue";
 import { onMounted } from "vue";
 import { useAuthStore } from "~/store/auth";
 const gameLists = ref<IGame[]>([]);
@@ -46,18 +47,14 @@ const authStore = useAuthStore();
 
 //===================== get user's game ======================//
 const getGame = async () => {
-  try {
     const response = await callAPI(
       `/dashboard/game/user/getUserGames/${authStore.id}`
     );
     const games = response.data;
-
     for (let i = 0; i < games.length; i++) {
       gameLists.value.push(games[i]);
     }
-  } catch { }
-};
-
+  } 
 //====================== select game option ================//
 const handleSelect = (event: any) => {
   const selectedGameId = event.target.value;
