@@ -35,7 +35,7 @@
                     <h1 class="text-md md:text-xl ">Categories:</h1>
                 </label>
                 <div @click="showSelectGame"
-                    class="relative cursor-pointer select-cat w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
+                    class="relative cursor-pointer select-cat w-full col-span-2 z-20 flex item-center justify-between px-2 min-h-[45px] ">
                     <p class="my-auto text-gray-400 select-none w-fit"
                         :class="{ 'text-black': genreList != 'Select game categories' }">{{
                             genreList

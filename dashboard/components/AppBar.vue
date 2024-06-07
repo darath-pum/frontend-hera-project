@@ -155,7 +155,7 @@ const showGame = () => {
 }
 
 .sidebar {
-    @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color] z-50;
+    @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color] z-40;
 }
 
 .sidebar-title {
@@ -167,7 +167,7 @@ const showGame = () => {
 }
 
 .nav-bar {
-    @apply bg-white shadow-sm border-b z-40 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
+    @apply bg-white shadow-sm border-b z-30 fixed left-0 md:left-[14rem] lg:left-[18rem] w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-18rem)] h-[4rem] p-5 md:p-5;
     @apply flex justify-between items-center text-black;
 
 }
