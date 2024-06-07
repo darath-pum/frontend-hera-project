@@ -2,7 +2,7 @@
     <ClientOnly>
 
     <div class="container">
-        <h1 class="page-title">Upload New Game</h1>
+        <h1 class="page-title">Update Game</h1>
 
         <form action="" ref="form" @submit.prevent="addGame"
             class="space-y-10 md:space-y-16 my-10 mx-auto max-w-screen-md flex flex-col justify-center item-center">
@@ -37,9 +37,7 @@
                 <div @click="showSelectGame"
                     class="relative cursor-pointer select-cat w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
                     <p class="my-auto text-gray-400 select-none w-fit"
-                        :class="{ 'text-black': genreList != 'Select game categories' }">{{
-                            genreList
-                        }}</p>
+                        :class="{ 'text-black': categories != 'Select game categories' }">{{categories.join(', ')}}</p>
                     <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
                         :class="{ 'rotate-180': isSelectGame }">
                         arrow_drop_down
@@ -91,7 +89,7 @@
                 </div>
 
                 <div v-if="gameIconUrl"
-                    class="relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64  rounded-lg">
+                    class="show-img-url relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64  rounded-lg ">
 
                     <span @click="removeIcon"
                         class="material-symbols-outlined absolute right-3 top-3 p-1 rounded-md h-fit cursor-pointer bg-red-500 hover:bg-red-400 text-white">
@@ -150,8 +148,8 @@
             </div>
 
             <div class="flex gap-5 justify-end">
-                <button class="primary-btn" @click="addGame">
-                    Upload
+                <button class="primary-btn" @click="updateGame">
+                    Save
                 </button>
             </div>
         </form>
@@ -162,6 +160,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {useRoute} from 'vue-router';
+
+const gameId = useRoute().query.gameID
 
 const title = ref("");
 const img = ref();
@@ -172,8 +173,8 @@ const iconFileName = ref("");
 const gameIconUrl = ref("");
 const categories = ref([])
 
-const gameFile = ref();
-const gameFileName = ref("");
+const gameFile = ref(null);
+const gameFileName = ref(null);
 
 const genres = ref<string[]>([]);
 const genreList = ref("Select game categories");
@@ -205,6 +206,20 @@ const nameGenres = ref([
     { name: "Sports", id: 25 },
     { name: "Tower Defense", id: 26 },
 ]);
+
+const getGameById = async()=>{
+    const res = await callAPI(`/dashboard/game/getInfo/${gameId}`);
+    console.log(res);
+    
+    title.value = res.data.title
+    description.value = res.data.description
+    gameIconUrl.value = res.data.img_url
+    // created_at.value = res.data.created_at
+    categories.value = res.data.categories
+    console.log("gdsgyweqygrewq",campaigns.value);
+    
+
+}
 
 function onIconFileChange(e: any) {
     const file = e.target.files[0];
@@ -241,19 +256,19 @@ const showSelectGame = () => {
     isSelectGame.value = !isSelectGame.value;
 };
 const addGenre = (genre: string, id: number) => {
-    if (!genres.value.includes(genre)) {
-        genres.value.push(genre);
-        console.log(genres.value);
+    if (!categories.value.includes(genre)) {
+        // genres.value.push(genre);
+        // console.log(genres.value);
         categories.value.push(genre)
     } else {
-        const index = genres.value.indexOf(genre);
-        genres.value.splice(index, 1);
+        const index = categories.value.indexOf(genre);
+        categories.value.splice(index, 1);
     }
 
-    genreList.value = genres.value.join(", ");
+    // genreList.value = genres.value.join(", ");
 
     if (genres.value.length == 0) {
-        genreList.value = "Select game categories";
+        categories.value = "Select game categories";
     }
 };
 
@@ -267,36 +282,40 @@ const removeGameFile = () => {
 
 
 // ==============Add game ===============
-let isAddGameCalled = false;
+let isEditGameCalled = false;
 
-const addGame = async() => {
-  if (isAddGameCalled) {
+const updateGame = async() => {
+  if (isEditGameCalled) {
     return; // Exit the function if it has already been called
   }
 
-    isAddGameCalled = true; 
+  isEditGameCalled = true; 
     const formData = new FormData();
 
     formData.set('title',title.value);
     formData.set('description',description.value)
     formData.set('categories',JSON.stringify(categories.value))
-    if(img.value != ''){
+    if(img.value != null){
         formData.append('img',img.value)
         console.log(img.value);
         
     }
-    if(game.value != ''){
+    if(game.value != null){
         formData.append('game',game.value)
         console.log(game.value);
     }
     console.log("formData",formData);
     
-    const res = await callAPI('/dashboard/game/create','POST',formData)
+    const res = await callAPI(`/dashboard/game/update/${gameId}`,'PUT',formData)
     console.log(res);
-    isAddGameCalled = false;
+    isEditGameCalled = false;
+    window.location.href='/game-admin'
     
 }
 
+onMounted(async()=>{
+    await getGameById()
+})
 </script>
 
 <style scoped>
@@ -342,7 +361,7 @@ label {
 
 input,
 .select-cat,
-textarea {
+textarea,.show-img-url {
     border: 1px solid var(--primary-color);
     border-radius: 5px;
     /* min-height: 45px; */

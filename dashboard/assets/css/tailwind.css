@@ -20,7 +20,7 @@ body {
 }
 
 :root {
-  --primary-color: #000000;
+  --primary-color: #32012F;
   --secondary-color: #6c757d;
   --third-color: #ffff;
   --radius: 10px;
@@ -47,7 +47,7 @@ body {
   color: #ffffff;
   font-weight: 600;
   padding: 0.5rem 1.5rem;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   height: 2.5rem;
   display: flex;
@@ -67,7 +67,7 @@ body {
   color: #000000;
   font-weight: 600;
   padding: 0.5rem 1.5rem;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   border: 1px solid #000000;
   height: 2.5rem;

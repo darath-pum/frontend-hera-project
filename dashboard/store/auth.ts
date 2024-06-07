@@ -7,7 +7,8 @@ export const useAuthStore = defineStore("auth", {
       last_name: "",
       email: "",
       role: "",
-      id: ""
+      id: "",
+      pf_img_url:""
     };
   },
   getters: {
@@ -21,7 +22,8 @@ export const useAuthStore = defineStore("auth", {
       this.last_name = data.last_name;
       this.email = data.email;
       this.role = data.role;
-      this.id = data.id
+      this.id = data.id;
+      this.pf_img_url = data.pf_img_url;
     },
   },
 });

@@ -4,7 +4,7 @@
             class="pf-g flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
             <span class="hidden md:block">{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
-                <img id="profile-image" src="/profile.png" alt="">
+                <img id="profile-image" :src="pf_image" alt="">
             </div>
             <span class="material-symbols-outlined cursor-pointer select-none">
                 arrow_drop_down
@@ -15,12 +15,15 @@
         <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false"
             :class="[isShow ? 'active' : '']">
             <div @click.stop class="flex pf-popup flex-col gap-2">
-                <img src="/profile.png" alt="">
+                <img :src="pf_image" alt="">
 
                 <h1>{{ authStore.first_name }}</h1>
                 <p class="">{{ authStore.email }}</p>
                 <div class="btn-save flex flex-col gap-5 justify-center">
-                    <button class="primary-btn">Your Account</button>
+                    <NuxtLink to="/my-account">
+                        <button class="primary-btn w-full">Your Account</button>
+
+                    </NuxtLink>
                     <button class="primary-btn" @click="logout">Logout</button>
                 </div>
             </div>
@@ -29,11 +32,14 @@
 
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { useAuthStore } from "~/store/auth";
 
 const authStore = useAuthStore()
-
+const pf_image = ref('')
+onMounted(()=>{
+    pf_image.value = authStore.pf_img_url
+})
 const isShow = ref(false)
 const token = useCookie('token')
 
@@ -43,10 +49,11 @@ const showPopup = () => {
 
 const logout = async () => {
     const res = await callAPI('/dashboard/user/logout', 'POST')
-    if (res.status == 200) {
-        token.value = ""
-        window.location.href = ('/login')
-    }
+    console.log(res);
+
+
+    localStorage.removeItem("token");
+    window.location.href = ('/login')
 
 }
 
@@ -93,15 +100,22 @@ const logout = async () => {
 #profile-image,
 .pf-popup img {
     width: 40px;
-    /* height: 50px; */
+    height: 40px;
     border-radius: 100px;
     background: #838181;
     object-fit: cover;
 }
 
 .pf-popup img {
-    width: 100px;
+    width: 5rem;
+    height: 5rem;
     margin: auto;
+    object-fit: cover;
+}
+.btn-save a{
+    width: 100%;
+    margin: 0;
+
 }
 
 .pf-popup {

@@ -1,11 +1,16 @@
 <template>
-    <div class="add-prize">
-        <button class="primary-btn" @click="isShow = true">Add prize</button>
+    <div class="edit-prize">
+        <div class="flex flex-row items-center gap-1 cursor-pointer" @click="isShow = true">
+            <span class="material-symbols-outlined">
+                edit
+            </span>
+            <span>Edit</span>
+        </div>
         <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addPrize">
+            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="editPrize">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
-                    <h1>Add prize</h1>
+                    <h1>Edit prize</h1>
                     <span class="material-symbols-outlined cursor-pointer" @click="isShow = false">
                         cancel
                     </span>
@@ -23,41 +28,43 @@
                     <label for="">Image:</label>
                     <input type="file" @change="handleImage">
                     <div class="select-image flex flex-row justify-center items-center">
-                        <img :src="image_url" alt="" v-if="image_url">
+                        <img :src="image_url" alt="" v-if="image_url != ''">
                         <img src="/image-icon.png" alt="" v-else>
-                        <span class="close bg-black rounded-full material-symbols-outlined"  v-if="image_url" @click="closeImage">
-                            close
-                        </span>
-                        <span class="material-symbols-outlined" v-else>
+                            <span class="material-symbols-outlined bg-white rounded-full" v-if="image_url != ''">
+                                close
+                            </span>
+                        <span class="material-symbols-outlined bg-white rounded-full" v-else>
                             add_circle
                         </span>
                     </div>
                 </div>
                 <div class="btn-save">
-                    <button class="primary-btn" @click="addPrize">Save</button>
+                    <button class="primary-btn" @click="getPrizeById">Save</button>
                 </div>
             </form>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const isShow = ref(false)
 
-const editPrize = ref()
-const props = defineProps(["editPrize"])
+
+const props = defineProps(["id"])
+const prizeId = ref(props.id)
+
+
 const name_en = ref();
 const name_kh = ref();
 const image = ref();
 const image_url = ref();
-
 async function getBase64(file: File) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 }
 const handleImage = async (e: any) => {
     const file = e.target.files[0]
@@ -65,29 +72,36 @@ const handleImage = async (e: any) => {
     image_url.value = await getBase64(file)
 }
 
-const closeImage = () =>{
-    image_url.value = ''
+
+const getPrizeById = async () => {
+    const res = await callAPI(`/dashboard/prize/getPrizebyId/${prizeId.value}`)
+    name_en.value = res.data.name_en
+    name_kh.value = res.data.name_kh
+    image_url.value = res.data.image
+
 }
 
-let isAddPrizeCalled = false;
+let isEditPrizeCalled = false;
 
-const addPrize = async () => {
-    if (isAddPrizeCalled) {
+const editPrize = async () => {
+    if (isEditPrizeCalled) {
         return; // Exit the function if it has already been called
     }
 
-    isAddPrizeCalled = true;
+    isEditPrizeCalled = true;
     const formData = new FormData();
     formData.set('name_en', name_en.value);
     formData.set('name_kh', name_kh.value);
     formData.append('image', image.value);
-    const res = await callAPI('/dashboard/prize/createPrize', 'POST', formData);
-    console.log(res);
+    const res = await callAPI(`/dashboard/prize/updatePrize/${prizeId.value}`, 'PUT', formData);
     window.location.href = '/prizes'
 
-    isAddPrizeCalled = false;
+    isEditPrizeCalled = false;
 
 }
+onMounted(() => {
+    getPrizeById()
+})
 </script>
 
 <style scoped>
@@ -123,6 +137,7 @@ form h1 {
 .image {
     display: flex;
     flex-direction: column;
+
 }
 
 input,
@@ -135,15 +150,13 @@ input,
 
 
 label {
+    text-align: start;
     font-weight: 600;
     color: #666464;
     padding-bottom: 0.2rem;
 }
 
-.close{
-    z-index: 100;
-    cursor: pointer;
-}
+
 .image input {
     height: 5rem;
     z-index: 1;

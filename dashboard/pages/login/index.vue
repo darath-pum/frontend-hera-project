@@ -30,9 +30,20 @@
   
   <script setup lang="ts">
       import Swal from 'sweetalert2'
-      import { ref} from 'vue';
+      import { ref,onMounted} from 'vue';
       const email = ref('');
       const password = ref('');
+      onMounted(()=>{
+          const token = localStorage.getItem('token')
+
+          console.log(token);
+          
+          
+          if (token) {
+            
+            window.location.href='/'
+          }
+      })
       const login = async() => {
         let data = {
             email:email.value,
@@ -63,6 +74,7 @@
                 })
             }
             token.value = res.data.token
+            localStorage.setItem("token", res.data.token);
         } 
   </script>
   

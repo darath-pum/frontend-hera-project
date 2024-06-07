@@ -7,6 +7,7 @@
         </p>
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="prize-btn">
+                
                 <AddPrize></AddPrize>
             </div>
         </div>
@@ -28,18 +29,20 @@
                             <img :src="item.image" alt="">
                         </div>
                     </td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.name }}</td>
+                    <td>{{ item.name_kh }}</td>
+                    <td>{{ item.name_en }}</td>
                     <td>
                         <div class="flex flex-row justify-center gap-5">
-                            <div class="flex flex-row items-center gap-1 cursor-pointer">
+                            
+                            <!-- <div class="flex flex-row items-center gap-1 cursor-pointer" @click="showEdit">
                                 <span class="material-symbols-outlined">
                                     edit
                                 </span>
                                 <span>Edit</span>
-                            </div>
+                            </div> -->
+                            <EditPrize :id="item.id"></EditPrize>
 
-                            <DeleteItem :itemName="'Prize'"></DeleteItem>
+                            <DeleteItem :itemName="'Prize'" :prizeId="item.id" :functionName="'deletePrize'"></DeleteItem>
                         </div>
                     </td>
                 </tr>
@@ -49,8 +52,15 @@
 </template>
 <script setup lang="ts">
 import AddPrize from "~/components/dialogs/AddPrize.vue"
+import EditPrize from "~/components/dialogs/EditPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import { ref, onMounted } from "vue"
+
+const isEditPrize = ref(false);
+const showEdit = () =>{
+    isEditPrize.value = true
+}
+
 
 const prizes = ref()
 const getAllPrizes = async () => {
@@ -59,8 +69,8 @@ const getAllPrizes = async () => {
         prizes.value = res.data
     }
 }
-onMounted(() => {
-    getAllPrizes()
+onMounted( async() => {
+    await getAllPrizes()
 })
 </script>
 <style scoped>
