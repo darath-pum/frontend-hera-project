@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '~/store/auth'
-
+import Swal from 'sweetalert2'
 const authStore = useAuthStore();
 const pf_image = ref('')
 const first_name = ref(authStore.first_name)
@@ -114,8 +114,18 @@ const updateUserInfo = async () => {
         first_name: first_name.value,
         last_name: last_name.value
     }
-    const res = await callAPI('/dashboard/user/updateUserInfos', 'PUT', body)
-    window.location.reload();
+    const res = await callAPI('/dashboard/user/updateUserInfos', 'PUT', body);
+    if (res.status == 200) {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Success",
+            text: "You have updated user info successed.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        window.location.reload();
+    }
 
 }
 
@@ -125,7 +135,17 @@ const changePassword = async () => {
         new_password: new_password.value
     }
     const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
-    console.log(res);
+    if (res.status == 200) {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Success",
+            text: "You have changed password successed.",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        window.location.reload();
+    }
 
 }
 

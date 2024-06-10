@@ -48,7 +48,7 @@
                             :class="isEnable == false && gameId == item.id ? 'active bg-red-500' : ''">Disable</span>
                     </div>
                     <div class="btn-view-detail">
-                        <NuxtLink to="/games/detail">
+                        <NuxtLink :to="`/games/detail?gameId=${item.game_id}`">
                             <button class="primary-btn text-sm px-4 py-2">View detail</button>
                         </NuxtLink>
                     </div>

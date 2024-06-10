@@ -1,6 +1,16 @@
 <template>
-  <div class="prize-setting page-bg">
-    <h1 class="page-title">Prizes Pool Setting</h1>
+  <div class="container my-5">
+    <div>
+      <NuxtLink to="/campaigns">
+        <div class="flex flex-row items-center gap-1 cursor-pointer w-6">
+                <span class="material-symbols-outlined">
+                    keyboard_backspace
+                </span>
+            </div>
+      </NuxtLink>
+      <h1 class="page-title">Prizes Pool Setting</h1>
+
+    </div>
     <p class="desc page-description">
       Prize setting involves determining the value or amount of a prize for a competition or event, considering
       factors such as objectives, budget, target audience, and perceived value.
@@ -8,10 +18,11 @@
     <div class="flex flex-row justify-between mt-10 mb-5 items-center">
       <div class="flex flex-row justify-between gap-2 items-center">
         <button class="secondary-btn">Save</button>
-        <DeleteItem :itemName="'prize pool'"></DeleteItem>
+        <!-- <button class="secondary-btn" @click="deletePrizePool">Delete</button> -->
+        <DeleteItem :itemName="'Prize pool'" :cpId="campaignId" :selectedItems="selectedItems" :functionName="'deletePrizePool'"></DeleteItem>
       </div>
       <div class="flex flex-row justify-between gap-2 items-center">
-        <AddPrizePool @custom-event="handleCustomEvent"></AddPrizePool>
+        <AddPrizePool :getAllPrizesPool="getAllPrizesPool"></AddPrizePool>
       </div>
     </div>
     <table>
@@ -31,29 +42,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in listAllPPools" :key="index">
+        <tr v-for="(item, index) in prizesPool" :key="index">
           <td>
             <div class="flex flex-row justify-center gap-2">
-              <input id="checkbox-{{ index }}" type="checkbox" v-model="selectedItems" :value="item.id" />
+              <input id="checkbox-{{ index }}" type="checkbox" v-model="selectedItems" :value="item.id"
+                @click="addId(item.id)" />
               <!-- <label :for="'checkbox-' + index"></label> -->
             </div>
           </td>
-          <td>{{ item.name_kh }}</td>
-          <td>{{ item.name_en }}</td>
+          <td>{{ item.prize_name_kh }}</td>
+          <td>{{ item.prize_name_en }}</td>
           <td>
             <div class="p-image flex flex-row justify-center">
-              <img :src="item.image" alt="" />
+              <img :src="item.prize_img_url" alt="" />
             </div>
           </td>
           <td>
             <div class="flex flex-row items-center justify-center gap-2">
-              <input id="input-qty" v-if="isEdit && prizePoolId == item.id" type="number" />
+              <input id="input-qty" v-if="prizePoolId == item.id" type="number" />
               <span v-else>{{ item.qty }}</span>
-              <span v-if="isEdit && prizePoolId == item.id" class="material-symbols-outlined cursor-pointer"
-                @click="showEditQty(false, item.id)">
+              <span v-if="prizePoolId == item.id" class="material-symbols-outlined cursor-pointer"
+                @click="showEditQty(item.id)">
                 close
               </span>
-              <span v-else class="material-symbols-outlined cursor-pointer" @click="showEditQty(true, item.id)">
+              <span v-else class="material-symbols-outlined cursor-pointer" @click="showEditQty(item.id)">
                 edit
               </span>
             </div>
@@ -72,43 +84,47 @@ import { ref } from 'vue';
 import { useAuthStore } from "~/store/auth.ts";
 import { useRoute } from "vue-router";
 
-const campaignId = useRoute().query.campaign;
+const campaignId =ref(useRoute().query.campaign);
 const authStore = useAuthStore();
 const prizesPool = ref([]);
 const prizePoolId = ref(0);
 const isEdit = ref(false);
 const selectedItems = ref([]);
-const listAllPPools = ref([])
-const emit = defineEmits(["custom-events"]);
 
-const handleCustomEvent = (prizePools:any) => {
-  listAllPPools.value = prizePools
-  console.log("cdsafdsafds",listAllPPools.value);
-  handleToParent(listAllPPools.value)
+const getAllPrizesPool = async () => {
+  const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
+  if (res.status == 200) {
+    console.log("prize pool", res.data);
+    prizesPool.value = res.data;
+
+  }
+};
+
+onMounted(async () => {
+  await getAllPrizesPool()
+})
+
+const addId = (id) => {
+  if (!selectedItems.value.includes(id)) {
+    selectedItems.value.push(id)
+    console.log(selectedItems.value);
+    }else{
+      const index = selectedItems.value.indexOf(id);
+      selectedItems.value.splice(index, 1);
+      console.log(selectedItems.value);
+
+  }
+
 }
-const handleToParent = (pPools:any)=>{
-  emit("custom-events", pPools);
-}
-
-// const getAllPrizesPool = async () => {
-//   const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId}`);
-//   if(res.status == 200){
-//     console.log("prize pool", res.data);
-//     prizesPool.value = res.data;
-
-//   }
-// };
-
-
-
-// const addId = (id)=>{
-//   selectedItems.value.push(id)
-//   console.log(selectedItems.value);
+const deletePrizePool = async () => {
+  const res = await callAPI(`/dashboard/prizepool/deletePrizePool/${campaignId.value}`,'DELETE',{prize_pool_ids:selectedItems.value});
+  console.log('delete',res);
   
-// }
+}
 
-const showEditQty = (isEditQty: boolean, id: number) => {
-  isEdit.value = isEditQty;
+
+const showEditQty = (id: number) => {
+  // isEdit.value = isEditQty;
   prizePoolId.value = id;
 };
 
@@ -119,7 +135,7 @@ const allChecked = computed({
       // selectedItems.value =""
       selectedItems.value = prizesPool.value.map((item) => item.id);
       console.log(selectedItems.value);
-      
+
     } else {
       selectedItems.value = [];
       console.log(selectedItems.value);
@@ -147,7 +163,7 @@ table {
 }
 
 th {
-  background: #000;
+  background: var(--primary-color);
   color: #FFFFFF;
   padding: 0.5rem;
 }

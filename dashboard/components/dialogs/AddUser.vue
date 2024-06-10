@@ -2,7 +2,7 @@
     <div class="add-prize">
         <button class="primary-btn" @click="isShow = true">Add user</button>
         <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUser">
+            <form action="" @click.stop class="flex flex-col gap-5" @submit.prevent="addUser">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
                     <h1>Add user</h1>
@@ -120,7 +120,7 @@ const addUser = async () => {
 
 form {
     width: 35rem;
-    height: 24rem;
+    height: 27rem;
     background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -150,7 +150,7 @@ form h1 {
 
 input {
     border: 1px solid var(--primary-color);
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;

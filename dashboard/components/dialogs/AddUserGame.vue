@@ -95,6 +95,7 @@ const addUsersGame = async()=>{
     const res = await callAPI('/dashboard/game/user/create','POST',body)
     console.log(res);
     isAddUserGameCalled = false
+    window.location.reload(`/user's-game`)
     
 }
 
@@ -123,7 +124,7 @@ onMounted(() => {
 
 form {
     width: 30rem;
-    height: 23rem;
+    height: 25rem;
     background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -137,7 +138,7 @@ form h1 {
 .select-game,
 
 .select-icon {
-    padding: 0.5rem;
+    padding:1rem 0.5rem;
     border: 1px solid var(--primary-color);
     border-radius:5px;
     width: 100%;
@@ -148,18 +149,20 @@ form h1 {
 
 .select-game {
     z-index: 1;
+    
 }
 
 .select-icon {
     width: 100%;
     position: relative;
-    height: 2.7rem;
-    margin-top: -2.7rem;
+    /* height: 2.7rem; */
+    margin-top: -3.6rem;
     display: flex;
     flex-direction: column;
     align-items: end;
     justify-content: center;
     border: none !important;
+    padding: 1rem 0.5rem;
 
 }
 
