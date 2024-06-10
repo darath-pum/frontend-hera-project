@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize flex flex-row">
-        <button v-if="itemName == 'prize pool'" class="secondary-btn" @click="isShow = true">Delete</button>
+        <button v-if="itemName == 'Prize pool'" class="secondary-btn" @click="showDelete">Delete</button>
         <div v-else class="add-prize flex flex-row cursor-pointer" @click="isShow = true">
             <span class="material-symbols-outlined">
                 delete
@@ -24,28 +24,77 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
+import Swal from 'sweetalert2'
 
-const props = defineProps(["itemName", "prizeId", "campaignId", "userId", "gameId" , "functionName", "getAllUsers"])
+const props = defineProps([
+    "itemName",
+    "prizeId",
+    "campaignId",
+    "userId",
+    "gameId",
+    "cpId",
+    "functionName",
+    "getAllUsers",
+    "getAllPrizes",
+    "getAllCampaigns",
+    "selectedItems"
+])
+const selectedItems = ref(props.selectedItems)
 const itemName = ref(props.itemName)
 const prize_id = props.prizeId
 const isShow = ref(false)
+const alert = ref(false)
+
+const showDelete = () => {
+    if (props.selectedItems.length == 0) {
+
+        Swal.fire({
+            position: "center",
+            icon: "info",
+            title: "Not Found",
+            text: "Which prize that you want to delete.",
+            showConfirmButton: false,
+            timer: 4000
+        });
+
+    } else {
+        isShow.value = true
+
+    }
+}
+
+
+
 
 const handleDelete = async () => {
     const options = {
         deleteCampaign: `/dashboard/campaign/deleteCampaign/${props.campaignId}`,
         deletePrize: `/dashboard/prize/deletePrize/${props.prizeId}`,
         deleteUser: `/dashboard/user/deleteUserById/${props.userId}`,
-        deleteGame: `/dashboard/game/delete/${props.gameId}`
+        deleteGame: `/dashboard/game/delete/${props.gameId}`,
+        deletePrizePool: `/dashboard/prizepool/deletePrizePool/${props.cpId}`
     }
     const option = options[props.functionName];
 
+    if (props.functionName == 'deletePrizePool') {
+        const res = await callAPI(option, 'DELETE', { prize_pool_ids: props.selectedItems })
+        console.log(res);
 
-    const res = await callAPI(option, 'DELETE')
-    console.log(res)
+
+    }
     if (props.functionName == 'deleteUser') {
         await props.getAllUsers()
 
-    } else {
+    }
+    if (props.functionName == 'deletePrize') {
+        await props.getAllPrizes()
+
+    }
+    if (props.functionName == 'deleteCampaign') {
+        await props.getAllCampaigns()
+
+    }
+    else {
         window.location.reload()
 
     }

@@ -8,7 +8,7 @@
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="prize-btn">
                 
-                <AddPrize></AddPrize>
+                <AddPrize :getAllPrizes="getAllPrizes"></AddPrize>
             </div>
         </div>
         <table>
@@ -40,9 +40,9 @@
                                 </span>
                                 <span>Edit</span>
                             </div> -->
-                            <EditPrize :id="item.id"></EditPrize>
+                            <EditPrize :id="item.id" :getAllPrizes="getAllPrizes"></EditPrize>
 
-                            <DeleteItem :itemName="'Prize'" :prizeId="item.id" :functionName="'deletePrize'"></DeleteItem>
+                            <DeleteItem :itemName="'Prize'" :prizeId="item.id" :functionName="'deletePrize'" :getAllPrizes="getAllPrizes"></DeleteItem>
                         </div>
                     </td>
                 </tr>
