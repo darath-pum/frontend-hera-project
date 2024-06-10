@@ -7,7 +7,7 @@
                                 <span>Edit</span>
                             </div>
         <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUser">
+            <form action="" @click.stop class="flex flex-col gap-5" @submit.prevent="addUser">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
                     <h1>Edit user</h1>
@@ -17,18 +17,20 @@
                 </div>
                 <div class="username flex flex-row gap-5">
                     <div>
-                        <label for="">First Name:</label>
+                        <label for="">First Name: <span class="text-red" v-if="pathName == 'first_name'">{{ validMessage
+                                }}</span></label>
                         <input type="text" v-model="first_name">
                     </div>
                     <div>
-                        <label for="">Last Name:</label>
+                        <label for="">Last Name: <span class="text-red" v-if="pathName == 'last_name'">{{ validMessage
+                                }}</span></label>
                         <input type="text" v-model="last_name">
                         
                     </div>
                 </div>
                 <div class="email">
                     <label for="">Email:</label>
-                    <input type="email" v-model="email">
+                    <input type="email" v-model="email" disabled>
                 </div>
                 
                 <div class="btn-save">
@@ -42,10 +44,11 @@
 import { ref, onMounted } from "vue"
 
 const isShow = ref(false)
-
-const first_name = ref()
-const last_name = ref()
-const email = ref()
+const validMessage = ref('')
+const pathName = ref('')
+const first_name = ref('')
+const last_name = ref('')
+const email = ref('')
 
 const props = defineProps(["userId","getAllUsers"])
 
@@ -57,6 +60,22 @@ const getUserById = async()=>{
     email.value = res.data.email
 }
 const editUser = async()=>{
+    const errFirstName = validFirstName(first_name.value);
+    const errLastName = validLastName(last_name.value);
+    if (errFirstName) {
+        validMessage.value = errFirstName
+        pathName.value = 'first_name'
+
+        return;
+    } if (errLastName) {
+        validMessage.value = errLastName
+        pathName.value = 'last_name'
+        return;
+    }
+    else {
+        pathName.value = ''
+
+    }
     let body = {
         first_name:first_name.value,
         last_name:last_name.value,
@@ -87,7 +106,7 @@ onMounted(()=>{
 
 form {
     width: 35rem;
-    height: 24rem;
+    height: 27rem;
     background: #D9D9D9;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -113,13 +132,14 @@ form h1 {
 
 input {
     border: 1px solid var(--primary-color);
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;
 }
 
 label {
+    text-align: start;
     font-weight: 600;
     color: #666464;
     padding-bottom: 0.2rem;

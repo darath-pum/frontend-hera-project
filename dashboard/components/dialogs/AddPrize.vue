@@ -2,7 +2,7 @@
     <div class="add-prize">
         <button class="primary-btn" @click="isShow = true">Add prize</button>
         <div v-if="isShow" class="prize-dialog" @click="isShow = false">
-            <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addPrize">
+            <form action="" @click.stop class="flex flex-col gap-5" @submit.prevent="addPrize">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
                     <h1>Add prize</h1>
@@ -11,21 +11,25 @@
                     </span>
                 </div>
                 <div class="n-kh">
-                    <label for="">Name(Khmer):</label>
+                    <label for="">Name(Khmer): <span v-if="pathName == 'name_kh'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="text" v-model="name_kh">
                 </div>
                 <div class="n-eg">
-                    <label for="">Name(English):</label>
+                    <label for="">Name(English): <span v-if="pathName == 'name_en'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="text" v-model="name_en">
 
                 </div>
                 <div class="image">
-                    <label for="">Image:</label>
+                    <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="file" @change="handleImage">
                     <div class="select-image flex flex-row justify-center items-center">
                         <img :src="image_url" alt="" v-if="image_url">
                         <img src="/image-icon.png" alt="" v-else>
-                        <span class="close bg-black rounded-full material-symbols-outlined"  v-if="image_url" @click="closeImage">
+                        <span class="close bg-black rounded-full material-symbols-outlined" v-if="image_url"
+                            @click="closeImage">
                             close
                         </span>
                         <span class="material-symbols-outlined" v-else>
@@ -43,35 +47,63 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const isShow = ref(false)
-
+const pathName = ref('')
+const invalidMessage = ref('')
 const editPrize = ref()
-const props = defineProps(["editPrize"])
-const name_en = ref();
-const name_kh = ref();
-const image = ref();
-const image_url = ref();
+const props = defineProps(["editPrize", "getAllPrizes"])
+const name_en = ref('');
+const name_kh = ref('');
+const image = ref<File>();
+const image_url = ref('');
 
+const resetInput = ()=>{
+    name_en.value = ''
+    name_kh.value = ''
+    image_url.value = ''
+}
 async function getBase64(file: File) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 }
 const handleImage = async (e: any) => {
     const file = e.target.files[0]
     image.value = file
     image_url.value = await getBase64(file)
+    const errImage = validPrizeImage(image.value);
+    if (errImage) {
+        pathName.value="image"
+        invalidMessage.value = errImage
+        return;
+    }
 }
 
-const closeImage = () =>{
+const closeImage = () => {
     image_url.value = ''
 }
 
 let isAddPrizeCalled = false;
 
 const addPrize = async () => {
+
+    const errKhName = validPrizeKhN(name_kh.value);
+    const errEnName = validPrizeEnN(name_en.value);
+    if (errKhName) {
+        console.log('fdsafdsad');
+
+        pathName.value = "name_kh"
+        invalidMessage.value = errKhName
+        return;
+    }
+    if (errEnName) {
+        pathName.value = "name_en"
+        invalidMessage.value = errEnName
+        return;
+    }
+
     if (isAddPrizeCalled) {
         return; // Exit the function if it has already been called
     }
@@ -83,8 +115,9 @@ const addPrize = async () => {
     formData.append('image', image.value);
     const res = await callAPI('/dashboard/prize/createPrize', 'POST', formData);
     console.log(res);
-    window.location.href = '/prizes'
-
+    await props.getAllPrizes()
+    isShow.value = false
+    resetInput()
     isAddPrizeCalled = false;
 
 }
@@ -107,7 +140,7 @@ const addPrize = async () => {
 
 form {
     width: 30rem;
-    height: 30rem;
+    height: 34rem;
     background: #D9D9D9;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -128,9 +161,10 @@ form h1 {
 input,
 .select-image {
     border: 1px solid var(--primary-color);
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
+    color: #666464;
 }
 
 
@@ -140,10 +174,11 @@ label {
     padding-bottom: 0.2rem;
 }
 
-.close{
+.close {
     z-index: 100;
     cursor: pointer;
 }
+
 .image input {
     height: 5rem;
     z-index: 1;

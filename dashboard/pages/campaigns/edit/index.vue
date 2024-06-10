@@ -9,26 +9,10 @@
         <form action="" class="flex flex-col gap-7">
             <div class="g-one">
                 <div class="title">
-                    <label for="">Title:</label>
+                    <label for="">Title: <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="text" v-model="title">
                 </div>
-                <!-- <div class="select">
-                    <label for="">Games</label>
-                    <div class="select-game" @click="showSelectGame">{{ genreList }}</div>
-                    <div class="select-icon">
-                        <span class="material-symbols-outlined">
-                            arrow_drop_down
-                        </span>
-                    </div>
-                    <div class="choose-select flex flex-col gap-5" v-if="isSelectGame" @click.stop>
-                        <div class="flex flex-row gap-2" v-for="(item, index) in nameGenres" :key="item">
-                            <input id="checkbox" type="checkbox" :id="item.name" :name="item.name"
-                                @click="addGenre(item.name, item.id)" />
-                            <label :for="item.name">{{ item.name }}</label>
-                        </div>
-                    </div>
-                </div> -->
-
                 <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
                     :class="[isSelectGame ? 'active' : '']"></div>
                 <div class="item-center w-full">
@@ -36,13 +20,13 @@
                         <h1>Categories:</h1>
                     </label>
                     <div @click="showSelectGame"
-                        class="relative cursor-pointer select-cat w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
-                        <p class="my-auto text-gray-400 select-none w-fit" >{{allGamesUser.join(', ') }}</p>
+                        class="relative cursor-pointer select-cat w-full top-[3px] col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
+                        <p class="my-auto text-gray-400 select-none w-fit">{{ allGamesUser.join(', ') }}</p>
                         <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
                             :class="{ 'rotate-180': isSelectGame }">
                             arrow_drop_down
                         </span>
-                        <div class="absolute left-0 top-[47px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
+                        <div class="absolute left-0 top-[60px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
                             v-if="isSelectGame" @click.stop>
                             <div class="max-h-[300px] overflow-y-auto">
                                 <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
@@ -62,17 +46,20 @@
             </div>
             <div class="g-two">
                 <div class="start-date">
-                    <label for="">Start Date:</label>
+                    <label for="">Start Date: <span v-if="pathName == 'start_date'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="date" v-model="start_date">
                 </div>
                 <div class="end-date">
-                    <label for="">End Date:</label>
-                    <input type="date" v-model="end_date">
+                    <label for="">End Date: <span v-if="pathName == 'end_date'" class="text-red">{{ invalidMessage
+                            }}</span></label>
+                    <input type="date" v-model="end_date" :min="minStartDate">
                 </div>
             </div>
             <div class="g-three">
                 <div class="image">
-                    <label for="">Image:</label>
+                    <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="file" @change="handleImage">
                     <div class="select-image">
                         <span class="material-symbols-outlined">
@@ -82,14 +69,18 @@
                     </div>
                 </div>
                 <div class="campain-desc">
-                    <label for="">Description:</label>
+                    <label for="">Description: <span v-if="pathName == 'desc'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <textarea name="" id="" v-model="desc"></textarea>
                 </div>
             </div>
         </form>
         <ManagePrizePool></ManagePrizePool>
         <div class="flex flex-row justify-end gap-2 -mt-7">
-            <button class="secondary-btn">Cancel</button>
+            <NuxtLink to="/campaigns">
+
+                <button class="secondary-btn">Cancel</button>
+            </NuxtLink>
             <button class="primary-btn" @click="editCampaign">Save</button>
         </div>
     </div>
@@ -98,19 +89,20 @@
 import { ref, onMounted } from "vue"
 import ManagePrizePool from "~/components/ManagePrizePool.vue"
 import { useRoute } from "vue-router"
-import {useAuthStore} from "~/store/auth"
+import { useAuthStore } from "~/store/auth"
 const authStore = useAuthStore()
 const campaign = ref()
 const campaignId = useRoute().query.campaign
 const genres = ref<string[]>([]);
 const gamesList = ref('Select Game');
 const isSelectGame = ref(false);
-
-const title = ref()
-const start_date = ref()
-const end_date = ref()
-const img_url = ref()
-const image = ref()
+const pathName = ref('')
+const invalidMessage = ref('')
+const title = ref('')
+const start_date = ref('')
+const end_date = ref('')
+const img_url = ref('')
+const image = ref<File>('')
 const desc = ref()
 const user_game_id = ref([])
 const userGames = ref()
@@ -119,18 +111,18 @@ const gameUserGameId = ref()
 
 
 async function getBase64(file: File) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 }
 
 const getCampaignById = async () => {
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
     console.log(res);
-    
+
     campaign.value = res.data
     title.value = res.data.title
     desc.value = res.data.desc
@@ -138,10 +130,10 @@ const getCampaignById = async () => {
     end_date.value = res.data.end_date.substring(0, 10)
     img_url.value = res.data.img_url
     gameUserGameId.value = res.data.user_game_id
-    console.log("user game id",gameUserGameId.value);
-    
-    
-   
+    console.log("user game id", gameUserGameId.value);
+
+
+
 }
 const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
@@ -152,13 +144,13 @@ const getAllUserGame = async () => {
             const guid = userGames.value[index].id;
             for (let i = 0; i < (gameUserGameId.value).length; i++) {
                 const id = gameUserGameId.value[i];
-                if (guid == id) {  
+                if (guid == id) {
                     allGamesUser.value.push(userGames.value[index].title)
                     user_game_id.value.push(guid);
                 }
-                
+
             }
-            
+
         }
 
     }
@@ -187,10 +179,34 @@ const handleImage = async (event: any) => {
 
     img_url.value = await getBase64(file)
     console.log(img_url.value);
-    
+
 
 }
 const editCampaign = async () => {
+    const errTitle = validTitle(title.value)
+    const errDesc = validDescription(desc.value)
+    const errStartDate = validateDate(start_date.value)
+    const errEndDate = validateDate(end_date.value)
+    if (errTitle) {
+        pathName.value = 'title'
+        invalidMessage.value = errTitle
+        return;
+    }
+    if (errStartDate) {
+        pathName.value = 'start_date'
+        invalidMessage.value = errStartDate
+        return;
+    }
+    if (errEndDate) {
+        pathName.value = 'end_date'
+        invalidMessage.value = errEndDate
+        return;
+    }
+    if (errDesc) {
+        pathName.value = 'desc'
+        invalidMessage.value = errDesc
+        return;
+    }
     const formData = new FormData();
 
     formData.set("title", title.value);
@@ -205,11 +221,16 @@ const editCampaign = async () => {
 
     const res = await callAPI(`/dashboard/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
     console.log(res.message);
-    window.location.href='/campaigns'
+    window.location.href = '/campaigns'
 
 }
-
-onMounted(async() => {
+const minStartDate = computed(() => {
+    if (start_date.value) {
+        const startDate = new Date(start_date.value);
+        return startDate.toISOString().split("T")[0];
+    }
+});
+onMounted(async () => {
     await getCampaignById()
     await getAllUserGame()
 })
@@ -252,7 +273,7 @@ input,
 textarea,
 .select-cat,
 .select-icon {
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
     border: 1px solid #000000;
     border-radius: 5px;
 }

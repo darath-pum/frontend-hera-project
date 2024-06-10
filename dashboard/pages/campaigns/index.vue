@@ -17,14 +17,14 @@
                 <tr>
                     <th>No.</th>
                     <th>Image</th>
-                    <Sorting :data="campaigns" :name="'Title'" :columnName="'title'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="campaigns" :name="'Title'" :columnName="'title'"
+                        v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <Sorting :data="campaigns" :name="'Start Date'" :columnName="'start_date'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="campaigns" :name="'Start Date'" :columnName="'start_date'"
+                        v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'"
+                        v-model:sortedColumn="sortedColumnName">
                     </Sorting>
                     <!-- <th>title</th> -->
                     <!-- <th>Start Date</th>
@@ -34,10 +34,10 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in campaigns" :key="item">
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ index + 1 }}{{ item.id }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
-                            <img :src="item.img_url ||campaingDefault" alt="">
+                            <img :src="item.img_url || campaingDefault" alt="">
                         </div>
                     </td>
                     <td>{{ item.title }}</td>
@@ -73,6 +73,16 @@
                                         <span>edit</span>
                                     </div>
                                 </NuxtLink>
+                                <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`'>
+                                    <div class="cursor-pointer">
+
+                                        <span class="material-symbols-outlined">
+                                            rewarded_ads
+                                        </span>
+                                        <span>Prize pool</span>
+                                    </div>
+
+                                </NuxtLink>
                                 <!-- <div class="cursor-pointer">
                                     <span class="material-symbols-outlined cursor-pointer">
                                         delete
@@ -80,7 +90,8 @@
                                     <span>delete</span>
 
                                 </div> -->
-                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id" :functionName="'deleteCampaign'"></DeleteItem>
+                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id"
+                                    :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
 
 
                             </div>
@@ -112,8 +123,8 @@ const showBtnAction = (id: any) => {
 }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
-    console.log('compaigns',res);
-    
+    console.log('compaigns', res);
+
     if (res.status == 200) {
         campaigns.value = res.data
     }
@@ -175,11 +186,11 @@ td:nth-child(1) {
 }
 
 #action-menu {
-
+    margin-left: -1rem;
     position: absolute;
     background: #FFFFFF;
-    height: 6rem;
-    width: 8rem;
+    height: 8.5rem;
+    width: 9rem;
     gap: 1rem;
     padding: 1rem;
     display: flex;

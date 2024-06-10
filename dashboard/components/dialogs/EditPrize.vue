@@ -25,14 +25,15 @@
 
                 </div>
                 <div class="image">
-                    <label for="">Image:</label>
+                    <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
+                            }}</span></label>
                     <input type="file" @change="handleImage">
                     <div class="select-image flex flex-row justify-center items-center">
                         <img :src="image_url" alt="" v-if="image_url != ''">
                         <img src="/image-icon.png" alt="" v-else>
-                            <span class="material-symbols-outlined bg-white rounded-full" v-if="image_url != ''">
-                                close
-                            </span>
+                        <span class="material-symbols-outlined bg-white rounded-full" v-if="image_url != ''">
+                            close
+                        </span>
                         <span class="material-symbols-outlined bg-white rounded-full" v-else>
                             add_circle
                         </span>
@@ -50,14 +51,17 @@ import { ref, onMounted } from "vue";
 const isShow = ref(false)
 
 
-const props = defineProps(["id"])
+const props = defineProps(["id", "getAllPrizes"])
 const prizeId = ref(props.id)
 
-
+const pathName = ref('')
+const invalidMessage = ref('')
 const name_en = ref();
 const name_kh = ref();
 const image = ref();
 const image_url = ref();
+
+
 async function getBase64(file: File) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -70,6 +74,12 @@ const handleImage = async (e: any) => {
     const file = e.target.files[0]
     image.value = file
     image_url.value = await getBase64(file)
+    const errImage = validPrizeImage(image.value);
+    if (errImage) {
+        pathName.value="image"
+        invalidMessage.value = errImage
+        return;
+    }
 }
 
 
@@ -94,8 +104,7 @@ const editPrize = async () => {
     formData.set('name_kh', name_kh.value);
     formData.append('image', image.value);
     const res = await callAPI(`/dashboard/prize/updatePrize/${prizeId.value}`, 'PUT', formData);
-    window.location.href = '/prizes'
-
+    await props.getAllPrizes()
     isEditPrizeCalled = false;
 
 }
@@ -121,7 +130,7 @@ onMounted(() => {
 
 form {
     width: 30rem;
-    height: 30rem;
+    height: 34rem;
     background: #D9D9D9;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -143,9 +152,10 @@ form h1 {
 input,
 .select-image {
     border: 1px solid var(--primary-color);
-    padding: 0.5rem;
+    padding: 1rem 0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
+    color: #666464;
 }
 
 

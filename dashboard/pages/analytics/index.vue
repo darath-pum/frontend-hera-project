@@ -13,7 +13,7 @@
         </option>
       </select>
     </div>
-    <div v-if="authStore.role === 'customer'" class="space-y-3 lg:space-y-5">
+    <div v-if="authStore.role === 'customer' " class="space-y-3 lg:space-y-5">
       <div class="chart-container">
         <CustomerDAP />
         <CustomerMAP />
@@ -42,6 +42,7 @@ import AdminDAU from "~/components/charts/AdminDAU.vue";
 import AdminMAU from "~/components/charts/AdminMAU.vue";
 import { onMounted } from "vue";
 import { useAuthStore } from "~/store/auth";
+const isSelect = ref(false)
 const gameLists = ref<IGame[]>([]);
 const authStore = useAuthStore();
 
@@ -58,6 +59,9 @@ const getGame = async () => {
 //====================== select game option ================//
 const handleSelect = (event: any) => {
   const selectedGameId = event.target.value;
+  if(!selectedGameId) {
+    isSelect.value = true
+  }
   window.location.href = `/analytics?gameId=${selectedGameId}`;
 };
 onMounted(async () => {

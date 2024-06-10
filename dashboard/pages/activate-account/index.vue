@@ -1,84 +1,80 @@
 <template>
   <div class="flex justify-center items-center w-screen h-screen">
-    <form action="" class="w-[30rem]" v-if="isToken">
+    <form action="" class="w-[30rem]">
       <div class="mb-20">
-        <h1 class="text-3xl text-center font-bold">Reset Password</h1>
-        <p class="text-center text-lg">Enter new password to reset password.</p>
+        <h1 class="text-3xl text-center font-bold">Account Activation</h1>
+        <p class="text-center text-lg">
+          Enter new password for your account to activate account.
+        </p>
       </div>
       <div>
         <div class="flex justify-between m-2">
-          <h1 class="text-[20px] font-bold mb-3">New Password</h1>
+          <h1 class="text-[20px] font-bold mb-3">Create password</h1>
           <span class="material-symbols-outlined select-none" v-if="isPassword" @click="visibility">visibility</span>
           <span class="material-symbols-outlined select-none" v-if="!isPassword" @click="visOff">visibility_off</span>
+
         </div>
         <input
-         @focus="inputSelected(true)"
+          @focus="inputSelected(true)"
           @blur="inputSelected(false)"
-         :type="!isPassword ? 'password' : 'text'"
-          @input="onInput"
+          :type="!isPassword ? 'password' : 'text'"
           v-model="password"
+          @input="onInput"
           placeholder="Enter new password"
           class="w-[31rem] p-[16px] rounded-[10px] border border-slate-300"
         />
       </div>
       <div class="mt-12">
         <div class="flex justify-between m-2">
-          <h1 class="text-[20px] font-bold mb-3">Comfirm Password</h1>
+          <h1 class="text-[20px] font-bold mb-3">Comfirm password</h1>
           <span class="material-symbols-outlined select-none" v-if="isComPassword" @click="visComfirm">visibility</span>
           <span class="material-symbols-outlined select-none" v-if="!isComPassword" @click="visOffComfirm">visibility_off</span>
         </div>
         <input
-           @focus="clearErrors()"
-           :type="!isComPassword ? 'password' : 'text'"
+         @focus="clearErrors()"
+          :type="!isComPassword ? 'password' : 'text'"
           v-model="comfirmPassword"
           placeholder="Enter comfirm password"
           class="w-[31rem] p-[16px] rounded-[10px] border border-slate-300"
         />
-        <span class="text-red">{{ messageErr }}</span>
+        <span  class="text-red">{{ messageErr }}</span>
       </div>
-      <div class="mt-12" @click.prevent="resetPassword()">
+      <div class="mt-12" @click.prevent="activateAccount">
         <button
+   
+   
           class="w-[31rem] p-[16px] rounded-[10px] bg-[#292929] text-[20px] text-white"
         >
-          Reset Password
+          Activate Account
         </button>
       </div>
     </form>
-    <div v-if="!isToken" >
-      <div class="flex justify-center items-center flex-col w-[30rem] ">
-        <span class="material-symbols-outlined text-[8rem] text-red mb-10 select-none">cancel</span>
-        <h1 class="text-2xl mb-7">Link is expired</h1>
-        <p >To reset your password, return to the login page and select "Forgot Your Passoword" to send a new email.</p>
-        <NuxtLink to="/login"> <button class="bg-black p-[10px] w-[30rem] mt-7 rounded-[10px]">Go to login</button></NuxtLink>
-      </div>
-     
-    </div>
-    <div class="absolute ml-[67rem] mb-[3rem] dialog-container"  :class="{ 'show-dialog': showDialog }">
-      <RequirePassword
+    <div class="absolute ml-[67rem] mb-[3rem] dialog-container" :class="{ 'show-dialog': showDialog }">
+    <RequirePassword
         :isLengthValid="isLengthValid"
         :hasUppercase="hasUppercase"
         :hasLowercase="hasLowercase"
         :hasDigit="hasDigit"
         :hasSpecialChar="hasSpecialChar"
-      />
-    </div>
+    />
+</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Swal from "sweetalert2";
 import RequirePassword from "../../components/dialogs/RequirePassword.vue";
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
 import { callAPI } from "../../composables/callAPI";
 import { usePasswordValidation } from "../../composables/usePasswordValidation";
+import Swal from 'sweetalert2';
+const password = ref();
 const isPassword = ref(false);
 const isComPassword = ref(false);
-const password = ref();
 const comfirmPassword = ref();
 const route = useRoute();
 const isToken = ref(false);
-const messageErr = ref("");
+const messageErr = ref('');
 const showDialog = ref(false);
 const {
   isLengthValid,
@@ -86,6 +82,7 @@ const {
   hasLowercase,
   hasDigit,
   hasSpecialChar,
+
   validatePassword,
 } = usePasswordValidation();
 
@@ -97,47 +94,41 @@ const onInput = () => {
 const checkToken = async () => {
   const data = { token: route.query.v_tkn };
   const response = await callAPI(
-    "/dashboard/user/verifyResetToken",
+    "/dashboard/user/verifyActivateToken",
     "POST",
     data
   );
-  
   if (response.code === 200) {
     isToken.value = true;
   } else {
-    isToken.value = false;
+    console.log("Token is expired.");
   }
 };
 
-const resetPassword = async () => {
+const activateAccount = async () => {
   const data = {
     token: route.query.v_tkn,
-    new_password: password.value,
+    password: password.value,
   };
-  const response = await callAPI(
-    "/dashboard/user/resetUserPassword",
-    "PUT",
-    data
-  );
-
+  const response = await callAPI("/dashboard/user/loginNewUser", "POST", data);
+  
   if (
     response.code === 200 &&
     isToken.value &&
     password.value === comfirmPassword.value &&
     hasUppercase.value &&
     hasLowercase.value &&
-    hasDigit.value &&
-    hasSpecialChar.value &&
-    password.value === comfirmPassword.value
+    hasDigit.value && 
+    hasSpecialChar.value 
   ) {
-    Swal.fire({
+  Swal.fire({
       position: "top-end",
       icon: "success",
       title: "Success",
-      text: "You have reseted password in successfully.",
+      text: "You have activated account in successfully.",
       showConfirmButton: false,
-      timer: 1500,
-    });
+      timer: 1500
+        });
     setTimeout(() => {
       window.location.href = "/login";
     }, 2000);
@@ -156,6 +147,7 @@ const resetPassword = async () => {
   }else {
     showDialog.value = true
   }
+ 
 };
 
 const visibility = () =>{
@@ -170,7 +162,6 @@ const visComfirm = ()=>{
 const visOffComfirm = ()=>{
     isComPassword.value = true;
 }
-
 const inputSelected = (selected) =>{
   showDialog.value = selected;
 }
@@ -183,6 +174,7 @@ onMounted(checkToken);
 
 
 <style scoped>
+
 .dialog-container {
     opacity: 0;
     transform: translateY(-20px);
@@ -193,5 +185,6 @@ onMounted(checkToken);
     opacity: 1;
     transform: translateY(0);
 }
+
 
 </style>
