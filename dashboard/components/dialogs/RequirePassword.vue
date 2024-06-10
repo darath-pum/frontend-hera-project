@@ -1,45 +1,74 @@
+
 <template>
-    <div class=" ">
-        <div id="talkbubble" class="p-5">
+    <div >
+      <div id="talkbubble" class="p-5">
             <h1 class="text-xl font-bold">Password must be: </h1>
             <div class="flex mt-2">
-                <span class="material-symbols-outlined  text-green-500">check</span>
+                <span  v-if="!isLengthValid" class="material-symbols-outlined text-red" >close</span>
+                <span v-else class="material-symbols-outlined  text-green-500">check</span>
                 <span>Minimum 8 characters long</span>
             </div>
             <div class="flex mt-2">
-                <span class="material-symbols-outlined  text-green-500">check</span>
+                <span v-if="!hasUppercase" class="material-symbols-outlined  text-red">close</span>
+                <span v-else class="material-symbols-outlined  text-green-500">check</span>
                 <span>Include at least one uppercase. ex: A-Z</span>
             </div>
             <div class="flex mt-2">
-                <span class="material-symbols-outlined  text-green-500">check</span>
+                <span v-if="!hasLowercase" class="material-symbols-outlined  text-red">close</span>
+                <span v-else class="material-symbols-outlined  text-green-500">check</span>
                 <span>Include at least one lowercase. ex: a-z</span>
             </div>
             <div class="flex mt-2">
-                <span class="material-symbols-outlined  text-green-500">check</span>
+                <span v-if="!hasDigit" class="material-symbols-outlined  text-red">close</span>
+                <span v-else class="material-symbols-outlined  text-green-500">check</span>
                 <span>Include at least one number or digit. ex: 0-9</span>
             </div>
             <div class="flex mt-2">
-                <span class="material-symbols-outlined text-green-500">check</span>
+                <span v-if="!hasSpecialChar" class="material-symbols-outlined  text-red">close</span>
+                <span v-else class="material-symbols-outlined  text-green-500">check</span>
                 <span>Include at least one special character. ex: [!, @, # ,$, %, ^, &, *]</span>
             </div>
         </div>
     </div>
-
-</template>
+  </template>
+  
 
 <script setup lang="ts">
+const props = defineProps({
 
+  isLengthValid: {
+    type: Boolean,
+    required: true
+  },
+  hasUppercase: {
+    type: Boolean,
+    required: true
+  },
+  hasLowercase: {
+    type: Boolean,
+    required: true
+  },
+  hasDigit: {
+    type: Boolean,
+    required: true
+  },
+  hasSpecialChar: {
+    type: Boolean,
+    required: true
+  }
+})
 </script>
-
+  
 <style scoped>
 #talkbubble {
     width: 33rem;
     height: 16rem;
-    background:#cbd5e1;
+    background:#dde2e6;
     position: relative;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }
 #talkbubble:before {
   content: "";
@@ -49,8 +78,9 @@
   width: 0;
   height: 0;
   border-top: 13px solid transparent;
-  border-right: 26px solid #cbd5e1;
+  border-right: 26px solid #dde2e6;
   border-bottom: 13px solid transparent;
+  
 }
 
 </style>

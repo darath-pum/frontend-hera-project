@@ -30,7 +30,7 @@
                                     <div>
                                         <p v-if="isErrorPassword" class="text-red-500">{{ errPasswordMsg }}</p>
                                     </div>
-                                    <NuxtLink to="/forgot-password" class="hover:text-blue-500 hover:underline">Forgot
+                                    <NuxtLink to="/send-email" class="hover:text-blue-500 hover:underline">Forgot
                                         password?</NuxtLink>
                                 </div>
                             </div>
@@ -61,6 +61,7 @@
 <script setup lang="ts">
 import Swal from 'sweetalert2'
 import { ref, onMounted } from 'vue';
+import { callAPI } from '../../composables/callAPI';
 const email = ref('');
 const password = ref('');
 const isErrorEmail = ref(false);
@@ -103,7 +104,6 @@ const login = async () => {
     }
     const token = useCookie('token');
     const res = await callAPI('/dashboard/user/login', 'POST', data);
-    console.log(res.status)
     if (res.status === 200) {
         Swal.fire({
             position: "center",

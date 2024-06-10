@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { Chart } from "chart.js/auto";
-import { onMounted } from "vue";
+import { onMounted,ref } from "vue";
 import type { ChartConfiguration } from "chart.js/auto";
 import { useRoute } from "vue-router";
 import { format } from "date-fns";
@@ -53,6 +53,8 @@ const getDAP = async () => {
     const dateTime = format(new Date(customerDAP[i].time), 'p')
     times.push(dateTime);
   }
+  console.log(times);
+  
 }
 
 onMounted(async () => {
