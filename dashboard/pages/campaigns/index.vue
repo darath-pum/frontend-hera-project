@@ -1,5 +1,5 @@
 <template>
-    <div class="prize-setting container">
+    <div class="prize-setting container" @click="showBtnAction(0)" @click.stop>
         <h1 class="page-title">Campaigns Setting</h1>
         <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
@@ -13,7 +13,7 @@
             </div>
         </div>
         <table>
-            <thead>
+            <!-- <thead> -->
                 <tr>
                     <th>No.</th>
                     <th>Image</th>
@@ -31,10 +31,10 @@
                     <th>End Date</th> -->
                     <th>Action</th>
                 </tr>
-            </thead>
-            <tbody>
+            <!-- </thead> -->
+            <!-- <tbody> -->
                 <tr v-for="(item, index) in campaigns" :key="item">
-                    <td>{{ index + 1 }}{{ item.id }}</td>
+                    <td>{{ index + 1 }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
                             <img :src="item.img_url || campaingDefault" alt="">
@@ -60,7 +60,7 @@
                         </div>
                         <div id="more-action">
                             <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
-                                @click="showBtnAction(item.id)">
+                                @click="showBtnAction(item.id)" @click.stop>
                                 more_horiz
                             </span>
                             <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
@@ -100,7 +100,7 @@
 
                     </td>
                 </tr>
-            </tbody>
+            <!-- </tbody> -->
         </table>
     </div>
 </template>
@@ -117,16 +117,21 @@ const isBtn = ref(false)
 const campaignId = ref()
 const showBtnAction = (id: any) => {
     console.log(id);
-
     campaignId.value = id
     isBtn.value = !isBtn.value
 }
+// const closeAction = () => {
+//     isBtn.value = false
+
+// }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
     console.log('compaigns', res);
 
     if (res.status == 200) {
         campaigns.value = res.data
+        campaignId.value = 0
+        isBtn.value = false
     }
 }
 
@@ -154,6 +159,9 @@ onMounted(() => {
 table {
     width: 100%;
     background: #FFFFFF;
+    /* background: #000; */
+    border-collapse: separate;
+    border-spacing: 0rem 0.5rem;
 }
 
 .p-image img {
@@ -169,8 +177,8 @@ th {
 }
 
 tr {
-    border-bottom: 5px solid #FFFFFF;
-    border-top: 5px solid #FFFFFF;
+    /* border-bottom: 5px solid #FFFFFF; */
+    /* border-top: 5px solid #FFFFFF; */
 }
 
 td {
@@ -181,12 +189,12 @@ td {
 
 th:nth-child(1),
 td:nth-child(1) {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 #action-menu {
-    margin-left: -1rem;
+    margin-left: -6rem;
     position: absolute;
     background: #FFFFFF;
     height: 8.5rem;
@@ -209,8 +217,8 @@ td:nth-child(1) {
 
 th:nth-child(6),
 td:nth-child(6) {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 @media (max-width: 67.5rem) {

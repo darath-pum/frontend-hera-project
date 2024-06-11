@@ -120,7 +120,7 @@ const addUser = async () => {
 
 form {
     width: 35rem;
-    height: 27rem;
+    height: 25rem;
     background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -150,7 +150,7 @@ form h1 {
 
 input {
     border: 1px solid var(--primary-color);
-    padding: 1rem 0.5rem;
+    padding:0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;

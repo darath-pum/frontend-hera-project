@@ -12,22 +12,30 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Title</th>
                     <th>Image</th>
-                    <th>Categories</th>
-                    <th>Create at</th>
+                    <Sorting :data="games" :name="'Title'" :columnName="'title'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+                    <Sorting :data="games" :name="'Categories'" :columnName="'categories'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+             
+                    <Sorting :data="games" :name="'Create at'" :columnName="'created_at'" 
+                         v-model:sortedColumn="sortedColumnName">
+                    </Sorting>
+             
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(item, index) in games" :key="item">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ item.title }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
                             <img :src="item.img_url" alt="">
                         </div>
                     </td>
+                    <td>{{ item.title }}</td>
                     <td>
                     <span>
                         {{ item.categories.join(', ')}} </span>
@@ -57,9 +65,9 @@
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import { ref, onMounted } from "vue"
-
+import Sorting from "@/components/sorting/Sorting.vue";
 const games = ref()
-
+const sortedColumnName = ref("");
 const getAllGames = async () => {
     const res = await callAPI('/dashboard/game/getAll')
     if (res.status == 200) {
@@ -76,6 +84,8 @@ onMounted(() => {
 table {
     width: 100%;
     background: #FFFFFF;
+    border-collapse: separate;
+    border-spacing: 0rem 0.5rem;
 }
 
 .p-image img {
@@ -102,14 +112,14 @@ td {
 
 th:nth-child(1),
 td:nth-child(1) {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 th:nth-child(6),
 td:nth-child(6) {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 @media (max-width: 67.5rem) {

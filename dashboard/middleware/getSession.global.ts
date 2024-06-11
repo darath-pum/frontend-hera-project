@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const authStore = useAuthStore();
   const token = localStorage.getItem('token');
 
-  if (to.path !== "/login") {
+  if (to.path !== "/login" && to.path !=='/reset-password' && to.path !== '/send-email') {
     try {
       const res = await $fetch<any>(getAPIURL("/dashboard/user/getUserSession"), {
         headers: { 

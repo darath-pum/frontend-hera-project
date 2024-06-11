@@ -132,7 +132,7 @@ input,
 select,
 .select-pizes {
     border: 1px solid #000000;
-    padding: 1rem 0.5rem;
+    padding:0.6rem;
     border-radius: 10px;
     background: #ffffff8a;
     color: #666464;
@@ -145,8 +145,7 @@ select {
 }
 
 .select-pizes {
-
-    margin-top: -3.6rem;
+    margin-top: -2.7rem;
     border: none;
 }
 

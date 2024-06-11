@@ -20,13 +20,15 @@
                         <h1>Categories:</h1>
                     </label>
                     <div @click="showSelectGame"
-                        class="relative cursor-pointer select-cat w-full top-[3px] col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
-                        <p class="my-auto text-gray-400 select-none w-fit">{{ allGamesUser.join(', ') }}</p>
-                        <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
+                        class="select-game relative cursor-pointer select-cat w-full top-[3px] col-span-2 z-50 flex item-center justify-between">
+                        <p class="my-auto text-gray-400 select-none w-fit line-clamp-1">{{ allGamesUser.join(', ') }}
+                        </p>
+                        <span
+                            class="material-symbols-outlined w-fit flex flex-row items-center h-full my-auto text-gray-400 select-none"
                             :class="{ 'rotate-180': isSelectGame }">
                             arrow_drop_down
                         </span>
-                        <div class="absolute left-0 top-[60px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
+                        <div class="absolute left-0 top-[45px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
                             v-if="isSelectGame" @click.stop>
                             <div class="max-h-[300px] overflow-y-auto">
                                 <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
@@ -75,7 +77,6 @@
                 </div>
             </div>
         </form>
-        <ManagePrizePool></ManagePrizePool>
         <div class="flex flex-row justify-end gap-2 -mt-7">
             <NuxtLink to="/campaigns">
 
@@ -87,7 +88,6 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
-import ManagePrizePool from "~/components/ManagePrizePool.vue"
 import { useRoute } from "vue-router"
 import { useAuthStore } from "~/store/auth"
 const authStore = useAuthStore()
@@ -179,7 +179,15 @@ const handleImage = async (event: any) => {
 
     img_url.value = await getBase64(file)
     console.log(img_url.value);
-
+    const errCpImage = validCpImageEdit(image.value)
+    if (errCpImage) {
+        pathName.value = 'image'
+        invalidMessage.value = errCpImage
+        return
+    } else {
+        pathName.value = ''
+        invalidMessage.value = ''
+    }
 
 }
 const editCampaign = async () => {
@@ -187,6 +195,7 @@ const editCampaign = async () => {
     const errDesc = validDescription(desc.value)
     const errStartDate = validateDate(start_date.value)
     const errEndDate = validateDate(end_date.value)
+    const errCpImage = validCpImageEdit(image.value)
     if (errTitle) {
         pathName.value = 'title'
         invalidMessage.value = errTitle
@@ -202,10 +211,19 @@ const editCampaign = async () => {
         invalidMessage.value = errEndDate
         return;
     }
+    if (errCpImage) {
+        pathName.value = 'image'
+        invalidMessage.value = errCpImage
+        return;
+    }
     if (errDesc) {
         pathName.value = 'desc'
         invalidMessage.value = errDesc
         return;
+    }
+    else {
+        pathName.value = ''
+        invalidMessage.value = ''
     }
     const formData = new FormData();
 
@@ -256,6 +274,7 @@ form {
 .start-date,
 .end-date,
 .image,
+
 .campain-desc {
     display: flex;
     flex-direction: column;
@@ -271,12 +290,13 @@ label {
 input,
 .select-game,
 textarea,
-.select-cat,
+.selelect-game,
 .select-icon {
-    padding: 1rem 0.5rem;
+    padding: 0.6rem 0.6rem;
     border: 1px solid #000000;
     border-radius: 5px;
 }
+
 
 .dialog-backdrop {
     position: fixed;
@@ -297,24 +317,10 @@ textarea,
     width: 2rem;
 }
 
-.select-game {
-    z-index: 1;
-}
-
-.select-icon {
-    height: 2.7rem;
-    margin-top: -2.7rem;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: center;
-    border: none !important;
-
-}
-
 textarea,
 .image input {
     height: 5rem;
+    width: 100%;
 }
 
 .image input {
@@ -338,8 +344,6 @@ textarea,
 .select-image img {
     position: absolute;
     width: 5rem;
-    height: 4rem;
-    object-fit: cover;
 }
 
 .select-image span {
@@ -349,19 +353,6 @@ textarea,
     font-weight: 600;
 }
 
-.choose-select {
-    background: #FFFFFF;
-    position: absolute;
-    z-index: 10;
-    width: 20rem;
-    margin-top: 4.3rem;
-    height: 20rem;
-    overflow-y: scroll;
-    border-radius: 5px;
-    border: 2rem solid #FFFFFF;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-
-}
 
 @media (max-width:67.5rem) {
     form {
@@ -372,18 +363,17 @@ textarea,
     input,
     .select-game,
     textarea,
-    .select-icon {
+    .select-game {
         padding: 0.5rem;
-        border: 2px solid #000000;
-        border-radius: 5px;
         font-size: 0.7rem;
     }
 
-    .select-icon {
-        height: 2.3rem;
-        margin-top: -2.3rem;
-
+    .select-game {
+        height: 2.1rem;
     }
+
+
+
 
     textarea,
     .image input,

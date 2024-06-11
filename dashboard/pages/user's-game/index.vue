@@ -7,9 +7,10 @@
             <div class="flex justify-between items-center w-full gap-5">
 
                 <div class="select flex flex-col items-center justify-center">
+                    <label for="" class="text-start w-full font-semibold">Selete user:</label>
                     <select class="select-game" name="" id="" v-model="user_id" @change="getAllGames">
-                        <option value="" disabled>Select user</option>
-                        <option v-for="(item, index) in users" :key="item" :value="item.id">{{ item.first_name }} {{ item.last_name }}</option>
+                        <option value="Select user" disabled>Select user</option>
+                        <option v-for="(item, index) in users" :key="item" :value="item.id"><NuxtLink :to="`/user's-game?user=${item.id}`"> {{ item.first_name }} {{ item.last_name }}</NuxtLink></option>
                       
                     </select>
                     <div class="select-icon">
@@ -20,7 +21,7 @@
 
                 </div>
                 <div>
-                    <AddUserGame></AddUserGame>
+                    <AddUserGame :userId="user_id"></AddUserGame>
                 </div>
 
             </div>
@@ -40,13 +41,7 @@
                             audience.</span>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="cursor-pointer">
-                        <span @click="enable(item.id)" class="toggler"
-                            :class="isEnable == true && gameId == item.id ? 'active bg-green-500' : ''">Enable</span>
-                        <span @click="disable(item.id)" class="toggler"
-                            :class="isEnable == false && gameId == item.id ? 'active bg-red-500' : ''">Disable</span>
-                    </div>
+                <div class="card-footer flex flex-row justify-end">
                     <div class="btn-view-detail">
                         <NuxtLink :to="`/games/detail?gameId=${item.game_id}`">
                             <button class="primary-btn text-sm px-4 py-2">View detail</button>
@@ -60,18 +55,22 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import AddUserGame from "~/components/dialogs/AddUserGame.vue"
-
-const user_id = ref()
+import {useRoute, useRouter} from "vue-router"
+const router = useRouter()
+const user_id = ref(useRoute().query.user)
+// const user_id = ref()
 const users = ref()
 const games = ref()
 const getAllGames = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${user_id.value}`)
+    router.push(`/user's-game?user=${user_id.value}`)
     if (res.status == 200) {
         games.value = res.data
         console.log("all games", games.value);
     }
 }
-import { ref, onMounted } from "vue"
+
+
 
 
 const getAllUsers = async () => {
@@ -86,6 +85,7 @@ const getAllUsers = async () => {
 }
 onMounted(() => {
     getAllUsers()
+    getAllGames()
 })
 // const getAllGames = async () => {
 //     const res = await callAPI('/dashboard/game/getAll')
@@ -118,7 +118,12 @@ const disable = (i: any) => {
     border-radius: 5px;
     width: 20rem;
 }
-
+label {
+    text-align: start;
+    font-weight: 600;
+    color: #666464;
+    padding-bottom: 0.2rem;
+}
 
 .select-game {
     z-index: 1;
