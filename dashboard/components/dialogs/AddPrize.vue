@@ -161,7 +161,7 @@ form h1 {
 input,
 .select-image {
     border: 1px solid var(--primary-color);
-    padding: 1rem 0.5rem;
+    padding: 0.6rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;

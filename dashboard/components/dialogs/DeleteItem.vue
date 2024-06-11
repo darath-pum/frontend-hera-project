@@ -1,7 +1,8 @@
 <template>
     <div class="add-prize flex flex-row">
-        <button v-if="itemName == 'Prize pool'" class="secondary-btn" @click="showDelete">Delete</button>
-        <div v-else class="add-prize flex flex-row cursor-pointer" @click="isShow = true">
+        <button v-if="itemName == 'Prize pool'" :class="selectedItems.length > 0 ? 'primary-btn' : 'secondary-btn'"
+            @click="showDelete">Delete</button>
+        <div v-else class="add-prize flex flex-row cursor-pointer gap-1" @click="isShow = true">
             <span class="material-symbols-outlined">
                 delete
             </span>
@@ -40,6 +41,8 @@ const props = defineProps([
     "selectedItems"
 ])
 const selectedItems = ref(props.selectedItems)
+console.log("selectedItems", selectedItems.value);
+
 const itemName = ref(props.itemName)
 const prize_id = props.prizeId
 const isShow = ref(false)
@@ -78,10 +81,12 @@ const handleDelete = async () => {
 
     if (props.functionName == 'deletePrizePool') {
         const res = await callAPI(option, 'DELETE', { prize_pool_ids: props.selectedItems })
-        console.log(res);
+        window.location.reload()
 
 
     }
+    const res = await callAPI(option, 'DELETE')
+    console.log(res);
     if (props.functionName == 'deleteUser') {
         await props.getAllUsers()
 
@@ -94,10 +99,7 @@ const handleDelete = async () => {
         await props.getAllCampaigns()
 
     }
-    else {
-        window.location.reload()
 
-    }
 }
 </script>
 

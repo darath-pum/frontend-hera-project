@@ -106,7 +106,7 @@ onMounted(()=>{
 
 form {
     width: 35rem;
-    height: 27rem;
+    height: 25rem;
     background: #D9D9D9;
     padding: 2rem 2rem;
     border-radius: 10px;
@@ -132,7 +132,7 @@ form h1 {
 
 input {
     border: 1px solid var(--primary-color);
-    padding: 1rem 0.5rem;
+    padding:0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;
@@ -155,5 +155,12 @@ label {
 
 .btn-save button {
     width: 100%;
+}
+@media (max-width: 67.5rem) {
+   
+
+   .material-symbols-outlined {
+       font-size: 1rem;
+   }
 }
 </style>

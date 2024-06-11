@@ -20,9 +20,7 @@
                     <Sorting :data="users" :name="'Role'" :columnName="'role'" 
                          v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <!-- <th>Name</th> -->
-                    <!-- <th>Email</th> -->
-                    <!-- <th>Role</th> -->
+                 
                     <th>Action</th>
                 </tr>
             </thead>
@@ -99,6 +97,8 @@ onMounted(() => {
 table {
     width: 100%;
     background: #FFFFFF;
+    border-collapse: separate;
+    border-spacing: 0rem 0.5rem;
 }
 
 
@@ -112,11 +112,6 @@ th {
 
 }
 
-tr {
-    border-bottom: 5px solid #FFFFFF;
-    border-top: 5px solid #FFFFFF;
-}
-
 td {
     background: #F2F6F6;
     text-align: center;
@@ -125,14 +120,14 @@ td {
 
 th:nth-child(1),
 td:nth-child(1) {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 th:nth-child(6),
 td:nth-child(6) {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .image-profile img {

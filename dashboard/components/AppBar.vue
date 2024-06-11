@@ -89,12 +89,15 @@
                         <span>Prizes</span>
                     </NuxtLink>
                 </div>
-                <NuxtLink to="/analytics" class="menu-btn">
+                <div v-if="authStore.role === 'customer'">
+                    <NuxtLink  to="/analytics" class="menu-btn">
                     <span class="material-symbols-outlined">
                         trending_up
                     </span>
                     <span class="sidebar-hidden">Analytics</span>
                 </NuxtLink>
+                </div>
+                
             </div>
         </div>
         <div>

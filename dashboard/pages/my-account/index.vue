@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-row">
-        <div class="pf-bar-left flex flex-col gap-10 w-[30rem] bg-[#D6DAC8] h-full min-h-dvh p-5">
+    <div class="flex flex-row user-pf">
+        <div class="pf-bar-left flex flex-col gap-10 w-[30rem] bg-[#D6DAC8] p-5">
             <div class="w-full text-end">
                 <button class=" bg-red p-2 w-24 rounded-full capitalize"
                     :class="{ 'bg-green p-2 w-24 rounded-full capitalize': authStore.role == 'admin' }">{{
@@ -25,12 +25,12 @@
             </div>
             <h1 class="pf-name">{{ authStore.first_name }} {{ authStore.last_name }}</h1>
             <div class="flex flex-col gap-5">
-                <button class="secondary-btn flex flex-row gap-5">
+                <!-- <button class="secondary-btn flex flex-row gap-5">
                     <span class="material-symbols-outlined">
                         lock_reset
                     </span>
                     <span>Reset password</span>
-                </button>
+                </button> -->
                 <button class="secondary-btn flex flex-row gap-5" @click="logout">
                     <span class="material-symbols-outlined">
                         logout
@@ -39,18 +39,18 @@
                 </button>
             </div>
         </div>
-        <div class="w-full pt-15 flex flex-col items-center gap-10 px-[15%]">
+        <div class="pf-right w-full pt-15 flex flex-col items-center gap-10 px-[15%]">
             <div class="first-name w-full flex flex-row justify-between items-center ">
                 <label for="">First name:</label>
-                <input type="text" class="p-4 border w-[70%]" v-model="first_name">
+                <input type="text" class="p-2 border w-[70%]" v-model="first_name">
             </div>
             <div class="first-name w-full flex flex-row justify-between items-center">
                 <label for="">Last name:</label>
-                <input type="text" class="p-4 border w-[70%]" v-model="last_name">
+                <input type="text" class="p-2 border w-[70%]" v-model="last_name">
             </div>
             <div class="first-name w-full flex flex-row justify-between items-center">
                 <label for="">Email:</label>
-                <input type="email" class="p-4 border w-[70%]" v-model="authStore.email" disabled>
+                <input type="email" class="p-2 border w-[70%]" v-model="authStore.email" disabled>
             </div>
             <div class="flex flex-row justify-end w-full">
                 <button class="primary-btn" @click="updateUserInfo">Save changes</button>
@@ -60,14 +60,14 @@
             </div>
             <div class="first-name w-full flex flex-row justify-between items-center">
                 <label for="">Current password:</label>
-                <input type="password" class="p-4 border w-[70%]" v-model="old_password" >
+                <input type="password" class="p-2 border w-[70%]" v-model="old_password" >
             </div>
             <div class="first-name w-full flex flex-row justify-between items-center">
                 <label for="">New password:</label>
-                <div class="w-[70%]">
-                    <input type="text" class="p-4 border w-full" v-model="new_password" v-if="isShowPassword" autocomplete="off" placeholder="">
-                    <input type="password" class="p-4 border w-full" v-model="new_password" v-else>
-                    <div class="p-4 -mt-14 w-[full] rounded flex flex-row justify-end items-center">
+                <div class="w-[70%] input-pass">
+                    <input type="text" class="p-2 border w-full" v-model="new_password" v-if="isShowPassword" autocomplete="off" placeholder="">
+                    <input type="password" class="p-2 border w-full" v-model="new_password" v-else>
+                    <div class="p-2 -mt-10 w-[full] rounded flex flex-row justify-end items-center">
                         <span class="material-symbols-outlined cursor-pointer"  v-if="!isShowPassword" @click="showPassword(true)">
                             visibility_off
                         </span>
@@ -179,6 +179,47 @@ input {
 }
 
 label {
+    width: 14rem;
     font-size: 1.3rem;
+}
+@media (max-width: 70.5rem) {
+    .user-pf{
+        display: flex;
+        flex-direction: column !important;
+    }
+    .pf-bar-left{
+        width: 100%;
+        height: 31rem !important;
+    }
+    .pf-right{
+        padding: 3rem 1.5rem !important;
+
+
+    }
+    .pf-right div{
+        display: flex;
+        flex-direction: column !important;
+        /* background: #000; */
+
+    }
+    input,.input-pass,.input-pass input, .input-pass div{
+        width: 100%;
+    }
+    .input-pass input{
+        z-index: 10;
+    }
+    .input-pass div{
+        display: flex;
+        flex-direction: row !important;
+        justify-content: flex-end !important;
+        
+    }
+    label {
+    width: 100%;
+    text-align: start;
+    font-size: 1rem;
+    
+}
+
 }
 </style>
