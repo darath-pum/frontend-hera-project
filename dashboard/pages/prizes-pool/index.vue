@@ -22,9 +22,9 @@
                             <input id="checkbox" type="checkbox">
                         </div>
                     </th>
+                    <th>Image</th>
                     <th>Name(Khmer)</th>
                     <th>Name(English)</th>
-                    <th>Image</th>
                     <th>Quantity</th>
                     <th>Used</th>
             
@@ -38,13 +38,13 @@
                             <input id="checkbox" type="checkbox">
                         </div>
                     </td>
-                    <td>អាវយឺត</td>
-                    <td>T-shirt</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
                             <img src="/t-shirt.png" alt="">
                         </div>
                     </td>
+                    <td>អាវយឺត</td>
+                    <td>T-shirt</td>
                     <td>
                         <div class="flex flex-row items-center justify-center gap-2">
                             

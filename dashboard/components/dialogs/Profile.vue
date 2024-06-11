@@ -152,6 +152,7 @@ const logout = async () => {
 @media (max-width: 67.5rem) {
     #profile-image {
         width: 35px;
+        height: 35px;
     }
 
     .pf-g {

@@ -17,10 +17,10 @@
                 </div>
                 <div class="card-footer">
                     <div class="cursor-pointer">
-                        <span @click="enable(item.id)" class="toggler"
-                            :class="isEnable == true && gameId == item.id ? 'active bg-green-500' : ''">Enable</span>
-                        <span @click="disable(item.id)" class="toggler"
-                            :class="isEnable == false && gameId == item.id ? 'active bg-red-500' : ''">Disable</span>
+                        <span class="toggler"
+                            :class="(item.is_enabled) == true ? 'active bg-green-500' : ''" @click="updateGameStatus(item.id,true)">Enable</span>
+                        <span  class="toggler"
+                            :class="(item.is_enabled) == false? 'active bg-red-500' : ''" @click="updateGameStatus(item.id,false)">Disable</span>
                     </div>
                     <div class="btn-view-detail">
                         <NuxtLink :to="`/games/detail?gameId=${item.id}`">
@@ -46,6 +46,14 @@ const getAllGames = async () => {
         console.log("all games", games.value);
     }
 }
+
+const updateGameStatus = async(id:number,isEniable:boolean)=>{
+
+const res = await callAPI(`/dashboard/game/user/updateStatus/${id}`,'PUT',{is_enabled:isEniable})
+await getAllGames()
+
+}
+
 
 onMounted(() => {
     getAllGames()

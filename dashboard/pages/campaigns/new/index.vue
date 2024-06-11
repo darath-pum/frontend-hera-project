@@ -18,16 +18,16 @@
                     :class="[isSelectGame ? 'active' : '']"></div>
                 <div class="item-center w-full">
                     <label for="game-category" class="col-span-1 my-auto">
-                        <h1>Categories:</h1>
+                        <h1>Games:</h1>
                     </label>
                     <div @click="showSelectGame"
-                        class="relative cursor-pointer select-cat top-[3px]  w-full col-span-2 z-50 flex item-center justify-between px-2 min-h-[45px] ">
-                        <p class="my-auto text-gray-400 select-none w-fit">{{ gamesList }}</p>
-                        <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
+                        class="select-game relative cursor-pointer top-[3px] w-full col-span-2 z-50 flex flex-row item-center justify-between">
+                        <p class="my-auto text-gray-400 select-none w-fit line-clamp-1">{{ gamesList }}</p>
+                        <span class="material-symbols-outlined flex flex-row items-center text-gray-400 select-none"
                             :class="{ 'rotate-180': isSelectGame }">
                             arrow_drop_down
                         </span>
-                        <div class="absolute left-0 top-[60px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
+                        <div class="absolute left-0 top-[45px]  px-1 py-2 bg-white w-[100%] shadow-md select-cat "
                             v-if="isSelectGame" @click.stop>
                             <div class="max-h-[300px] overflow-y-auto">
                                 <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
@@ -35,7 +35,7 @@
                                     <input type="checkbox" :id="it.title" :name="it.title"
                                         :checked="user_game_id.includes(it.id)" class="border-none" />
 
-                                    <p class="h-fit my-auto">{{ it.title }}</p>
+                                    <p class=" my-auto">{{ it.title }}</p>
 
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </form>
-        <ManagePrizePool></ManagePrizePool>
+
         <div class="flex flex-row justify-end gap-2 -mt-7">
             <NuxtLink to="/campaigns">
 
@@ -89,7 +89,6 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue"
-import ManagePrizePool from "~/components/ManagePrizePool.vue"
 import { useAuthStore } from '~/store/auth'
 
 
@@ -112,9 +111,9 @@ const user_game_id = ref<any[]>([])
 // const handleCustom = (pPools:any)=>{
 //     console.log('love darath',pPools);
 //     prizePoolHandle = pPools
-    
+
 //     }
-        
+
 async function getBase64(file: File) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -133,6 +132,9 @@ const handleImage = async (event: any) => {
         pathName.value = 'image'
         invalidMessage.value = errCpImage
         return
+    }else{
+        pathName.value = ''
+        invalidMessage.value = ''
     }
 
 
@@ -171,6 +173,7 @@ const addCampaign = async () => {
     const errDesc = validDescription(desc.value)
     const errStartDate = validateDate(start_date.value)
     const errEndDate = validateDate(end_date.value)
+    const errCpImage = validCpImage(image.value)
     if (errTitle) {
         pathName.value = 'title'
         invalidMessage.value = errTitle
@@ -186,10 +189,18 @@ const addCampaign = async () => {
         invalidMessage.value = errEndDate
         return;
     }
+    if (errCpImage) {
+        pathName.value = 'image'
+        invalidMessage.value = errCpImage
+        return
+    }
     if (errDesc) {
         pathName.value = 'desc'
         invalidMessage.value = errDesc
         return;
+    } else {
+        pathName.value = ''
+        invalidMessage.value = ''
     }
     // for (let index = 0; index < prizePoolHandle.length; index++) {
     //         prize_pools.value.push({
@@ -197,7 +208,7 @@ const addCampaign = async () => {
     //             qty:prizePoolHandle[index].qty,
     //         })
     //         console.log("element",prize_pools.value);
-            
+
     //     }
     const formData = new FormData();
 
@@ -224,14 +235,14 @@ const minStartDate = computed(() => {
     }
 });
 onMounted(() => {
-    for (let index = 0; index < prizePoolHandle.length; index++) {
-            prize_pools.value.push({
-                prize_id:prizePoolHandle[index].prize_id,
-                qty:prizePoolHandle[index].qty,
-            })
-            console.log("element",prize_pools.value);
-            
-        }
+    // for (let index = 0; index < prizePoolHandle.length; index++) {
+    //         prize_pools.value.push({
+    //             prize_id:prizePoolHandle[index].prize_id,
+    //             qty:prizePoolHandle[index].qty,
+    //         })
+    //         console.log("element",prize_pools.value);
+
+    //     }
     getAllUserGame()
 })
 
@@ -256,6 +267,7 @@ form {
 .start-date,
 .end-date,
 .image,
+
 .campain-desc {
     display: flex;
     flex-direction: column;
@@ -271,12 +283,13 @@ label {
 input,
 .select-game,
 textarea,
-.select-cat,
+.selelect-game,
 .select-icon {
-    padding: 1rem 0.5rem;
+    padding: 0.6rem 0.6rem;
     border: 1px solid #000000;
     border-radius: 5px;
 }
+
 
 .dialog-backdrop {
     position: fixed;
@@ -295,21 +308,6 @@ textarea,
 
 #checkbox {
     width: 2rem;
-}
-
-.select-game {
-    z-index: 1;
-}
-
-.select-icon {
-    height: 2.7rem;
-    margin-top: -2.7rem;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: center;
-    border: none !important;
-
 }
 
 textarea,
@@ -348,19 +346,6 @@ textarea,
     font-weight: 600;
 }
 
-.choose-select {
-    background: #FFFFFF;
-    position: absolute;
-    z-index: 10;
-    width: 20rem;
-    margin-top: 4.3rem;
-    height: 20rem;
-    overflow-y: scroll;
-    border-radius: 5px;
-    border: 2rem solid #FFFFFF;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-
-}
 
 @media (max-width:67.5rem) {
     form {
@@ -371,16 +356,17 @@ textarea,
     input,
     .select-game,
     textarea,
-    .select-icon {
+    .select-game {
         padding: 0.5rem;
         font-size: 0.7rem;
     }
 
-    .select-icon {
-        height: 2.3rem;
-        margin-top: -2.3rem;
-
+    .select-game {
+        height: 2.1rem;
     }
+
+
+
 
     textarea,
     .image input,

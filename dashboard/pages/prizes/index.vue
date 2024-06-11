@@ -77,11 +77,14 @@ onMounted( async() => {
 table {
     width: 100%;
     background: #FFFFFF;
+    border-collapse: separate;
+    border-spacing: 0rem 0.5rem;
 }
 
 .p-image img {
     width: 2rem;
     height: 2rem;
+    object-fit: cover;
 }
 
 th {
@@ -90,10 +93,7 @@ th {
     padding: 0.5rem;
 }
 
-tr {
-    border-bottom: 5px solid #FFFFFF;
-    border-top: 5px solid #FFFFFF;
-}
+
 
 td {
     background: #F2F6F6;
@@ -103,14 +103,14 @@ td {
 
 th:nth-child(1),
 td:nth-child(1) {
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 th:nth-child(5),
 td:nth-child(5) {
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 @media (max-width: 67.5rem) {

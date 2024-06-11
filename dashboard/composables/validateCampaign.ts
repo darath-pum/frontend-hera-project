@@ -24,3 +24,14 @@ export function validCpImage(image?: File): string | undefined {
       return "Invalid date format. Please use the format YYYY-MM-DD";
     return;
   }
+export function validCpImageEdit(image?: File): string | undefined {
+    if (image) {
+      const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "avif"]; // Add more image extensions if needed
+      const fileExtension = image.name.split(".").pop()?.toLowerCase();
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        return "Invalid file type. Only image files are allowed.";
+      }
+      
+    }
+    // Additional validation or processing logic can be added here if needed
+  }
