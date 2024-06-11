@@ -10,8 +10,8 @@
       <div>
         <div class="flex justify-between m-2">
           <h1 class="text-[20px] font-bold mb-3">Create password</h1>
-          <span class="material-symbols-outlined select-none" v-if="isPassword" @click="visibility">visibility</span>
-          <span class="material-symbols-outlined select-none" v-if="!isPassword" @click="visOff">visibility_off</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="isPassword" @click="visibility">visibility</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="!isPassword" @click="visOff">visibility_off</span>
 
         </div>
         <input
@@ -27,8 +27,8 @@
       <div class="mt-12">
         <div class="flex justify-between m-2">
           <h1 class="text-[20px] font-bold mb-3">Comfirm password</h1>
-          <span class="material-symbols-outlined select-none" v-if="isComPassword" @click="visComfirm">visibility</span>
-          <span class="material-symbols-outlined select-none" v-if="!isComPassword" @click="visOffComfirm">visibility_off</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="isComPassword" @click="visComfirm">visibility</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="!isComPassword" @click="visOffComfirm">visibility_off</span>
         </div>
         <input
          @focus="clearErrors()"
@@ -41,8 +41,6 @@
       </div>
       <div class="mt-12" @click.prevent="activateAccount">
         <button
-   
-   
           class="w-[31rem] p-[16px] rounded-[10px] bg-[#292929] text-[20px] text-white"
         >
           Activate Account
@@ -169,8 +167,12 @@ const clearErrors =()=> {
   messageErr.value = "";
 }
 
-onMounted(checkToken);
+onMounted(() => {
+    localStorage.removeItem("token");
+    checkToken();
+    });
 </script>
+
 
 
 <style scoped>

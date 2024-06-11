@@ -8,8 +8,8 @@
       <div>
         <div class="flex justify-between m-2">
           <h1 class="text-[20px] font-bold mb-3">New Password</h1>
-          <span class="material-symbols-outlined select-none" v-if="isPassword" @click="visibility">visibility</span>
-          <span class="material-symbols-outlined select-none" v-if="!isPassword" @click="visOff">visibility_off</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="isPassword" @click="visibility">visibility</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="!isPassword" @click="visOff">visibility_off</span>
         </div>
         <input
          @focus="inputSelected(true)"
@@ -24,8 +24,8 @@
       <div class="mt-12">
         <div class="flex justify-between m-2">
           <h1 class="text-[20px] font-bold mb-3">Comfirm Password</h1>
-          <span class="material-symbols-outlined select-none" v-if="isComPassword" @click="visComfirm">visibility</span>
-          <span class="material-symbols-outlined select-none" v-if="!isComPassword" @click="visOffComfirm">visibility_off</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="isComPassword" @click="visComfirm">visibility</span>
+          <span class="material-symbols-outlined select-none cursor-pointer" v-if="!isComPassword" @click="visOffComfirm">visibility_off</span>
         </div>
         <input
            @focus="clearErrors()"
@@ -44,7 +44,7 @@
         </button>
       </div>
     </form>
-    <div v-if="!isToken" >
+    <div v-if="!isToken && !isLoading" >
       <div class="flex justify-center items-center flex-col w-[30rem] ">
         <span class="material-symbols-outlined text-[8rem] text-red mb-10 select-none">cancel</span>
         <h1 class="text-2xl mb-7">Link is expired</h1>
@@ -72,6 +72,7 @@ import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
 import { callAPI } from "../../composables/callAPI";
 import { usePasswordValidation } from "../../composables/usePasswordValidation";
+const isLoading = ref(true);
 const isPassword = ref(false);
 const isComPassword = ref(false);
 const password = ref();
@@ -106,10 +107,12 @@ const checkToken = async () => {
     isToken.value = true;
   } else {
     isToken.value = false;
+    
   }
 };
 
 const resetPassword = async () => {
+  isLoading.value = true;
   const data = {
     token: route.query.v_tkn,
     new_password: password.value,
@@ -156,6 +159,7 @@ const resetPassword = async () => {
   }else {
     showDialog.value = true
   }
+    isLoading.value = false;
 };
 
 const visibility = () =>{
@@ -178,7 +182,12 @@ const clearErrors =()=> {
   messageErr.value = "";
 }
 
-onMounted(checkToken);
+
+onMounted(() => {
+  localStorage.removeItem("token");
+    checkToken();
+
+    });
 </script>
 
 

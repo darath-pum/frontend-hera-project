@@ -4,8 +4,10 @@
             <div class="card-item flex flex-col justify-between">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
-                        <span class="card-title">User Total:</span>
-                        <h2>{{ userTotal }}</h2>
+                        <span v-if="authStore.role === 'admin'" class="card-title">User Total:</span>
+                        <span v-else class="card-title">Player Total:</span>
+                        <h2 v-if="authStore.role === 'admin'">{{ userTotal }}</h2>
+                        <h2 v-else>{{ playerTotal }}</h2>
                     </div>
                     <div>
                         <img src="/active-user.png" alt="">
@@ -15,10 +17,11 @@
                     <span class="material-symbols-outlined text-green">
                         north
                     </span>
-                    <p><span class="text-green">%{{ userPercentage }}</span> of new users </p>
+                    <p v-if="authStore.role === 'admin'"><span class="text-green">%{{ userPercentage }}</span> of new users </p>
+                    <p v-else><span  class="text-green">% {{ playerPercentage }}</span> of new players </p>
                 </div>
             </div>
-            <div class="card-item item2 flex flex-col justify-between">
+            <div class="card-item item2 flex flex-col justify-between" v-if="authStore.role === 'customer'">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
                         <span class="card-title">Game Total:</span>
@@ -28,17 +31,17 @@
                         <img src="/active-user.png" alt="">
                     </div>
                 </div>
-                <div class="desc flex flex-row items-center">
+                <!-- <div class="desc flex flex-row items-center">
                     <span class="material-symbols-outlined text-green">
                         north
                     </span>
-                    <p><span class="text-green">%{{ gamePercentage }}</span> of new games</p>
-                </div>
+                    <p><span class="text-green">%{{  }}</span> of new games</p>
+                </div> -->
             </div>
             <div class="card-item item3 flex flex-col justify-between">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
-                        <span class="card-title">Active users</span>
+                        <span class="card-title">Active player</span>
                         <h2>1.999k</h2>
                     </div>
                     <div>
@@ -52,10 +55,10 @@
                     <p><span class="text-green">%50</span> of user increase</p>
                 </div>
             </div>
-            <div class="card-item item4 flex flex-col justify-between">
+            <div class="card-item item4 flex flex-col justify-between" v-if="authStore.role === 'customer'">
                 <div class="title-image flex flex-row justify-between">
                     <div class="flex flex-col gap-2">
-                        <span class="card-title">Active users</span>
+                        <span class="card-title">player session</span>
                         <h2>1.999k</h2>
                     </div>
                     <div>
@@ -79,19 +82,39 @@
 <script setup lang="ts">
 import AdminDAU from "~/components/charts/AdminDAU.vue";
 import AdminMAU from "~/components/charts/AdminMAU.vue";
-import { onMounted } from "vue";
-const gamePercentage = ref();
+import { onMounted,ref } from "vue";
+import { callAPI } from "../composables/callAPI";
+import { useAuthStore } from "~/store/auth";
+const authStore = useAuthStore();
+const playerPercentage = ref();
 const  gameTotal = ref();
 const userPercentage = ref();
 const userTotal = ref();
-const getHomeInfo = async() => {
-    const response = await callAPI("/dashboard/analytics/admin/getDashboardSummary");
-    gamePercentage.value = response.data.games.percentage;
-    gameTotal.value = response.data.games.total;
-    userPercentage.value = response.data.users.percentage;
-    userTotal.value = response.data.users.total;
+const playerTotal = ref();
+//======================= admin home page =======================//
+const getUserTotal = async() => {
+    const response = await callAPI("/dashboard/analytics/admin/getSummaryOfUsers");
+    userPercentage.value = response.data.percentage;
+    userTotal.value = response.data.total;
 }
-onMounted(getHomeInfo);
+//====================== customer home page ====================//
+const getGameTotal = async()=> {
+    const response = await callAPI("/dashboard/analytics/customer/getTotalOfGames");
+    gameTotal.value = response.data
+    }
+    
+    const getPlayerTotal = async()=> {
+        const response = await callAPI("/dashboard/analytics/customer/getSummaryOfPlayers");
+        playerTotal.value = response.data.total;
+        playerPercentage.value = response.data.percentage;
+}
+
+onMounted(() => {
+      getGameTotal();
+      getUserTotal();
+      getPlayerTotal();
+    });
+
 </script>
 
 <style scoped>
