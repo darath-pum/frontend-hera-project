@@ -51,7 +51,6 @@
         <p >To reset your password, return to the login page and select "Forgot Your Passoword" to send a new email.</p>
         <NuxtLink to="/login"> <button class="bg-black p-[10px] w-[30rem] mt-7 rounded-[10px]">Go to login</button></NuxtLink>
       </div>
-     
     </div>
     <div class="absolute ml-[67rem] mb-[3rem] dialog-container"  :class="{ 'show-dialog': showDialog }">
       <RequirePassword
@@ -109,10 +108,10 @@ const checkToken = async () => {
     isToken.value = false;
     
   }
+  isLoading.value = false;
 };
 
 const resetPassword = async () => {
-  isLoading.value = true;
   const data = {
     token: route.query.v_tkn,
     new_password: password.value,
@@ -159,7 +158,7 @@ const resetPassword = async () => {
   }else {
     showDialog.value = true
   }
-    isLoading.value = false;
+   
 };
 
 const visibility = () =>{

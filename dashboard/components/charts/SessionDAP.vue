@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted } from 'vue';
+import { onMounted,ref } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
 import { useRoute } from 'vue-router';
 import { format } from "date-fns";
@@ -26,7 +26,7 @@ const times: string[] = [];
 const data = {
     labels: times,
     datasets: [{
-        label: "Active users",
+        label: "Active players",
         backgroundColor: "blue",
         borderColor: "blue",
         data: avgPlayTimes,
