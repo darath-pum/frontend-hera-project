@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center w-screen h-screen">
-    <form action="" class="w-[30rem]">
+    <form action="" class="w-[30rem]" v-if="isToken">
       <div class="mb-20">
         <h1 class="text-3xl text-center font-bold">Account Activation</h1>
         <p class="text-center text-lg">
@@ -47,6 +47,13 @@
         </button>
       </div>
     </form>
+    <div v-if="!isToken && !isLoading">
+      <div class="flex justify-center items-center flex-col w-[30rem] ">
+        <span class="material-symbols-outlined text-[8rem] text-red mb-10 select-none">cancel</span>
+        <h1 class="text-2xl mb-5">Activation Link Expired</h1>
+        <p class="text-center">Your activation link has expired. Please request a new activation link or contact support for assistance.</p>
+      </div>
+    </div>
     <div class="absolute ml-[67rem] mb-[3rem] dialog-container" :class="{ 'show-dialog': showDialog }">
     <RequirePassword
         :isLengthValid="isLengthValid"
@@ -72,6 +79,7 @@ const isComPassword = ref(false);
 const comfirmPassword = ref();
 const route = useRoute();
 const isToken = ref(false);
+const isLoading = ref(true);
 const messageErr = ref('');
 const showDialog = ref(false);
 const {
@@ -99,8 +107,9 @@ const checkToken = async () => {
   if (response.code === 200) {
     isToken.value = true;
   } else {
-    console.log("Token is expired.");
+    isToken.value = false;
   }
+  isLoading.value = false;
 };
 
 const activateAccount = async () => {

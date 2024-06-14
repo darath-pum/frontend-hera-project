@@ -12,6 +12,7 @@
   <div class="pb-15 container" v-if="gameLists.length !== 0">
     <div v-if="authStore.role === 'customer'">
       <label for="game-select" class="text-black">Choose a game:</label><br />
+      <span class="material-symbols-outlined absolute   mt-[2px]  ml-52 text-4xl">arrow_drop_down</span>
       <select
         name="games"
         id="game-select"
@@ -73,7 +74,6 @@ const gameId = ref();
 const isLoading = ref(true);
 //===================== get user's game ======================//
 const getGame = async () => {
-  isLoading.value = true
   const response = await callAPI(
     `/dashboard/game/user/getUserGames/${authStore.id}`
   );
@@ -103,6 +103,7 @@ onMounted(async () => {
 <style scoped>
 .chart-container {
   @apply grid grid-cols-1 xl:grid-cols-2 gap-3 md:gap-3 lg:gap-5;
+  margin-top: 20px;
 }
 
 label {
