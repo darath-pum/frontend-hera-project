@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in users" :key="item">
+                <tr v-for="(item, index) in users" :key="item.id">
                     <td>{{ index + 1 }}</td>
                     <td>
                         <div class="image-profile flex flex-row justify-center">
@@ -59,25 +59,33 @@
                                 </span>
                                 <span>Edit</span>
                             </div> -->
-                            <EditUser :userId="item.id" :getAllUsers="getAllUsers"></EditUser>
+                            <EditUser v-if="item.role !=='admin'" :userId="item.id" :getAllUsers="getAllUsers"></EditUser>
 
-                            <DeleteItem :itemName="'User'" :userId="item.id" :functionName="'deleteUser'"
+                            <DeleteItem v-if="item.role !=='admin'" :itemName="'User'" :userId="item.id" :functionName="'deleteUser'"
                                 :getAllUsers="getAllUsers"></DeleteItem>
+                            <span v-if="item.role =='admin'">No action</span>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div class="w-full flex flex-row justify-center">
+            <Loading v-if="loading && users.length == 0" :loader="'big'"></Loading>
+        </div>
+        <EmptyData v-if="!loading && users.length == 0" :contain="'User'"></EmptyData>
     </div>
 </template>
 <script setup lang="ts">
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
 import AddUser from "~/components/dialogs/AddUser.vue"
 import EditUser from "~/components/dialogs/EditUser.vue"
+import Loading from "~/components/Loading.vue"
+import EmptyData from "~/components/EmptyData.vue"
 import Sorting from "@/components/sorting/Sorting.vue";
 import { ref, onMounted } from "vue"
 
-const users = ref()
+const loading = ref(true)
+const users = ref<IUser[]>([])
 const sortedColumnName = ref("");
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
@@ -85,7 +93,7 @@ const getAllUsers = async () => {
 
     if (res.status == 200) {
         users.value = res.data
-
+        loading.value = false
 
     }
 }

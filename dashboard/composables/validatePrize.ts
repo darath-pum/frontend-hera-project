@@ -8,7 +8,7 @@ export function validPrizeEnN(name_en?:string):string | any{
         return "is required";
     }
 }
-export function validPrizeImage(image?: File): string | undefined {
+export function validPrizeImage(image: File|null): string | undefined {
     if (!image) return "is required";
     const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "avif"]; // Add more image extensions if needed
     const fileExtension = image.name.split(".").pop()?.toLowerCase();

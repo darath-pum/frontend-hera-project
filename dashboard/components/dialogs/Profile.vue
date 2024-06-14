@@ -52,7 +52,7 @@ const logout = async () => {
     console.log(res);
 
 
-    localStorage.removeItem("token");
+    token.value = ''
     window.location.href = ('/login')
 
 }

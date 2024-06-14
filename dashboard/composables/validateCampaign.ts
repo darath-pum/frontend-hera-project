@@ -8,7 +8,7 @@ export function validDescription(desc?:string):string | any{
         return "is required";
     }
 }
-export function validCpImage(image?: File): string | undefined {
+export function validCpImage(image: File|null): string | undefined {
     if (!image) return "is required";
     const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "avif"]; // Add more image extensions if needed
     const fileExtension = image.name.split(".").pop()?.toLowerCase();
@@ -24,7 +24,7 @@ export function validCpImage(image?: File): string | undefined {
       return "Invalid date format. Please use the format YYYY-MM-DD";
     return;
   }
-export function validCpImageEdit(image?: File): string | undefined {
+export function validCpImageEdit(image: File|null): string | undefined {
     if (image) {
       const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "avif"]; // Add more image extensions if needed
       const fileExtension = image.name.split(".").pop()?.toLowerCase();

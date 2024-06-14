@@ -1,7 +1,7 @@
 <template>
     <div class="add-prize">
         <button class="primary-btn" @click="isShow = true">Add user</button>
-        <div v-if="isShow" class="prize-dialog" @click="isShow = false">
+        <div v-if="isShow" class="dialog" @click="isShow = false">
             <form action="" @click.stop class="flex flex-col gap-5" @submit.prevent="addUser">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
@@ -14,24 +14,27 @@
                     <div>
                         <label for="">First Name: <span class="text-red" v-if="pathName == 'first_name'">{{ validMessage
                                 }}</span></label>
-                        <input type="text" v-model="first_name">
+                        <input type="text" v-model="first_name" class="outline-none"
+                            :style="pathName == 'first_name' ? 'border:2px solid red' : ''" @click="pathName = ''">
                     </div>
                     <div>
                         <label for="">Last Name: <span class="text-red" v-if="pathName == 'last_name'">{{ validMessage
                                 }}</span></label>
-                        <input type="text" v-model="last_name">
+                        <input type="text" v-model="last_name" :style="pathName == 'last_name' ? 'border:2px solid red' : ''"
+                            @click="pathName = ''">
 
                     </div>
                 </div>
                 <div class="email">
                     <label for="">Email: <span class="text-red" v-if="pathName == 'email'">{{ validMessage
                             }}</span></label>
-                    <input type="email" v-model="email">
+                    <input type="email" v-model="email" :style="pathName == 'email' ? 'border:2px solid red' : ''"
+                        @click="pathName = ''">
                 </div>
 
                 <div class="btn-save">
                     <button class="primary-btn" @click="addUser">
-                        <div v-if="loading" class="loader"></div>
+                        <Loading v-if="loading" class="loader"></Loading>
                         <span v-else>Submit</span>
                     </button>
                 </div>
@@ -41,7 +44,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
-
+import Loading from '~/components/Loading.vue'
 const loading = ref(false)
 const isShow = ref(false)
 const validMessage = ref()
@@ -51,10 +54,13 @@ const last_name = ref('')
 const email = ref('')
 const props = defineProps(["getAllUsers"])
 let isAddUserCalled = false;
+
+const resetData = () => {
+    first_name.value = '';
+    last_name.value = '';
+    email.value = '';
+}
 const addUser = async () => {
-
-
-
     const errEmail = validateEmail(email.value);
     const errFirstName = validFirstName(first_name.value);
     const errLastName = validLastName(last_name.value);
@@ -91,8 +97,9 @@ const addUser = async () => {
     if (res.status == 200) {
         await props.getAllUsers();
         isAddUserCalled = false;
-        loading.value = false
-        isShow.value = false
+        loading.value = false;
+        isShow.value = false;
+        resetData();
     } else {
 
         loading.value = false
@@ -104,20 +111,6 @@ const addUser = async () => {
 </script>
 
 <style scoped>
-.prize-dialog {
-    position: fixed;
-    background: #0000005e;
-    width: 100%;
-    height: 100%;
-    z-index: 100 !important;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 form {
     width: 35rem;
     height: 25rem;
@@ -150,7 +143,7 @@ form h1 {
 
 input {
     border: 1px solid var(--primary-color);
-    padding:0.5rem;
+    padding: 0.5rem;
     border-radius: 5px;
     background: #ffffff8a;
     color: #666464;
@@ -173,25 +166,30 @@ label {
     width: 100%;
 }
 
-.loader {
-    width: 25px;
-    padding: 3px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: #ffffff;
-    --_m:
-        conic-gradient(#0000 10%, #000),
-        linear-gradient(#000 0 0) content-box;
-    -webkit-mask: var(--_m);
-    mask: var(--_m);
-    -webkit-mask-composite: source-out;
-    mask-composite: subtract;
-    animation: l3 1s infinite linear;
-}
+@media (max-width: 35.5rem) {
+    form h1 {
+        font-size:1.2rem;
+        font-weight: 600;
+    }
 
-@keyframes l3 {
-    to {
-        transform: rotate(1turn)
+    form {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .username {
+        display: flex;
+        flex-direction: column !important;
+    }
+
+    input {
+        padding: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    label {
+        font-size: 0.7rem;
     }
 }
 </style>

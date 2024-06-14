@@ -1,12 +1,12 @@
 <template>
     <div class="edit-prize">
         <div class="flex flex-row items-center gap-1 cursor-pointer" @click="isShow = true">
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined icon-edit">
                 edit
             </span>
             <span>Edit</span>
         </div>
-        <div v-if="isShow" class="prize-dialog" @click="isShow = false">
+        <div v-if="isShow" class="dialog" @click="isShow = false">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="editPrize">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
@@ -40,7 +40,10 @@
                     </div>
                 </div>
                 <div class="btn-save">
-                    <button class="primary-btn" @click="getPrizeById">Save</button>
+                    <button class="primary-btn" @click="getPrizeById">
+                        <Loading v-if="loading" class="loader"></Loading>
+                        <span v-else>Save</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -48,9 +51,10 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import Loading from "~/components/Loading.vue"
+
+const loading = ref(false)
 const isShow = ref(false)
-
-
 const props = defineProps(["id", "getAllPrizes"])
 const prizeId = ref(props.id)
 
@@ -76,7 +80,7 @@ const handleImage = async (e: any) => {
     image_url.value = await getBase64(file)
     const errImage = validPrizeImage(image.value);
     if (errImage) {
-        pathName.value="image"
+        pathName.value = "image"
         invalidMessage.value = errImage
         return;
     }
@@ -95,7 +99,7 @@ let isEditPrizeCalled = false;
 
 const editPrize = async () => {
     if (isEditPrizeCalled) {
-        return; // Exit the function if it has already been called
+        return; 
     }
 
     isEditPrizeCalled = true;
@@ -103,9 +107,14 @@ const editPrize = async () => {
     formData.set('name_en', name_en.value);
     formData.set('name_kh', name_kh.value);
     formData.append('image', image.value);
+    loading.value = true
     const res = await callAPI(`/dashboard/prize/updatePrize/${prizeId.value}`, 'PUT', formData);
-    await props.getAllPrizes()
-    isEditPrizeCalled = false;
+    if (res.status == 200) {
+        loading.value = false
+        isShow.value = false
+        await props.getAllPrizes()
+        isEditPrizeCalled = false;
+    }
 
 }
 onMounted(() => {
@@ -114,20 +123,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.prize-dialog {
-    position: fixed;
-    background: #0000005e;
-    width: 100%;
-    height: 100%;
-    z-index: 10 !important;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 form {
     width: 30rem;
     height: 34rem;
@@ -201,11 +196,31 @@ label {
 .btn-save button {
     width: 100%;
 }
-@media (max-width: 67.5rem) {
-   
 
-    .material-symbols-outlined {
+@media (max-width: 67.5rem) {
+
+
+    .icon-edit {
         font-size: 1rem;
+    }
+}
+@media (max-width: 35.5rem) {
+    form h1 {
+        font-size:1.2rem;
+        font-weight: 600;
+    }
+
+    form{
+        width:100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    input{
+        padding: 0.5rem;
+        font-size: 0.7rem;
+    }
+    label{
+        font-size: 0.7rem;
     }
 }
 </style>

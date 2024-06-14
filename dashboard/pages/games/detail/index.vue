@@ -53,14 +53,15 @@ import {ref, onMounted} from "vue";
 import {useRoute} from "vue-router";
 import {useAuthStore} from '~/store/auth'
 const authStore = useAuthStore()
-const game = ref({});
-const gameId = parseInt(useRoute().query.gameId)
+const game:any = ref([]);
+const route = useRoute()
+const gameId:any = (route.query.gameId)
 
 const categories = ref()
 const getGameDetail = async ()=>{
     console.log(gameId);
     
-    const res = await callAPI(`/dashboard/game/user/detail/${gameId}`)
+    const res = await callAPI(`/dashboard/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
     console.log(res);
     categories.value =(res.data.categories)

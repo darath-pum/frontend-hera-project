@@ -4,7 +4,7 @@
 
     
         <div class="list-cards  flex flex-row justify-between">
-            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item">
+            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item.id">
                 <div class="flex flex-row items-start">
                     <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
                         <img :src="item.img_url" alt="" class="w-auto h-full object-cover">
@@ -30,20 +30,27 @@
                 </div>
             </div>
         </div>
+        <div class="w-full flex flex-row justify-center">
+      <Loading v-if="loading && games.length == 0" :loader="'big'"></Loading>
+    </div>
+    <EmptyData v-if="!loading && games.length == 0" :contain="'Game'"></EmptyData>
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import AddUserGame from "~/components/dialogs/AddUserGame.vue";
 import {useAuthStore} from "~/store/auth"
+import EmptyData from "~/components/EmptyData.vue"
+import Loading from "~/components/Loading.vue"
 
+const loading = ref(true)
 const authStore = useAuthStore()
-const games = ref()
+const games = ref<IGame[]>([])
 const getAllGames = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`)
     if (res.status == 200) {
         games.value = res.data
         console.log("all games", games.value);
+        loading.value = false
     }
 }
 
@@ -55,19 +62,13 @@ await getAllGames()
 }
 
 
-onMounted(() => {
-    getAllGames()
+onMounted(async() => {
+    await getAllGames()
 })
 const isEnable = ref(false);
 const gameId = ref();
-const enable = (i: any) => {
-    isEnable.value = true
-    gameId.value = i
-}
-const disable = (i: any) => {
-    isEnable.value = false
-    gameId.value = i
-}
+
+
 </script>
 <style scoped>
 .select-game,

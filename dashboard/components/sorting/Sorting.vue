@@ -94,4 +94,11 @@ th{
 .material-symbols-outlined{
   cursor: pointer;
 }
+@media (max-width: 67.5rem) {
+
+
+.material-symbols-outlined{
+    font-size: 1rem;
+}
+}
 </style>
