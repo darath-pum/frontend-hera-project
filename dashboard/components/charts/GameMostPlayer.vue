@@ -24,7 +24,7 @@ const date = ['2023-02-01', '2023-02-02', '2023-02-03', '2023-02-04', '2023-02-0
 const data = {
     labels: date,
     datasets: [{
-        label: "Active users",
+        label: "Active players",
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,

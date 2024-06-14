@@ -5,7 +5,7 @@
         <span>DAU</span>
       </div>
       <div class="input-date">
-        <span>User Total: {{ totalUser }}</span>
+        <span>User Total: {{ userTotal }}</span>
       </div>
     </div>
     <canvas id="AdminDAU" class="h-full"></canvas>
@@ -14,10 +14,9 @@
 
 <script setup lang="ts">
 import { Chart } from "chart.js/auto";
-import { onMounted } from "vue";
-import type { ChartConfiguration } from "chart.js/auto";
+import { onMounted,ref } from "vue";
 import { format } from "date-fns";
-const totalUser = ref();
+const userTotal = ref();
 const counts: number[] = [];
 const times: string[] = [];
 
@@ -34,12 +33,16 @@ const data = {
   ],
 };
 
-const config: ChartConfiguration<"line"> = {
+const config: any = {
   type: "line",
   data: data,
-  options: {},
+  options: {
+    ticks: {
+          // forces step size to be 50 units
+          stepSize: 1
+        }
+  },
 };
-
 onMounted(async () => {
   await getDAU();
   const canvasElement = document.getElementById(
@@ -54,7 +57,7 @@ onMounted(async () => {
 const getDAU = async () => {
   const response = await callAPI("/dashboard/analytics/admin/getDAU");
   const adminDAU = response.data.user_counts;
-  totalUser.value = response.data.total_users;
+  userTotal.value = response.data.total_users;
   for (let i = 0; i < adminDAU.length; i++) {
       counts.push(adminDAU[i].user_count);
       const dateTime = format(new Date(adminDAU[i].time), 'p')

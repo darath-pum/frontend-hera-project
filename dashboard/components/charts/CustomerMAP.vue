@@ -14,10 +14,10 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted } from 'vue';
-import type { ChartConfiguration } from 'chart.js/auto';
+import { onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { format } from "date-fns";
+import { callAPI } from '../../composables/callAPI';
 const gameID = useRoute().query.gameId
 const totalPlayer = ref();
 const counts: number[] = [];
@@ -34,15 +34,19 @@ const data = {
     }]
 };
 
-const config: ChartConfiguration<'line'> = {
-    type: 'line',
-    data: data,
-    options: {}
+const config: any = {
+  type: "line",
+  data: data,
+  options: {
+    ticks: {
+          // forces step size to be 50 units
+          stepSize: 1
+        }
+  },
 };
 
 onMounted(async () => {
     await getMAP();
-
     const canvasElement = document.getElementById("customerMAP") as HTMLCanvasElement | null;
     if (canvasElement) {
         new Chart(canvasElement, config);
@@ -56,7 +60,7 @@ const getMAP = async () => {
     totalPlayer.value = response.data.total_players;
     for (let i = 0; i < customerMAP.length; i++) {
         counts.push(customerMAP[i].player_count) 
-        const date = format(new Date(customerMAP[i].time), 'dd-MM')
+        const date = format(new Date(customerMAP[i].day), 'dd-MM');
         dates.push(date);
     }
 } 

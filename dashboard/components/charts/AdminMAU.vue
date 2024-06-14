@@ -5,7 +5,7 @@
                 <span>MAU</span>
             </div>
             <div class="input-date">
-                <span>User Total: {{ totalUser }}</span>
+                <span>User Total: {{ userTotal }}</span>
             </div>
         </div>
         <canvas id="AdminMAU"></canvas>
@@ -14,10 +14,9 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted } from 'vue';
-import type { ChartConfiguration } from 'chart.js/auto';
+import { onMounted,ref } from 'vue';
 import { format } from "date-fns";
-const totalUser = ref();
+const userTotal = ref();
 const counts: number[] = [];
 const dates: string[] = [];
 
@@ -32,10 +31,15 @@ const data = {
     }]
 };
 
-const config: ChartConfiguration<'line'> = {
-    type: 'line',
-    data: data,
-    options: {}
+const config: any = {
+  type: "line",
+  data: data,
+  options: {
+    ticks: {
+          // forces step size to be 50 units
+          stepSize: 1
+        }
+  },
 };
 
 onMounted(async () => {
@@ -50,7 +54,7 @@ onMounted(async () => {
 const getMAU = async () => {
     const response = await callAPI("/dashboard/analytics/admin/getMAU");
     const adminMAU = response.data.user_counts;
-    totalUser.value = response.data.total_users;
+    userTotal.value = response.data.total_users;
     for (let i = 0; i < adminMAU.length; i++) {
         counts.push(adminMAU[i].user_count);
         const date = format(new Date(adminMAU[i].time), 'dd-MM')

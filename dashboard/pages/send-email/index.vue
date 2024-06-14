@@ -7,7 +7,7 @@
             </div>
                 <div>
                     <h1 class="text-[20px] font-bold mb-3">Your Email</h1>
-                    <input type="email" v-model="email" placeholder="Enter email" class="w-[31rem] p-[16px] rounded-[10px] mb-2 border border-slate-300">
+                    <input type="email" @focus="clearErrors()" v-model="email" placeholder="Enter email" class="w-[31rem] p-[16px] rounded-[10px] mb-2 border border-slate-300">
                     <span class="text-red  ">{{ messErr }}</span>
                     <p class="text-lg ">The reset password link will be sent for you to reset a new password. Please do not share this link to others.</p>
                 </div>
@@ -27,21 +27,25 @@ const messErr = ref('');
 const sendEmail = async() => {
     const data = {email:email.value};
     const response = await callAPI('/dashboard/user/sendResetPassword','POST',data);
-
     if(response.code === 200) {
-        Swal.fire({
-            position: "top-end",
-            text: "Please check your email.",
-            showConfirmButton: false,
-            timer: 1500
-        });
+    Swal.fire({
+    position: "top-end",
+    icon: "success", 
+    text: "Please check your email.",
+    showConfirmButton: false,
+    timer: 1500
+});
         messErr.value = "";
     }
     else{
         messErr.value = "Email invalid";
     }
     if(email.value == "") {
-        messErr.value = "Email required"
+        messErr.value = "Email required";
     }
+}
+
+const clearErrors = () =>{
+    messErr.value = "";
 }
 </script>
