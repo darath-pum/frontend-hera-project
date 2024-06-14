@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize flex flex-row">
-        <button v-if="itemName == 'Prize pool'" :class="selectedItems.length > 0 ? 'primary-btn' : 'secondary-btn'"
+        <button v-if="itemName == 'Prize pool'" class="secondary-btn bg-transparent"
             @click="showDelete">Delete</button>
         <div v-else class="add-prize flex flex-row cursor-pointer gap-1" @click="isShow = true">
             <span class="material-symbols-outlined">
@@ -70,7 +70,7 @@ const showDelete = () => {
 
 
 const handleDelete = async () => {
-    const options = {
+    const options:any = {
         deleteCampaign: `/dashboard/campaign/deleteCampaign/${props.campaignId}`,
         deletePrize: `/dashboard/prize/deletePrize/${props.prizeId}`,
         deleteUser: `/dashboard/user/deleteUserById/${props.userId}`,
@@ -162,6 +162,11 @@ const handleDelete = async () => {
 }
 
 @media (max-width: 67.5rem) {
+    #dilog-delete {
+    width: 16rem;
+    height: 12rem;
+
+}
     .material-symbols-outlined {
         font-size: 1rem;
     }

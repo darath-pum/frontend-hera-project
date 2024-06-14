@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in games" :key="item">
+                <tr v-for="(item, index) in games" :key="item.id">
                     <td>{{ index + 1 }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
@@ -59,25 +59,33 @@
                 </tr>
             </tbody>
         </table>
+        <div class="w-full flex flex-row justify-center">
+            <Loading v-if="loading && games.length == 0" :loader="'big'"></Loading>
+        </div>
+        <EmptyData v-if="!loading && games.length == 0" :contain="'Game'"></EmptyData>
     </div>
 </template>
 <script setup lang="ts">
-import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import EmptyData from "~/components/EmptyData.vue"
+import Loading from "~/components/Loading.vue"
 import { ref, onMounted } from "vue"
 import Sorting from "@/components/sorting/Sorting.vue";
-const games = ref()
+
+const loading = ref(true)
+const games = ref<IGame[]>([])
 const sortedColumnName = ref("");
 const getAllGames = async () => {
     const res = await callAPI('/dashboard/game/getAll')
     if (res.status == 200) {
         games.value = res.data
+        loading.value = false
         console.log("all games", games.value);
 
     }
 }
-onMounted(() => {
-    getAllGames()
+onMounted(async() => {
+    await getAllGames()
 })
 </script>
 <style scoped>
@@ -91,6 +99,8 @@ table {
 .p-image img {
     width: 2rem;
     height: 2rem;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 th {

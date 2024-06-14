@@ -11,7 +11,7 @@
                 <div class="title">
                     <label for="">Title: <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="text" v-model="title">
+                    <input type="text" v-model="title" :style="pathName == 'title'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
                 <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
                     :class="[isSelectGame ? 'active' : '']"></div>
@@ -50,12 +50,12 @@
                 <div class="start-date">
                     <label for="">Start Date: <span v-if="pathName == 'start_date'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="date" v-model="start_date">
+                    <input type="date" v-model="start_date" :style="pathName == 'start_date'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
                 <div class="end-date">
                     <label for="">End Date: <span v-if="pathName == 'end_date'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="date" v-model="end_date" :min="minStartDate">
+                    <input type="date" v-model="end_date" :min="minStartDate" :style="pathName == 'end_date'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
             </div>
             <div class="g-three">
@@ -63,7 +63,7 @@
                     <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
                             }}</span></label>
                     <input type="file" @change="handleImage">
-                    <div class="select-image">
+                    <div class="select-image" :style="pathName == 'image'?'border:2px solid red':''" @click="pathName = ''">
                         <span class="material-symbols-outlined">
                             add_circle </span>
                         <img src="/image-icon.png" alt="" v-if="!img_url">
@@ -73,16 +73,18 @@
                 <div class="campain-desc">
                     <label for="">Description: <span v-if="pathName == 'desc'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <textarea name="" id="" v-model="desc"></textarea>
+                    <textarea name="" id="" v-model="desc" :style="pathName == 'desc'?'border:2px solid red':''" @click="pathName = ''"></textarea>
                 </div>
             </div>
         </form>
         <div class="flex flex-row justify-end gap-2 -mt-7">
-            <NuxtLink to="/campaigns">
 
-                <button class="secondary-btn">Cancel</button>
-            </NuxtLink>
-            <button class="primary-btn" @click="editCampaign">Save</button>
+            <button class="secondary-btn" @click="$router.back()">Cancel</button>
+
+            <button class="primary-btn" @click="editCampaign">
+                <Loading v-if="loading"></Loading>
+                <span v-else>Save</span>
+            </button>
         </div>
     </div>
 </template>
@@ -90,10 +92,12 @@
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
 import { useAuthStore } from "~/store/auth"
+import Loading from "~/components/Loading.vue"
+
+const loading = ref(false)
 const authStore = useAuthStore()
 const campaign = ref()
 const campaignId = useRoute().query.campaign
-const genres = ref<string[]>([]);
 const gamesList = ref('Select Game');
 const isSelectGame = ref(false);
 const pathName = ref('')
@@ -101,12 +105,12 @@ const invalidMessage = ref('')
 const title = ref('')
 const start_date = ref('')
 const end_date = ref('')
-const img_url = ref('')
-const image = ref<File>('')
+const img_url:any = ref('')
+const image = ref<File|null>(null)
 const desc = ref()
-const user_game_id = ref([])
-const userGames = ref()
-const allGamesUser = ref([])
+const user_game_id = ref<any>([])
+const userGames:any = ref<any>()
+const allGamesUser = ref<any>([])
 const gameUserGameId = ref()
 
 
@@ -140,8 +144,8 @@ const getAllUserGame = async () => {
     if (res.status == 200) {
         userGames.value = res.data
         console.log("usersGame", userGames.value);
-        for (let index = 0; index < (userGames.value).length; index++) {
-            const guid = userGames.value[index].id;
+        for (let index:number = 0; index < (userGames.value).length; index++) {
+            const guid:number = userGames.value[index].id;
             for (let i = 0; i < (gameUserGameId.value).length; i++) {
                 const id = gameUserGameId.value[i];
                 if (guid == id) {
@@ -183,6 +187,7 @@ const handleImage = async (event: any) => {
     if (errCpImage) {
         pathName.value = 'image'
         invalidMessage.value = errCpImage
+        image.value = null
         return
     } else {
         pathName.value = ''
@@ -191,26 +196,10 @@ const handleImage = async (event: any) => {
 
 }
 const editCampaign = async () => {
-    const errTitle = validTitle(title.value)
     const errDesc = validDescription(desc.value)
-    const errStartDate = validateDate(start_date.value)
-    const errEndDate = validateDate(end_date.value)
     const errCpImage = validCpImageEdit(image.value)
-    if (errTitle) {
-        pathName.value = 'title'
-        invalidMessage.value = errTitle
-        return;
-    }
-    if (errStartDate) {
-        pathName.value = 'start_date'
-        invalidMessage.value = errStartDate
-        return;
-    }
-    if (errEndDate) {
-        pathName.value = 'end_date'
-        invalidMessage.value = errEndDate
-        return;
-    }
+
+  
     if (errCpImage) {
         pathName.value = 'image'
         invalidMessage.value = errCpImage
@@ -232,15 +221,21 @@ const editCampaign = async () => {
     if (image.value) {
         formData.append("image", image.value);
     }
-    formData.set("start_date", new Date(start_date.value).toISOString());
-    formData.set("end_date", new Date(end_date.value).toISOString());
+    if(start_date.value && end_date.value){
+        formData.set("start_date", new Date(start_date.value).toISOString());
+        formData.set("end_date", new Date(end_date.value).toISOString());
+    }
+    
+    
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
-    console.log("formData", formData);
-
+    loading.value = true
     const res = await callAPI(`/dashboard/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
-    console.log(res.message);
-    window.location.href = '/campaigns'
-
+    console.log(res);
+    
+    if (res.status == 200) {
+        loading.value = false
+        window.location.href = '/campaigns'
+    }
 }
 const minStartDate = computed(() => {
     if (start_date.value) {

@@ -16,13 +16,15 @@
     </p>
     <div class="flex flex-row justify-between mt-10 mb-5 items-center">
       <div class="flex flex-row justify-between gap-2 items-center">
-        <button :class="prize_pool.length >0? 'primary-btn':'secondary-btn'" @click="saveQty">Save</button>
+        <button :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'secondary-btn cursor-pointer'"
+          @click="saveQty">Save</button>
         <!-- <button class="secondary-btn" @click="deletePrizePool">Delete</button> -->
         <DeleteItem :itemName="'Prize pool'" :cpId="campaignId" :selectedItems="selectedItems"
-          :functionName="'deletePrizePool'"></DeleteItem>
+          :functionName="'deletePrizePool'"
+          :class="selectedItems.length > 0 ? 'bg-[var(--primary-color)] rounded text-white' : ''"></DeleteItem>
       </div>
       <div class="flex flex-row justify-between gap-2 items-center">
-        <AddPrizePool :getAllPrizesPool="getAllPrizesPool"></AddPrizePool>
+        <AddPrizePool :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
       </div>
     </div>
     <table>
@@ -66,14 +68,18 @@
           <td>{{ item.prize_name_en }}</td>
           <td>
             <div class="flex flex-row items-center justify-center gap-2">
-              <input id="input-qty" v-model="newQty" @keyup.enter="updateQty(item.id, newQty)"
-                v-if="prizePoolId == item.id" type="number" />
+              <!-- <p v-if=" prizePoolId == item.id && (newQty <0  || (typeof (newQty)== 'string'))" class="absolute -mt-20 bg-red p-2">Qty must be equal or more than 0 and no -->
+                <!-- text.</p> -->
+              <input id="input-qty" min="0" class="outline-none" v-model.number="newQty" @keyup.enter="updateQty(item.id, newQty)" 
+                v-if="prizePoolId == item.id" type="number" :style="newQty <0  || (typeof (newQty)== 'string')?'border:1px solid red':'border:1px solid green'" />
               <span v-else>{{ item.qty }}</span>
-              <span v-if="prizePoolId == item.id" class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
+              <span v-if="prizePoolId == item.id"
+                class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
                 @click="updateQty(item.id, newQty)">
                 add
               </span>
-              <span v-if="prizePoolId == item.id" class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
+              <span v-if="prizePoolId == item.id"
+                class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
                 @click="showEditQty(0)">
                 close
               </span>
@@ -86,31 +92,48 @@
         </tr>
       </tbody>
     </table>
+    <div class="w-full flex flex-row justify-center">
+      <Loading v-if="loading && !prizesPool" :loader="'big'"></Loading>
+    </div>
+    <EmptyData v-if="!loading && !prizesPool" :contain="'Campaign'"></EmptyData>
   </div>
 </template>
 
 <script setup lang="ts">
 import AddPrizePool from "~/components/dialogs/AddPrizePool.vue";
 import DeleteItem from "~/components/dialogs/DeleteItem.vue";
+import EmptyData from "~/components/EmptyData.vue";
+import Loading from "~/components/Loading.vue";
 import { ref } from 'vue';
-import { useAuthStore } from "~/store/auth.ts";
+import { useAuthStore } from "~/store/auth";
 import { useRoute } from "vue-router";
+
+const loading = ref(true)
 const sortedColumnName = ref('')
 const campaignId = ref(useRoute().query.campaign);
 const authStore = useAuthStore();
 const prizePoolId = ref(0);
-const isEdit = ref(false);
-const selectedItems = ref([]);
-let backUpPrizes = []
-const prize_pool = ref<{ id: number; qty: number }[]>([]);
-const prizesPool = ref<{ id: number; qty: number }[]>([]);
+const selectedItems: any = ref([]);
+const newQty = ref<number | 0>(0)
+let backUpPrizes: any = []
+const prize_pool: any = ref([]);
+const prizesPool = ref<IPrizePool[]>([]);
+const arrIdPrize: any = ref([])
 const getAllPrizesPool = async () => {
   const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
+  loading.value = false
   if (res.status == 200) {
-    console.log("prize pool", res.data);
+    console.log("prize pool", res);
     prizesPool.value = res.data;
     backUpPrizes = res.data
     selectedItems.value = [];
+    let dataPrizePool: any = prizesPool.value;
+    for (let index = 0; index < dataPrizePool.length; index++) {
+
+      arrIdPrize.value.push(dataPrizePool[index].prize_id)
+
+
+    }
 
   }
 };
@@ -122,7 +145,7 @@ const updateQty = (id: number, newQty: number) => {
     }
     return obj;
   });
-  const existingItem = prize_pool.value.find((item) => item.id === id);
+  const existingItem = prize_pool.value.find((item: any) => item.id === id);
 
   if (existingItem) {
     existingItem.qty = newQty;
@@ -169,7 +192,7 @@ const addId = (id: number, qty: number) => {
     console.log('after delete', prize_pool.value);
     for (let index = 0; index < backUpPrizes.length; index++) {
       const element = backUpPrizes[index];
-      let isFound = false;
+      let isFound = <boolean>(false);
       const updatedPrizesPool = prizesPool.value.map(obj => {
         if (obj.id === id) {
           isFound = true
@@ -188,11 +211,7 @@ const addId = (id: number, qty: number) => {
 
 
 }
-const deletePrizePool = async () => {
-  const res = await callAPI(`/dashboard/prizepool/deletePrizePool/${campaignId.value}`, 'DELETE', { prize_pool_ids: selectedItems.value });
-  console.log('delete', res);
 
-}
 
 
 const showEditQty = (id: number) => {
@@ -205,7 +224,8 @@ const allChecked = computed({
   set: (value) => {
     if (value) {
       // selectedItems.value =""
-      selectedItems.value = prizesPool.value.map((item) => item.id);
+      selectedItems.value = prizesPool.value.map((item:any) => item.id);
+      // prize_pool.value = selectedItems.value.map((item:any) => item.id);
       console.log(selectedItems.value);
 
     } else {
@@ -254,10 +274,10 @@ td {
 }
 
 #input-qty {
-  border: 2px solid #000000;
-  border-radius: 10px;
+  border: 1px solid #000000;
+  border-radius: 5px;
   padding: 2px 0.5rem;
-  width: 30%;
+  width: 50%;
 }
 
 th:nth-child(1),

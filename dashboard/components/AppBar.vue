@@ -9,12 +9,14 @@
             </div>
 
             <div class="sidebar-title">
-                <div class="sidebar-title-logo">
-                    <span class="material-symbols-outlined">
-                        dashboard
-                    </span>
-                    <h1 class="text-xl">DASHBOARD</h1>
-                </div>
+                <NuxtLink to="/">
+                    <div class="sidebar-title-logo">
+                        <span class="material-symbols-outlined">
+                            dashboard
+                        </span>
+                        <h1 class="text-xl">DASHBOARD</h1>
+                    </div>
+                </NuxtLink>
                 <p class="text-sm text-white opacity-60">{{ authStore.email }}</p>
             </div>
             <div class="flex flex-col gap-2 p-3">
@@ -49,9 +51,9 @@
                         </span>
                     </div>
                     <NuxtLink to="/game-admin" v-if="isGame" class="menu-btn dropdown-item"
-                        :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
+                        :class="$route.path.includes('game-admin') ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
-                            campaign
+                            sports_esports
                         </span>
                         <span>Games</span>
                     </NuxtLink>
@@ -76,7 +78,7 @@
                         </span>
                     </div>
                     <NuxtLink to="/campaigns" v-if="isLd" class="menu-btn dropdown-item"
-                        :class="$route.path == '/campaigns/edit' || $route.path == '/campaigns/new' ? 'router-link-active' : ''">
+                        :class="$route.path.includes('campaigns') ? 'router-link-active' : ''">
                         <span class="material-symbols-outlined">
                             campaign
                         </span>
@@ -156,11 +158,16 @@ const showGame = () => {
     width: 100%;
     background: #000;
 }
-
-.sidebar {
-    @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color] z-40;
+.sidebar-title .router-link-active{
+    background: #00000000;
 }
 
+.sidebar {
+    @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color];
+}
+.sidebar{
+    z-index: 100 !important;
+}
 .sidebar-title {
     @apply flex flex-col items-center gap-2 border-b py-5;
 }
@@ -175,7 +182,7 @@ const showGame = () => {
 
 }
 .nav-bar{
-    z-index: 100;
+    z-index: 90;
 }
 
 .nav-bar h1 {

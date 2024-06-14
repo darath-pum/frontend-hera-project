@@ -15,14 +15,14 @@
             <thead>
                 <tr>
                     <th>No.</th>
+                    <th>Image</th>
                     <th>Name(Khmer)</th>
                     <th>Name(English)</th>
-                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in prizes" :key="item">
+                <tr v-for="(item, index) in prizes" :key="item.id">
                     <td>{{ index + 1 }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
@@ -48,25 +48,27 @@
                 </tr>
             </tbody>
         </table>
+        <div class="w-full flex flex-row justify-center">
+            <Loading v-if="loading && prizes.length == 0" :loader="'big'"></Loading>
+        </div>
+        <EmptyData v-if="!loading && prizes.length == 0" :contain="'Prize'"></EmptyData>
     </div>
 </template>
 <script setup lang="ts">
 import AddPrize from "~/components/dialogs/AddPrize.vue"
 import EditPrize from "~/components/dialogs/EditPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import EmptyData from "~/components/EmptyData.vue"
+import Loading from "~/components/Loading.vue"
 import { ref, onMounted } from "vue"
 
-const isEditPrize = ref(false);
-const showEdit = () =>{
-    isEditPrize.value = true
-}
-
-
-const prizes = ref()
+const loading = ref(true)
+const prizes = ref<IPrize[]>([])
 const getAllPrizes = async () => {
     const res = await callAPI('/dashboard/prize/getAllPrizes')
     if (res.status == 200) {
         prizes.value = res.data
+        loading.value = false
     }
 }
 onMounted( async() => {

@@ -11,7 +11,7 @@
                 <div class="title">
                     <label for="">Title: <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="text" v-model="title">
+                    <input type="text" v-model="title" :style="pathName == 'title'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
 
                 <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
@@ -50,20 +50,20 @@
                 <div class="start-date">
                     <label for="">Start Date: <span v-if="pathName == 'start_date'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="date" v-model="start_date">
+                    <input type="date" v-model="start_date" :style="pathName == 'start_date'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
                 <div class="end-date">
                     <label for="">End Date: <span v-if="pathName == 'end_date'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="date" v-model="end_date" :min="minStartDate">
+                    <input type="date" v-model="end_date" :min="minStartDate" :style="pathName == 'end_date'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
             </div>
             <div class="g-three">
-                <div class="image">
+                <div class="image" >
                     <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="file" @change="handleImage">
-                    <div class="select-image">
+                    <input type="file" @change="handleImage" >
+                    <div class="select-image" :style="pathName == 'image'?'border:2px solid red':''" @click="pathName = ''">
                         <span class="material-symbols-outlined">
                             add_circle </span>
                         <img src="/image-icon.png" alt="" v-if="!image_url">
@@ -73,24 +73,26 @@
                 <div class="campain-desc">
                     <label for="">Description: <span v-if="pathName == 'desc'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <textarea name="" id="" v-model="desc"></textarea>
+                    <textarea name="" id="" v-model="desc" :style="pathName == 'desc'?'border:2px solid red':''" @click="pathName = ''"></textarea>
                 </div>
             </div>
         </form>
 
         <div class="flex flex-row justify-end gap-2 -mt-7">
-            <NuxtLink to="/campaigns">
 
-                <button class="secondary-btn">Cancel</button>
-            </NuxtLink>
-            <button class="primary-btn" @click="addCampaign">Save</button>
+
+            <button class="secondary-btn" @click="$router.back()">Cancel</button>
+            <button class="primary-btn" @click="addCampaign">
+                <Loading v-if="loading"></Loading>
+                <span v-else>Save</span>
+            </button>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue"
 import { useAuthStore } from '~/store/auth'
-
+import Loading from '~/components/Loading.vue'
 
 const authStore = useAuthStore()
 const allGamesUser = ref<string[]>([]);
@@ -100,19 +102,12 @@ const pathName = ref('')
 const invalidMessage = ref('')
 const title = ref('');
 const desc = ref('');
-const image_url = ref('')
-const image = ref<File>();
+const image_url:any = ref('')
+const image = ref<File|null>(null);
 const start_date = ref('');
 const end_date = ref('');
 const user_game_id = ref<any[]>([])
-// const prize_pools = ref([])
-
-// let prizePoolHandle = []
-// const handleCustom = (pPools:any)=>{
-//     console.log('love darath',pPools);
-//     prizePoolHandle = pPools
-
-//     }
+const loading = ref(false)
 
 async function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -132,7 +127,7 @@ const handleImage = async (event: any) => {
         pathName.value = 'image'
         invalidMessage.value = errCpImage
         return
-    }else{
+    } else {
         pathName.value = ''
         invalidMessage.value = ''
     }
@@ -202,14 +197,7 @@ const addCampaign = async () => {
         pathName.value = ''
         invalidMessage.value = ''
     }
-    // for (let index = 0; index < prizePoolHandle.length; index++) {
-    //         prize_pools.value.push({
-    //             prize_id:prizePoolHandle[index].prize_id,
-    //             qty:prizePoolHandle[index].qty,
-    //         })
-    //         console.log("element",prize_pools.value);
 
-    //     }
     const formData = new FormData();
 
     formData.set("title", title.value);
@@ -220,13 +208,12 @@ const addCampaign = async () => {
     formData.set("start_date", new Date(start_date.value).toISOString());
     formData.set("end_date", new Date(end_date.value).toISOString());
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
-    // formData.set("prize_pools", JSON.stringify(prize_pools.value))
-    console.log("formData", formData);
-
+    loading.value = true
     const res = await callAPI('/dashboard/campaign/createCampaign', 'POST', formData);
-    console.log(res.message);
-    window.location.href = '/campaigns'
-
+    if (res.status == 200) {
+        loading.value = false
+        window.location.href = '/campaigns';
+    }
 }
 const minStartDate = computed(() => {
     if (start_date.value) {
@@ -235,14 +222,6 @@ const minStartDate = computed(() => {
     }
 });
 onMounted(() => {
-    // for (let index = 0; index < prizePoolHandle.length; index++) {
-    //         prize_pools.value.push({
-    //             prize_id:prizePoolHandle[index].prize_id,
-    //             qty:prizePoolHandle[index].qty,
-    //         })
-    //         console.log("element",prize_pools.value);
-
-    //     }
     getAllUserGame()
 })
 

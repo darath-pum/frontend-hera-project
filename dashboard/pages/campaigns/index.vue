@@ -13,7 +13,6 @@
             </div>
         </div>
         <table>
-            <!-- <thead> -->
                 <tr>
                     <th>No.</th>
                     <th>Image</th>
@@ -26,14 +25,11 @@
                     <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'"
                         v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <!-- <th>title</th> -->
-                    <!-- <th>Start Date</th>
-                    <th>End Date</th> -->
+             
                     <th>Action</th>
                 </tr>
-            <!-- </thead> -->
-            <!-- <tbody> -->
-                <tr v-for="(item, index) in campaigns" :key="item">
+ 
+                <tr v-for="(item, index) in campaigns" :key="item.id">
                     <td>{{ index + 1 }}</td>
                     <td>
                         <div class="p-image flex flex-row justify-center">
@@ -51,12 +47,7 @@
                                 </span>
                                 <span>Play</span>
                             </div>
-                            <!-- <div class="flex flex-row items-center gap-1 cursor-pointer">
-                                <span class="material-symbols-outlined">
-                                    delete
-                                </span>
-                                <span>Delete</span>
-                            </div> -->
+                          
                         </div>
                         <div id="more-action">
                             <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
@@ -83,13 +74,7 @@
                                     </div>
 
                                 </NuxtLink>
-                                <!-- <div class="cursor-pointer">
-                                    <span class="material-symbols-outlined cursor-pointer">
-                                        delete
-                                    </span>
-                                    <span>delete</span>
-
-                                </div> -->
+                              
                                 <DeleteItem :itemName="'Campaign'" :campaignId="item.id"
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
 
@@ -102,17 +87,23 @@
                 </tr>
             <!-- </tbody> -->
         </table>
+        <div class="w-full flex flex-row justify-center">
+            <Loading v-if="loading && campaigns.length == 0" :loader="'big'"></Loading>
+        </div>
+        <EmptyData v-if="!loading && campaigns.length == 0" :contain="'Campaign'"></EmptyData>
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
-import AddPrize from "~/components/dialogs/AddPrize.vue"
 import DeleteItem from "~/components/dialogs/DeleteItem.vue"
+import EmptyData from "~/components/EmptyData.vue"
+import Loading from "~/components/Loading.vue"
 import { useAuthStore } from '~/store/auth';
 
+const loading = ref(true)
 const authStore = useAuthStore()
 const sortedColumnName = ref("")
-const campaigns = ref()
+const campaigns = ref<ICampaign[]>([])
 const isBtn = ref(false)
 const campaignId = ref()
 const showBtnAction = (id: any) => {
@@ -120,10 +111,7 @@ const showBtnAction = (id: any) => {
     campaignId.value = id
     isBtn.value = !isBtn.value
 }
-// const closeAction = () => {
-//     isBtn.value = false
 
-// }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
     console.log('compaigns', res);
@@ -132,27 +120,14 @@ const getAllCampaigns = async () => {
         campaigns.value = res.data
         campaignId.value = 0
         isBtn.value = false
+        loading.value = false
     }
 }
 
-// const handleScroll = (event: any) => {
-//     // Check the direction of the scroll
-//     if (event.wheelDelta < 0) {
-//         // Scrolling down
-//         isBtn.value = false
-//     } else {
-//         // Scrolling up
-//         isBtn.value = false
-//     }
 
-//     // Prevent the default scroll behavior
-//     event.preventDefault();
-// };
+onMounted(async() => {
 
-onMounted(() => {
-    // Attach the event listener to the root element
-    // document.addEventListener('wheel', handleScroll);
-    getAllCampaigns()
+    await getAllCampaigns()
 });
 </script>
 <style scoped>

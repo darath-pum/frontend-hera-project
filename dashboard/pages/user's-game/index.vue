@@ -3,7 +3,6 @@
         <h1 class="page-title">List all games</h1>
 
         <div class="flex flex-col items-center gap-4 mt-10">
-            <!-- <h2>Search game by user name</h2> -->
             <div class="flex justify-between items-center w-full gap-5">
 
                 <div class="select flex flex-col items-center justify-center">
@@ -11,29 +10,25 @@
                     <select class="select-game" name="" id="" v-model="user_id" @change="getAllGames">
                         <option value="Select user" disabled>Select user</option>
                         <option v-for="(item, index) in users" :key="item" :value="item.id"><NuxtLink :to="`/user's-game?user=${item.id}`"> {{ item.first_name }} {{ item.last_name }}</NuxtLink></option>
-                      
                     </select>
                     <div class="select-icon">
                         <span class="material-symbols-outlined">
                             arrow_drop_down
                         </span>
                     </div>
-
                 </div>
                 <div>
-                    <AddUserGame :userId="user_id"></AddUserGame>
+                    <AddUserGame :userId="user_id" :arrGameId="arrGameId"></AddUserGame>
                 </div>
 
             </div>
         </div>
-        <div v-if="games?.length == 0">
-            <h1>No game</h1> 
-       </div>
-        <div v-else class="list-cards  flex flex-row justify-between">
-            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item">
+       
+        <div class="list-cards  flex flex-row justify-between">
+            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item.id">
                 <div class="flex flex-row items-start">
                     <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
-                        <img :src="item.img_url" alt="" class="w-auto h-full object-cover">
+                        <img :src="item.img_url" alt="" class="w-full h-full object-cover">
                     </div>
                     <div class="flex flex-col pl-5 gap-1">
                         <h2 class="text-md font-semibold line-clamp-1">{{ item.title }}</h2>
@@ -43,71 +38,65 @@
                 </div>
                 <div class="card-footer flex flex-row justify-end">
                     <div class="btn-view-detail">
-                        <NuxtLink :to="`/games/detail?gameId=${item.game_id}`">
+                        <NuxtLink :to="`/games/detail?gameId=${item.id}`">
                             <button class="primary-btn text-sm px-4 py-2">View detail</button>
                         </NuxtLink>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="flex flex-row justify-center">
+            <Loading v-if="loading && games.length == 0 && $route.path !==`/user's-game`" :loader="'big'"></Loading> 
+        </div>
+        <EmptyData v-if="!loading &&  games.length == 0" :contain="`User's game`"></EmptyData> 
+  
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import AddUserGame from "~/components/dialogs/AddUserGame.vue"
+import Loading from "~/components/Loading.vue"
+import EmptyData from "~/components/EmptyData.vue"
 import {useRoute, useRouter} from "vue-router"
+
+const loading = ref(true)
 const router = useRouter()
 const user_id = ref(useRoute().query.user)
-// const user_id = ref()
 const users = ref()
-const games = ref()
+const games = ref<IGame[]>([])
+const arrGameId:any = ref([])
+
+
 const getAllGames = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${user_id.value}`)
     router.push(`/user's-game?user=${user_id.value}`)
     if (res.status == 200) {
         games.value = res.data
         console.log("all games", games.value);
+        loading.value = false
+        let gameData = res.data
+        for (let index = 0; index < gameData.length; index++) {
+
+            arrGameId.value.push(gameData[index].game_id)
+            
+        }
     }
 }
-
-
-
 
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
     console.log(res.data);
-
     if (res.status == 200) {
         users.value = res.data
-
-
     }
 }
+
 onMounted(() => {
     getAllUsers()
     getAllGames()
 })
-// const getAllGames = async () => {
-//     const res = await callAPI('/dashboard/game/getAll')
-//     if (res.status == 200) {
-//         games.value = res.data
-//         console.log("all games", games.value);
-//     }
-// }
 
-// onMounted(() => {
-//     getAllGames()
-// })
-const isEnable = ref(false);
-const gameId = ref();
-const enable = (i: any) => {
-    isEnable.value = true
-    gameId.value = i
-}
-const disable = (i: any) => {
-    isEnable.value = false
-    gameId.value = i
-}
+
 </script>
 <style scoped>
 .select-game,
@@ -190,5 +179,21 @@ label {
 
 .btn-view-detail button {
     border-radius: 100px;
+}
+@media (max-width: 35.5rem) {
+
+    .select-game,
+    .select-icon {
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        width: 10rem;
+    }
+    .select-icon{
+        margin-top: -2.1rem;
+        height: 2.1rem;
+    }
+    label {
+        font-size: 0.7rem;
+    }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <div class="add-prize">
+    <div class="">
         <button class="primary-btn" @click="showDlialog">Add user's game</button>
-        <div v-if="isShow" class="prize-dialog" @click="closeDialog">
+        <div v-if="isShow" class="dialog" @click="closeDialog">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUsersGame">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
@@ -15,8 +15,8 @@
                     <label for="">Users:</label>
                     <div class="select flex flex-col items-center justify-center">
                         <select class="select-game" name="" id="" v-model="user_id">
-                            <option value="">Select user</option>
-                            <option v-for="(item, index) in users" :key="item" :value="item.id">{{ item.first_name }} {{
+                            <option value="" class="bg-grey" disabled>Select user</option>
+                            <option v-for="(item, index) in users" :key="item" :value="item.id" >{{ item.first_name }} {{
                                 item.last_name }}</option>
 
                         </select>
@@ -33,8 +33,9 @@
                     <label for="">Games:</label>
                     <div class="select flex flex-col items-center justify-center">
                         <select class="select-game" name="" id="" v-model="game_id">
-                            <option value="">Select game</option>
-                            <option v-for="(item, index) in games" :key="item" :value="item.id">{{ item.title }}</option>
+                            <option value="" class="bg-grey" disabled>Select game</option>
+                            <option v-for="(item, index) in games" :key="item" :value="item.id" :disabled="arrGameId.includes(item.id)">{{ item.title }}
+                            </option>
 
                         </select>
                         <div class="select-icon">
@@ -49,7 +50,10 @@
 
                 <!-- </div> -->
                 <div class="btn-save">
-                    <button class="primary-btn" @click="addUsersGame">Save</button>
+                    <button class="primary-btn" @click="addUsersGame">
+                        <Loading v-if="loading"></Loading>
+                        <span v-else>Submit</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -58,19 +62,25 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
+import Loading from "~/components/Loading.vue";
+
+
+const loading = ref(false)
 const user_id = ref()
 const route = useRoute()
 const isShow = ref(false)
 const game_id = ref()
-// const props = defineProps(["userId"])
-
+// const props = defineProps(["arrGameId"])
+// const arrGameId = ref(props.arrGameId)
+const arrGameId:any = ref([])
 const users = ref()
 const games = ref()
 
 const showDlialog = () => {
     isShow.value = true
-    user_id.value = parseInt(route.query.user)
+    user_id.value = route.query.user
     console.log("userId", user_id.value);
+    getAllGamesUser()
 }
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
@@ -97,45 +107,51 @@ const addUsersGame = async () => {
     }
     isAddUserGameCalled = true;
     let body = {
-        user_id: user_id.value,
+        user_id: parseInt(user_id.value),
         game_id: game_id.value
     }
     console.log(body);
-
-    const res = await callAPI('/dashboard/game/user/create', 'POST', body)
-    console.log(res);
-    isAddUserGameCalled = false
-    window.location.reload(`/user's-game?user=${user_id.value}`)
+    loading.value = true
+    const res = await callAPI('/dashboard/game/user/create', 'POST', body);
+    if (res.status == 200) {
+        loading.value = false
+        isAddUserGameCalled = false
+        window.location.reload()
+    }
 
 }
 
+
+
+
+const getAllGamesUser = async () => {
+    const res = await callAPI(`/dashboard/game/user/getUserGames/${route.query.user}`)
+
+    if (res.status == 200) {
+  
+        let gameData = res.data
+        for (let index = 0; index < gameData.length; index++) {
+
+            arrGameId.value.push(gameData[index].game_id)
+            
+        }
+    }
+}
 const closeDialog = () => {
     isShow.value = false
     user_id.value = ''
+    arrGameId.value =[]
 }
 
 onMounted(() => {
     getAllGames()
     getAllUsers()
+    getAllGamesUser()
 })
 
 </script>
 
 <style scoped>
-.prize-dialog {
-    position: fixed;
-    background: #0000005e;
-    width: 100%;
-    height: 100%;
-    z-index: 10 !important;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 form {
     width: 30rem;
     height: 25rem;
@@ -152,12 +168,12 @@ form h1 {
 .select-game,
 
 .select-icon {
-    padding:0.5rem;
+    padding: 0.5rem;
     border: 1px solid var(--primary-color);
     border-radius: 5px;
     width: 100%;
     background: #ffffff8a;
-    color: #666464;
+    color: #333030;
 }
 
 
@@ -194,5 +210,33 @@ label {
 
 .btn-save button {
     width: 100%;
+}
+@media (max-width: 35.5rem) {
+    form h1 {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    form {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .select-game,
+
+.select-icon {
+        padding: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    label {
+        font-size: 0.7rem;
+    }
+
+    .select-icon  {
+        margin-top: -2.1rem;
+        padding: 0.25rem;
+    }
 }
 </style>
