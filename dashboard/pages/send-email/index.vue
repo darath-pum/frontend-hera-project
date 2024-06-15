@@ -49,9 +49,11 @@ const sendEmail = async () => {
     }
     else {
         messErr.value = "Email invalid";
+        loading.value = false;
     }
     if (email.value == "") {
         messErr.value = "Email required";
+        loading.value = false;
     }
 }
 

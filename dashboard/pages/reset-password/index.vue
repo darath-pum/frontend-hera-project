@@ -137,6 +137,9 @@ const resetPassword = async () => {
       window.location.href = "/login";
     }, 2000);
   }
+  else {
+    loading.value = false;
+  }
   if (comfirmPassword.value !== password.value) {
     messageErr.value = "Password not matching";
   } else {
