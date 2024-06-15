@@ -13,8 +13,8 @@
             <div id="dilog-delete" action="" :class="isShow ? 'form-dialog' : 'form-hide'" @click.stop
                 class="flex flex-col gap-4">
 
-                <h1>Delete</h1>
-                <p class="  ">Do you want to delete this {{ itemName }}?</p>
+                <h1 class="text-red">Delete</h1>
+                <p class="text-[#000000]">Do you want to delete this {{ itemName }}?</p>
                 <div class="btn-save flex flex-row gap-2 justify-center">
                     <button class="primary-btn" @click="isShow = false">No</button>
                     <button class="secondary-btn" @click="handleDelete">Yes</button>
@@ -38,7 +38,8 @@ const props = defineProps([
     "getAllUsers",
     "getAllPrizes",
     "getAllCampaigns",
-    "selectedItems"
+    "selectedItems",
+    "getAllGames"
 ])
 const selectedItems = ref(props.selectedItems)
 console.log("selectedItems", selectedItems.value);
@@ -97,6 +98,10 @@ const handleDelete = async () => {
     }
     if (props.functionName == 'deleteCampaign') {
         await props.getAllCampaigns()
+
+    }
+    if (props.functionName == 'deleteGame') {
+        await props.getAllGames()
 
     }
 

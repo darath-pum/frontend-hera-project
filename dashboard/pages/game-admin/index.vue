@@ -53,7 +53,7 @@
                                 </div>
                             </NuxtLink>
 
-                            <DeleteItem :itemName="'Game'" :gameId="item.id" :functionName="'deleteGame'"></DeleteItem>
+                            <DeleteItem :itemName="'Game'" :gameId="item.id" :functionName="'deleteGame'" :getAllGames="getAllGames"></DeleteItem>
                         </div>
                     </td>
                 </tr>

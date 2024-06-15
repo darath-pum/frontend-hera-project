@@ -41,9 +41,11 @@
       </div>
       <div class="mt-12" @click.prevent="activateAccount">
         <button
-          class="w-[31rem] p-[16px] rounded-[10px] bg-[#292929] text-[20px] text-white"
+          class="flex flex-row justify-center items-center w-[31rem] p-[16px] rounded-[10px] bg-[#292929] text-[20px] text-white"
         >
-          Activate Account
+        <Loading v-if="loading"></Loading>
+        <span v-else>Activate Account</span>
+          
         </button>
       </div>
     </form>
@@ -73,6 +75,9 @@ import { ref, onMounted } from "vue";
 import { callAPI } from "../../composables/callAPI";
 import { usePasswordValidation } from "../../composables/usePasswordValidation";
 import Swal from 'sweetalert2';
+import Loading from "~/components/Loading.vue"
+
+const loading = ref(false)
 const password = ref();
 const isPassword = ref(false);
 const isComPassword = ref(false);
@@ -117,6 +122,7 @@ const activateAccount = async () => {
     token: route.query.v_tkn,
     password: password.value,
   };
+  loading.value = true
   const response = await callAPI("/dashboard/user/loginNewUser", "POST", data);
   
   if (
@@ -128,6 +134,7 @@ const activateAccount = async () => {
     hasDigit.value && 
     hasSpecialChar.value 
   ) {
+    loading.value = false
   Swal.fire({
       position: "top-end",
       icon: "success",
@@ -169,7 +176,7 @@ const visComfirm = ()=>{
 const visOffComfirm = ()=>{
     isComPassword.value = true;
 }
-const inputSelected = (selected) =>{
+const inputSelected = (selected:boolean) =>{
   showDialog.value = selected;
 }
 const clearErrors =()=> {

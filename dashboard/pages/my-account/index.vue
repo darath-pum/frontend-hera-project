@@ -135,6 +135,8 @@ const changePassword = async () => {
         new_password: new_password.value
     }
     const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
+    console.log(res);
+    
     if (res.status == 200) {
         Swal.fire({
             position: "center",
@@ -145,6 +147,15 @@ const changePassword = async () => {
             timer: 1500
         });
         window.location.reload();
+    }else{
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Fail",
+            text: "Password is incorrect.",
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 
 }
