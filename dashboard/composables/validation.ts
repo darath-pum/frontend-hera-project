@@ -72,13 +72,13 @@ export function validateCampaignName(
   if (!campaign_name) return "Campaign name is required";
 }
 
-export function validateDate(date?: string): string | undefined {
-  if (!date) return "is required";
-  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-  if (!datePattern.test(date))
-    return "Invalid date format. Please use the format YYYY-MM-DD";
-  return;
-}
+// export function validateDate(date?: string): string | undefined {
+//   if (!date) return "is required";
+//   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+//   if (!datePattern.test(date))
+//     return "Invalid date format. Please use the format YYYY-MM-DD";
+//   return;
+// }
 export function validFirstName(first_name: any): string | undefined {
   if (!first_name) return "is required";
 }

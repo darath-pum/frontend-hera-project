@@ -16,12 +16,12 @@
     </p>
     <div class="flex flex-row justify-between mt-10 mb-5 items-center">
       <div class="flex flex-row justify-between gap-2 items-center">
-        <button :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'secondary-btn cursor-pointer'"
+        <button :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'disable-btn cursor-pointer'"
           @click="saveQty">Save</button>
         <!-- <button class="secondary-btn" @click="deletePrizePool">Delete</button> -->
         <DeleteItem :itemName="'Prize pool'" :cpId="campaignId" :selectedItems="selectedItems"
           :functionName="'deletePrizePool'"
-          :class="selectedItems.length > 0 ? 'bg-[var(--primary-color)] rounded text-white' : ''"></DeleteItem>
+          :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'disable-btn cursor-pointer'"></DeleteItem>
       </div>
       <div class="flex flex-row justify-between gap-2 items-center">
         <AddPrizePool :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
@@ -70,19 +70,19 @@
             <div class="flex flex-row items-center justify-center gap-2">
               <!-- <p v-if=" prizePoolId == item.id && (newQty <0  || (typeof (newQty)== 'string'))" class="absolute -mt-20 bg-red p-2">Qty must be equal or more than 0 and no -->
                 <!-- text.</p> -->
-              <input id="input-qty" min="0" class="outline-none" v-model.number="newQty" @keyup.enter="updateQty(item.id, newQty)" 
-                v-if="prizePoolId == item.id" type="number" :style="newQty <0  || (typeof (newQty)== 'string')?'border:1px solid red':'border:1px solid green'" />
+              <input id="input-qty" min="0" class="outline-none" v-model.number="item.qty" @keyup.enter="updateQty(item.id, item.qty)" 
+                v-if="prizePoolId == item.id" type="number" :style="item.qty <0  || (typeof (item.qty)== 'string')?'border:1px solid red':'border:1px solid green'" />
               <span v-else>{{ item.qty }}</span>
               <span v-if="prizePoolId == item.id"
                 class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
-                @click="updateQty(item.id, newQty)">
-                add
+                @click="updateQty(item.id, item.qty)">
+                check
               </span>
-              <span v-if="prizePoolId == item.id"
+              <!-- <span v-if="prizePoolId == item.id"
                 class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
                 @click="showEditQty(0)">
                 close
-              </span>
+              </span> -->
               <span v-else class="material-symbols-outlined cursor-pointer" @click="showEditQty(item.id)">
                 edit
               </span>
@@ -114,7 +114,6 @@ const campaignId = ref(useRoute().query.campaign);
 const authStore = useAuthStore();
 const prizePoolId = ref(0);
 const selectedItems: any = ref([]);
-const newQty = ref<number | 0>(0)
 let backUpPrizes: any = []
 const prize_pool: any = ref([]);
 const prizesPool = ref<IPrizePool[]>([]);
@@ -169,6 +168,7 @@ const saveQty = async () => {
   }
   const res = await callAPI(`/dashboard/prizepool/updatePrizePool/${campaignId.value}`, 'PUT', body)
   console.log("saveQty", res);
+  window.location.reload()
   await getAllPrizesPool()
 }
 
@@ -177,17 +177,18 @@ onMounted(async () => {
 });
 
 const addId = (id: number, qty: number) => {
-  if (!selectedItems.value.includes(id)) {
+  if (!selectedItems.value.includes(id) ) {
     selectedItems.value.push(id)
-    console.log(selectedItems.value);
+    console.log('fdsagfdsaghhdfsa',selectedItems.value);
     prize_pool.value.push({ id, qty: qty });
     console.log('after add', prize_pool.value);
-  } else {
+  }
+   else {
     const indexOne = selectedItems.value.indexOf(id);
     selectedItems.value.splice(indexOne, 1);
-
-    const indexTwo = prize_pool.value.indexOf(id);
-    prize_pool.value.splice(indexTwo, 1);
+    console.log('after delete', selectedItems.value);
+    prize_pool.value.splice(indexOne, 1);
+ 
 
     console.log('after delete', prize_pool.value);
     for (let index = 0; index < backUpPrizes.length; index++) {

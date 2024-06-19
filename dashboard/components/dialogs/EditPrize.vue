@@ -114,7 +114,11 @@ const editPrize = async () => {
         isShow.value = false
         await props.getAllPrizes()
         isEditPrizeCalled = false;
+    }else{
+        loading.value = false
+
     }
+
 
 }
 onMounted(() => {

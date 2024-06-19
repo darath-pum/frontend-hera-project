@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@mdi/font/css/materialdesignicons.css',
   ],
   build: {
-    transpile: ["vuetify"],
+    transpile: ["vuetify","qrcode.vue"],
   },
   app: {
     head: {

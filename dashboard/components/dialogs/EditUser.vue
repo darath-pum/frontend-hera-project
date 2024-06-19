@@ -72,7 +72,11 @@ const editUser = async () => {
         loading.value = false
         isShow.value = false
         await props.getAllUsers();
+    }else{
+        loading.value = false
+
     }
+
 
 }
 onMounted(() => {
