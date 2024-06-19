@@ -135,6 +135,9 @@ const addPrize = async () => {
         isShow.value = false
         resetInput()
         isAddPrizeCalled = false;
+    }else{
+        loading.value = false
+
     }
 
 }

@@ -55,16 +55,16 @@
                                 more_horiz
                             </span>
                             <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
-                                <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`'>
+                                <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined cursor-pointer">
                                             edit
                                         </span>
-                                        <span>edit</span>
+                                        <span>Edit</span>
                                     </div>
                                 </NuxtLink>
-                                <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`'>
+                                <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`' class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined">
@@ -75,7 +75,7 @@
 
                                 </NuxtLink>
                               
-                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id"
+                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id" class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white"
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
 
 
@@ -174,7 +174,7 @@ td:nth-child(1) {
     background: #FFFFFF;
     height: 8.5rem;
     width: 9rem;
-    gap: 1rem;
+    gap: 0.4rem;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -197,6 +197,10 @@ td:nth-child(6) {
 }
 
 @media (max-width: 67.5rem) {
+    #action-menu {
+        width: 7.5rem;
+        height: 8rem;
+    }
     .campaign-btn {
         margin-top: -2rem !important;
     }

@@ -88,7 +88,10 @@ const addPrizePool = async () => {
         loading.value = false
         window.location.reload()
         isShow.value = false
+    }else{
+        loading.value = false
     }
+
 
 }
 

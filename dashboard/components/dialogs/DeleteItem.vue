@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize flex flex-row">
-        <button v-if="itemName == 'Prize pool'" class="secondary-btn bg-transparent"
+        <button v-if="itemName == 'Prize pool'" class="bg-transparent"
             @click="showDelete">Delete</button>
         <div v-else class="add-prize flex flex-row cursor-pointer gap-1" @click="isShow = true">
             <span class="material-symbols-outlined">
@@ -58,7 +58,7 @@ const showDelete = () => {
             title: "Not Found",
             text: "Which prize that you want to delete.",
             showConfirmButton: false,
-            timer: 4000
+            timer: 2000
         });
 
     } else {

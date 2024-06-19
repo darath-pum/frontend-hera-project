@@ -1,14 +1,14 @@
 <template>
     <div class="container game-detail p-5 pb-32">
-      
-            <div class="flex flex-row items-center gap-1 cursor-pointer">
-                <span class="material-symbols-outlined" @click="$router.back()">
-                    keyboard_backspace
-                </span>
-            </div>
 
- 
-       
+        <div class="flex flex-row items-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined" @click="$router.back()">
+                keyboard_backspace
+            </span>
+        </div>
+
+
+
         <div class="flex flex-row items-start justify-center">
             <h1 class="page-title">Game detail</h1>
             <span></span>
@@ -18,29 +18,38 @@
                 <div class="w-48 h-48 lg:w-64 lg:h-64 rounded-lg overflow-hidden">
                     <img :src="game.img_url" alt="" class="w-full h-full object-cover">
                 </div>
-                <div class="btn-action flex flex-row justify-end md:w-full" v-if="authStore.role !=='admin'">
+                <div class="btn-action flex flex-row justify-end md:w-full" v-if="authStore.role !== 'admin'">
                     <!-- <button class="bg-green-500 text-white px-5 py-2 rounded-md">Enable</button> -->
-                    <button v-if="game.is_enabled == true" @click="updateGameStatus(game.id, false)" class="bg-red-500 text-white px-5 py-2 rounded-md">Disable</button>
-                    <button v-if="game.is_enabled == false" @click="updateGameStatus(game.id, true)" class="bg-green-500 text-white px-5 py-2 rounded-md">Enable</button>
+                    <button v-if="game.is_enabled == true" @click="updateGameStatus(game.id, false)"
+                        class="bg-red-500 text-white px-5 py-2 rounded-md">Disable</button>
+                    <button v-if="game.is_enabled == false" @click="updateGameStatus(game.id, true)"
+                        class="bg-green-500 text-white px-5 py-2 rounded-md">Enable</button>
                 </div>
             </div>
             <div class="flex flex-col gap-10 border-gray-300">
                 <div class="space-y-5">
                     <div class="flex flex-row items-center gap-2">
                         <h2 class="text-3xl font-semibold">{{ game.title }}</h2>
-                        <button v-if="game.is_enabled == true" class="px-5 py-1 rounded-full text-xs text-white bg-green-500">Active</button>
+                        <button v-if="game.is_enabled == true"
+                            class="px-5 py-1 rounded-full text-xs text-white bg-green-500">Active</button>
                     </div>
                     <div class="flex items-center gap-2 flex-wrap my-5">
-                        <div v-for="(item, index) in categories" :key="item" class="px-5 py-1 rounded-full text-xs text-black bg-gray-100">{{ item }}
+                        <div v-for="(item, index) in categories" :key="item"
+                            class="px-5 py-1 rounded-full text-xs text-black bg-gray-100">{{ item }}
                         </div>
                     </div>
                     <p class="text-lg text-gray-600 max-w-[500px]">{{ game.description }}</p>
                 </div>
                 <div class="qr-code flex flex-col gap-5 justify-center items-center sm:items-start pb-24">
                     <h1 class="text-xl font-semibold">Game QR Code</h1>
-                    <img src="/QR.jpg" alt="" class="w-64 h-64 border rounded-lg">
+                    <div>
+                        <qrcode-vue :value="game.img_url" :size="200" level="H"></qrcode-vue>
+                    </div>
 
-                    <button class="secondary-btn mt-1">Download QR Code</button>
+                    <a href="http://192.168.11.122:3201/public/hera/image/image-zCnhA6-20240601094056.png" download>
+                        
+                        <button class="secondary-btn mt-1">Download QR Code</button>
+                    </a>
 
                 </div>
             </div>
@@ -49,32 +58,34 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from "vue";
-import {useRoute} from "vue-router";
-import {useAuthStore} from '~/store/auth'
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useAuthStore } from '~/store/auth'
+import QrcodeVue from "qrcode.vue";
+
 const authStore = useAuthStore()
-const game:any = ref([]);
+const game: any = ref([]);
 const route = useRoute()
-const gameId:any = (route.query.gameId)
+const gameId: any = (route.query.gameId)
 
 const categories = ref()
-const getGameDetail = async ()=>{
+const getGameDetail = async () => {
     console.log(gameId);
-    
+
     const res = await callAPI(`/dashboard/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
-    console.log(res);
-    categories.value =(res.data.categories)
-    
-}
-const updateGameStatus = async(id:number,isEniable:boolean)=>{
-
-const res = await callAPI(`/dashboard/game/user/updateStatus/${id}`,'PUT',{is_enabled:isEniable})
-await getGameDetail()
+    console.log(res.data.img_url);
+    categories.value = (res.data.categories)
 
 }
+const updateGameStatus = async (id: number, isEniable: boolean) => {
 
-onMounted(()=>{
-   getGameDetail();
+    const res = await callAPI(`/dashboard/game/user/updateStatus/${id}`, 'PUT', { is_enabled: isEniable })
+    await getGameDetail()
+
+}
+
+onMounted(() => {
+    getGameDetail();
 })
 </script>
