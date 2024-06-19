@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center md:w-screen md:h-screen">
-    <form action="" class="w-full px-5 md:max-w-[500px]" v-if="!isToken">
+    <form action="" class="w-full px-5 md:max-w-[500px]" v-if="isToken">
       <div class="mb-20">
         <h1 class="text-3xl text-center font-bold">Reset Password</h1>
         <p class="text-center text-lg">Enter new password to reset password.</p>
@@ -41,7 +41,7 @@
         </button>
       </div>
     </form>
-    <div v-if="isToken && !isLoading">
+    <div v-if="!isToken && !isLoading">
       <div class="flex justify-center items-center flex-col w-[30rem] ">
         <span class="material-symbols-outlined text-[8rem] text-red mb-10 select-none">cancel</span>
         <h1 class="text-2xl mb-7">Link is expired</h1>

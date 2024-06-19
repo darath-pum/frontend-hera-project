@@ -61,7 +61,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from '~/store/auth'
-import QrcodeVue from "qrcode.vue"
+import QrcodeVue from "qrcode.vue";
 
 const authStore = useAuthStore()
 const game: any = ref([]);
