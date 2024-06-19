@@ -1,17 +1,12 @@
 <template>
     <div class="flex flex-row user-pf">
-        <div class="pf-bar-left flex flex-col gap-10 w-[30rem] bg-[#D6DAC8] p-5">
-            <div class="w-full text-end">
-                <button class=" bg-red p-2 w-24 rounded-full capitalize"
-                    :class="{ 'bg-green p-2 w-24 rounded-full capitalize': authStore.role == 'admin' }">{{
-                        authStore.role }}</button>
-
-            </div>
+        <div class="pf-bar-left flex flex-col gap-5 w-[30rem] pt-10 px-8">
+          
             <div class="flex flex-col justify-center items-center">
                 <div class="profile-image m-auto">
                     <input type="file" @change="handleImage"
-                        class="w-52 h-52 absolute rounded-full opacity-0 cursor-pointer bg-red"
-                        style="border-radius: 100%;">
+                        class="absolute rounded-full opacity-0 cursor-pointer bg-red"
+                        style="border-radius: 100%; width: 13rem; height: 13rem;">
                     <img :src="pf_image" alt="" class="w-52 h-52 rounded-full object-cover bg-gray-50/50">
                 </div>
                 <span
@@ -24,6 +19,12 @@
 
             </div>
             <h1 class="pf-name">{{ authStore.first_name }} {{ authStore.last_name }}</h1>
+            <div class="w-full text-center -mt-2">
+                <button class=" bg-grey p-1 w-24 rounded-full capitalize"
+                    :class="{ 'bg-grey p-1 w-24 rounded-full capitalize': authStore.role == 'admin' }">{{
+                        authStore.role }}</button>
+
+            </div>
             <div class="flex flex-col gap-5">
                 <!-- <button class="secondary-btn flex flex-row gap-5">
                     <span class="material-symbols-outlined">
@@ -31,7 +32,7 @@
                     </span>
                     <span>Reset password</span>
                 </button> -->
-                <button class="secondary-btn flex flex-row gap-5" @click="logout">
+                <button class="primary-btn flex flex-row gap-5 mt-5" @click="logout">
                     <span class="material-symbols-outlined">
                         logout
                     </span>
@@ -39,7 +40,7 @@
                 </button>
             </div>
         </div>
-        <div class="pf-right w-full pt-15 flex flex-col items-center gap-10 px-[15%]">
+        <div class="pf-right w-full pt-10 flex flex-col items-center gap-10 px-[15%]">
             <div class="first-name w-full flex flex-row justify-between items-center ">
                 <label for="">First name:</label>
                 <input type="text" class="p-2 border w-[70%]" v-model="first_name">
@@ -52,33 +53,61 @@
                 <label for="">Email:</label>
                 <input type="email" class="p-2 border w-[70%]" v-model="authStore.email" disabled>
             </div>
-            <div class="flex flex-row justify-end w-full">
-                <button class="primary-btn" @click="updateUserInfo">Save changes</button>
+            <div class="pf-btn flex flex-row justify-end w-full">
+                <button class="primary-btn" @click="updateUserInfo" >Save changes</button>
             </div>
             <div class="pf-h-change-pass">
                 <h1>Change Password</h1>
             </div>
             <div class="first-name w-full flex flex-row justify-between items-center">
                 <label for="">Current password:</label>
-                <input type="password" class="p-2 border w-[70%]" v-model="old_password" >
+                <input type="password" class="p-2 border w-[70%]" v-model="old_password">
             </div>
-            <div class="first-name w-full flex flex-row justify-between items-center">
+            <div class="first-name w-full flex flex-row justify-between items-center relative">
                 <label for="">New password:</label>
                 <div class="w-[70%] input-pass">
-                    <input type="text" class="p-2 border w-full" v-model="new_password" v-if="isShowPassword" autocomplete="off" placeholder="">
-                    <input type="password" class="p-2 border w-full" v-model="new_password" v-else>
-                    <div class="p-2 -mt-10 w-[full] rounded flex flex-row justify-end items-center">
-                        <span class="material-symbols-outlined cursor-pointer"  v-if="!isShowPassword" @click="showPassword(true)">
+                    <input type="text" class="p-2 border w-full" v-model="new_password" v-if="isShowPassword"
+                        autocomplete="off" placeholder="" @input="valiadtionPass()">
+                    <input type="password" class="p-2 border w-full" v-model="new_password" v-else
+                        @input="valiadtionPass()">
+                    <div class="show-pass-icon p-2 -mt-10 w-[full] rounded flex flex-row justify-end items-center">
+                        <span class="material-symbols-outlined cursor-pointer" v-if="!isShowPassword"
+                            @click="showPassword(true)">
                             visibility_off
                         </span>
                         <span class="material-symbols-outlined cursor-pointer" v-else @click="showPassword(false)">
                             visibility
                         </span>
                     </div>
+                    <div v-if="!isPasswordChecked"
+                        class="flex flex-col  pass-validtion px-4 py-3 rounded pointer-events-none gap-3">
+                        <h1 class="font-semibold">Password must be:</h1>
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.uppercaseRegex">
+                            <span for="">Uppercase</span>
+                        </div>
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="new_password.length >=8">
+                            <span for="">Equal or more than 8 charecters</span>
+                        </div>
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.lowercaseRegex">
+                            <span for="">Lowercase</span>
+                        </div>
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.specialCharRegex">
+                            <span for="">Special charecter</span>
+                        </div>
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.numberRegex">
+                            <span for="">Number</span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <div class="flex flex-row justify-end w-full">
-                <button class="primary-btn" @click="changePassword">Save changes</button>
+            <div class="pf-btn flex flex-row justify-end w-full">
+                <button class="primary-btn" @click="changePassword" >Save changes</button>
             </div>
         </div>
     </div>
@@ -94,10 +123,23 @@ const last_name = ref(authStore.last_name)
 const old_password = ref('')
 const new_password = ref('')
 const isShowPassword = ref(false)
-const showPassword = (isShow:boolean) => {
+const errPassword:any = ref({})
+const showPassword = (isShow: boolean) => {
     isShowPassword.value = isShow
-}
 
+}
+const isPasswordChecked = ref(true)
+const valiadtionPass = () => {
+    isPasswordChecked.value = false
+    errPassword.value = validatePassword(new_password.value);
+    console.log("errPassword", errPassword.value);
+    if (new_password.value.length >=8 && errPassword.value.uppercaseRegex && errPassword.value.lowercaseRegex && errPassword.value.specialCharRegex && errPassword.value.numberRegex) {
+        console.log('true');
+        
+        isPasswordChecked.value = true
+    }
+
+}
 onMounted(() => {
     pf_image.value = authStore.pf_img_url
 })
@@ -136,7 +178,7 @@ const changePassword = async () => {
     }
     const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
     console.log(res);
-    
+
     if (res.status == 200) {
         Swal.fire({
             position: "center",
@@ -147,7 +189,7 @@ const changePassword = async () => {
             timer: 1500
         });
         window.location.reload();
-    }else{
+    } else {
         Swal.fire({
             position: "center",
             icon: "error",
@@ -181,7 +223,9 @@ const logout = async () => {
 }
 
 .pf-bar-left {
+    background: #EEEEEE;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    height:100vh;
 }
 
 input {
@@ -193,44 +237,79 @@ label {
     width: 14rem;
     font-size: 1.3rem;
 }
-@media (max-width: 70.5rem) {
-    .user-pf{
-        display: flex;
-        flex-direction: column !important;
-    }
-    .pf-bar-left{
-        width: 100%;
-        height: 31rem !important;
-    }
+
+#pass-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+.pass-validtion{
+    position: absolute;
+    width: 20rem;
+    background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+@media (max-width:81.25rem) {
+
     .pf-right{
-        padding: 3rem 1.5rem !important;
-
-
+        width: 100% !important;
+        padding: 2rem !important;
+        /* background: #000; */
     }
-    .pf-right div{
+    .pf-right div {
         display: flex;
         flex-direction: column !important;
-        /* background: #000; */
+        width: 100% !important;
+        /* align-items: center; */
+        
 
     }
-    input,.input-pass,.input-pass input, .input-pass div{
+    label {
         width: 100%;
+        text-align: start;
+        font-size: 1rem;
+
     }
-    .input-pass input{
-        z-index: 10;
-    }
-    .input-pass div{
+    .input-pass .show-pass-icon {
         display: flex;
         flex-direction: row !important;
         justify-content: flex-end !important;
-        
+
     }
-    label {
-    width: 100%;
-    text-align: start;
-    font-size: 1rem;
+    input,
+    .input-pass,
+    .input-pass input,
+    .input-pass div {
+        width: 100%;
+
+    }
+    .input-pass input{
+        z-index: 20;
+    }
+    .pass-validtion{
+        width: 20rem !important;
+        margin-top:2.5rem;
+        display: flex;
+        flex-direction: column !important;
+    }
+    .pass-validtion div{
+        display: flex;
+        flex-direction: row !important;
+    }
+    
     
 }
+
+@media (max-width: 50.5rem) {
+    .user-pf {
+        display: flex;
+        flex-direction: column !important;
+    }
+    
+    .pf-bar-left {
+        width: 100%;
+        height: 31rem !important;
+    }
 
 }
 </style>

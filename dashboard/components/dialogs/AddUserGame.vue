@@ -117,7 +117,11 @@ const addUsersGame = async () => {
         loading.value = false
         isAddUserGameCalled = false
         window.location.reload()
+    }else{
+        loading.value = false
+
     }
+
 
 }
 

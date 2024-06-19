@@ -20,8 +20,8 @@
                     <div>
                         <label for="">Last Name: <span class="text-red" v-if="pathName == 'last_name'">{{ validMessage
                                 }}</span></label>
-                        <input type="text" v-model="last_name" :style="pathName == 'last_name' ? 'border:2px solid red' : ''"
-                            @click="pathName = ''">
+                        <input type="text" v-model="last_name"
+                            :style="pathName == 'last_name' ? 'border:2px solid red' : ''" @click="pathName = ''">
 
                     </div>
                 </div>
@@ -44,6 +44,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
+import Swal from 'sweetalert2'
 import Loading from '~/components/Loading.vue'
 const loading = ref(false)
 const isShow = ref(false)
@@ -101,8 +102,40 @@ const addUser = async () => {
         isShow.value = false;
         resetData();
     } else {
+        if (res.code == 401) {
 
-        loading.value = false
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Error",
+                text: "Email already existed.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            loading.value = false
+        }
+        if (res.code == 500) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Error",
+                text: "Failed to create user.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            loading.value = false
+        }
+        if (res.code == 503) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Error",
+                text: "Failed to create user.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            loading.value = false
+        }
     }
 
 
@@ -168,7 +201,7 @@ label {
 
 @media (max-width: 35.5rem) {
     form h1 {
-        font-size:1.2rem;
+        font-size: 1.2rem;
         font-weight: 600;
     }
 
