@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center items-center w-screen h-screen">
-    <form action="" class="w-[30rem]" v-if="isToken">
-      <div class="mb-20">
+  <div class="flex justify-center items-center md:w-screen md:h-screen">
+    <form action=""  class="w-full px-5 md:max-w-[500px]" v-if="isToken">
+      <div class="sm:mb-10 md:mb-20 lg:mb-20">
         <h1 class="text-3xl text-center font-bold">Account Activation</h1>
         <p class="text-center text-lg">
           Enter new password for your account to activate account.
@@ -12,7 +12,6 @@
           <h1 class="text-[20px] font-bold mb-3">Create password</h1>
           <span class="material-symbols-outlined select-none cursor-pointer" v-if="isPassword" @click="visibility">visibility</span>
           <span class="material-symbols-outlined select-none cursor-pointer" v-if="!isPassword" @click="visOff">visibility_off</span>
-
         </div>
         <input
           @focus="inputSelected(true)"
@@ -21,8 +20,9 @@
           v-model="password"
           @input="onInput"
           placeholder="Enter new password"
-          class="w-[31rem] p-[16px] rounded-[10px] border border-slate-300"
+          class="w-full p-[10px]  rounded-[10px] border border-slate-300"
         />
+        <span class="text-red ">{{ passErr }}</span>
       </div>
       <div class="mt-12">
         <div class="flex justify-between m-2">
@@ -35,13 +35,17 @@
           :type="!isComPassword ? 'password' : 'text'"
           v-model="comfirmPassword"
           placeholder="Enter comfirm password"
-          class="w-[31rem] p-[16px] rounded-[10px] border border-slate-300"
+          class="w-full p-[10px]  rounded-[10px] border border-slate-300"
         />
-        <span  class="text-red">{{ messageErr }}</span>
+        <span  class="text-red">{{ passComfirmErr }}</span>
+      </div>
+      <div class="block min-sm:hidden md:block lg:hidden mt-6">
+          <PassRequireForm :isLengthValid="isLengthValid" :hasUppercase="hasUppercase" :hasLowercase="hasLowercase"
+          :hasDigit="hasDigit" :hasSpecialChar="hasSpecialChar" />
       </div>
       <div class="mt-12" @click.prevent="activateAccount">
         <button
-          class="flex flex-row justify-center items-center w-[31rem] p-[16px] rounded-[10px] bg-[#292929] text-[20px] text-white"
+          class="flex flex-row justify-center items-center  w-full p-[10px]  rounded-[10px] bg-[#292929] text-[20px] text-white"
         >
         <Loading v-if="loading"></Loading>
         <span v-else>Activate Account</span>
@@ -56,7 +60,7 @@
         <p class="text-center">Your activation link has expired. Please request a new activation link or contact support for assistance.</p>
       </div>
     </div>
-    <div class="absolute ml-[67rem] mb-[3rem] dialog-container" :class="{ 'show-dialog': showDialog }">
+    <div class="absolute ml-[57rem] mb-[3.5rem] dialog-container hidden min-sm:block md:hidden lg:block" :class="{ 'show-dialog': showDialog }">
     <RequirePassword
         :isLengthValid="isLengthValid"
         :hasUppercase="hasUppercase"
@@ -74,9 +78,9 @@ import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
 import { callAPI } from "../../composables/callAPI";
 import { usePasswordValidation } from "../../composables/usePasswordValidation";
+import PassRequireForm from "~/components/PassRequireForm.vue";
 import Swal from 'sweetalert2';
 import Loading from "~/components/Loading.vue"
-
 const loading = ref(false)
 const password = ref();
 const isPassword = ref(false);
@@ -85,7 +89,8 @@ const comfirmPassword = ref();
 const route = useRoute();
 const isToken = ref(false);
 const isLoading = ref(true);
-const messageErr = ref('');
+const passErr = ref('');
+const passComfirmErr = ref('');
 const showDialog = ref(false);
 const {
   isLengthValid,
@@ -132,11 +137,12 @@ const activateAccount = async () => {
     hasUppercase.value &&
     hasLowercase.value &&
     hasDigit.value && 
+    isLengthValid &&
     hasSpecialChar.value 
   ) {
     loading.value = false
   Swal.fire({
-      position: "top-end",
+      position: "center",
       icon: "success",
       title: "Success",
       text: "You have activated account in successfully.",
@@ -146,11 +152,13 @@ const activateAccount = async () => {
     setTimeout(() => {
       window.location.href = "/login";
     }, 2000);
+  }else {
+    loading.value = false;
   }
   if(comfirmPassword.value !== password.value) {
-    messageErr.value = "Password not matching";
+    passComfirmErr.value = "Password not matching";
   }else {
-    messageErr.value = ''
+    passComfirmErr.value = ''
   }
   if( hasUppercase.value &&
     hasLowercase.value &&
@@ -159,7 +167,8 @@ const activateAccount = async () => {
     isLengthValid.value) {
     showDialog.value = false;
   }else {
-    showDialog.value = true
+    showDialog.value = true;
+    passErr.value = "Please enter a password that meets our security standard";
   }
  
 };
@@ -178,9 +187,10 @@ const visOffComfirm = ()=>{
 }
 const inputSelected = (selected:boolean) =>{
   showDialog.value = selected;
+  passErr.value = "";
 }
 const clearErrors =()=> {
-  messageErr.value = "";
+  passComfirmErr.value = "";
 }
 
 onMounted(() => {
