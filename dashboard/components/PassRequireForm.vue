@@ -63,3 +63,11 @@ const props = defineProps({
   }
 })
 </script>
+
+<style scoped>
+span {
+  font-size: 15.5px;
+  display:flex;
+  align-items:center;
+}
+</style>

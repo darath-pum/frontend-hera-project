@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center md:w-screen md:h-screen">
     <form action="" class="w-full px-5 md:max-w-[500px]" v-if="isToken">
-      <div class="mb-20">
+      <div class="mb-11 mt-5">
         <h1 class="text-3xl text-center font-bold">Reset Password</h1>
         <p class="text-center text-lg">Enter new password to reset password.</p>
       </div>

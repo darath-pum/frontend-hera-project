@@ -95,7 +95,7 @@
     <div class="w-full flex flex-row justify-center">
       <Loading v-if="loading && !prizesPool" :loader="'big'"></Loading>
     </div>
-    <EmptyData v-if="!loading && !prizesPool" :contain="'Campaign'"></EmptyData>
+    <EmptyData v-if="!loading && !prizesPool" :contain="'Prize pool'"></EmptyData>
   </div>
 </template>
 
@@ -221,21 +221,17 @@ const showEditQty = (id: number) => {
 };
 
 const allChecked = computed({
-  get: () => selectedItems.value.length === prizesPool.value.length,
+  get: () => selectedItems.value.length === prizesPool.value.length && prize_pool.value.length === prizesPool.value.length,
   set: (value) => {
     if (value) {
-      // selectedItems.value =""
-      selectedItems.value = prizesPool.value.map((item:any) => item.id);
-      // prize_pool.value = selectedItems.value.map((item:any) => item.id);
-      console.log(selectedItems.value);
-
+      selectedItems.value = prizesPool.value.map((item) => item.id);
+      prize_pool.value = prizesPool.value.map((item) => ({ id: item.id, qty: item.qty }));
+      console.log('gfdsgfdshfdshf',selectedItems.value, prize_pool.value);
     } else {
       selectedItems.value = [];
       prize_pool.value = [];
-      console.log(selectedItems.value);
-      console.log("prize_pool clear all", prize_pool.value);
     }
-  },
+  }
 });
 </script>
 <style scoped>
