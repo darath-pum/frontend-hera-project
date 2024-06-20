@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row user-pf">
         <div class="pf-bar-left flex flex-col gap-5 w-[30rem] pt-10 px-8">
-          
+
             <div class="flex flex-col justify-center items-center">
                 <div class="profile-image m-auto">
                     <input type="file" @change="handleImage"
@@ -54,7 +54,7 @@
                 <input type="email" class="p-2 border w-[70%]" v-model="authStore.email" disabled>
             </div>
             <div class="pf-btn flex flex-row justify-end w-full">
-                <button class="primary-btn" @click="updateUserInfo" >Save changes</button>
+                <button :class="first_name !=authStore.first_name || last_name != authStore.last_name?'primary-btn':'disable-btn'" @click="updateUserInfo" >Save info</button>
             </div>
             <div class="pf-h-change-pass">
                 <h1>Change Password</h1>
@@ -67,9 +67,8 @@
                 <label for="">New password:</label>
                 <div class="w-[70%] input-pass">
                     <input type="text" class="p-2 border w-full" v-model="new_password" v-if="isShowPassword"
-                        autocomplete="off" placeholder="" @input="valiadtionPass()">
-                    <input type="password" class="p-2 border w-full" v-model="new_password" v-else
-                        @input="valiadtionPass()">
+                        autocomplete="off" placeholder="" @input="onInput()">
+                    <input type="password" class="p-2 border w-full" v-model="new_password" v-else @input="onInput()">
                     <div class="show-pass-icon p-2 -mt-10 w-[full] rounded flex flex-row justify-end items-center">
                         <span class="material-symbols-outlined cursor-pointer" v-if="!isShowPassword"
                             @click="showPassword(true)">
@@ -83,31 +82,31 @@
                         class="flex flex-col  pass-validtion px-4 py-3 rounded pointer-events-none gap-3">
                         <h1 class="font-semibold">Password must be:</h1>
                         <div class="flex flex-row items-center gap-3">
-                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.uppercaseRegex">
-                            <span for="">Uppercase</span>
+                            <input id="pass-checkbox" type="checkbox" :checked="hasUppercase">
+                            <span for="">Uppercase <span>A-Z</span></span>
+                        </div>
+                       
+                        <div class="flex flex-row items-center gap-3">
+                            <input id="pass-checkbox" type="checkbox" :checked="hasLowercase">
+                            <span for="">Lowercase <span>a-z</span></span>
                         </div>
                         <div class="flex flex-row items-center gap-3">
-                            <input id="pass-checkbox" type="checkbox" :checked="new_password.length >=8">
-                            <span for="">Equal or more than 8 charecters</span>
+                            <input id="pass-checkbox" type="checkbox" :checked="hasSpecialChar">
+                            <span for="">Special charecter <span>[! @ # $ % ^ & *]</span></span>
                         </div>
                         <div class="flex flex-row items-center gap-3">
-                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.lowercaseRegex">
-                            <span for="">Lowercase</span>
+                            <input id="pass-checkbox" type="checkbox" :checked="hasDigit">
+                            <span for="">Number or digit <span>0-9</span></span>
                         </div>
                         <div class="flex flex-row items-center gap-3">
-                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.specialCharRegex">
-                            <span for="">Special charecter</span>
+                            <input id="pass-checkbox" type="checkbox" :checked="isLengthValid">
+                            <span for="">8 characters long</span>
                         </div>
-                        <div class="flex flex-row items-center gap-3">
-                            <input id="pass-checkbox" type="checkbox" :checked="errPassword.numberRegex">
-                            <span for="">Number</span>
-                        </div>
-
                     </div>
                 </div>
             </div>
             <div class="pf-btn flex flex-row justify-end w-full">
-                <button class="primary-btn" @click="changePassword" >Save changes</button>
+                <button :class="isPasswordChecked == true && new_password !==''?'primary-btn':'disable-btn'" @click="changePassword">Save password</button>
             </div>
         </div>
     </div>
@@ -123,23 +122,32 @@ const last_name = ref(authStore.last_name)
 const old_password = ref('')
 const new_password = ref('')
 const isShowPassword = ref(false)
-const errPassword:any = ref({})
 const showPassword = (isShow: boolean) => {
     isShowPassword.value = isShow
 
 }
 const isPasswordChecked = ref(true)
-const valiadtionPass = () => {
+const {
+    isLengthValid,
+    hasUppercase,
+    hasLowercase,
+    hasDigit,
+    hasSpecialChar,
+    validatePassword,
+} = usePasswordValidation();
+
+const onInput = () => {
     isPasswordChecked.value = false
-    errPassword.value = validatePassword(new_password.value);
-    console.log("errPassword", errPassword.value);
-    if (new_password.value.length >=8 && errPassword.value.uppercaseRegex && errPassword.value.lowercaseRegex && errPassword.value.specialCharRegex && errPassword.value.numberRegex) {
-        console.log('true');
-        
+    validatePassword(new_password.value);
+    if (isLengthValid.value == true && hasUppercase.value == true &&
+        hasLowercase.value == true &&
+        hasDigit.value == true &&
+        hasSpecialChar.value == true) {
         isPasswordChecked.value = true
     }
+};
 
-}
+
 onMounted(() => {
     pf_image.value = authStore.pf_img_url
 })
@@ -176,6 +184,12 @@ const changePassword = async () => {
         old_password: old_password.value,
         new_password: new_password.value
     }
+    if (isLengthValid.value == false && hasUppercase.value == false &&
+        hasLowercase.value == false &&
+        hasDigit.value == false &&
+        hasSpecialChar.value == false) {
+        return;
+    }
     const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
     console.log(res);
 
@@ -189,15 +203,18 @@ const changePassword = async () => {
             timer: 1500
         });
         window.location.reload();
-    } else {
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Fail",
-            text: "Password is incorrect.",
-            showConfirmButton: false,
-            timer: 1500
-        });
+    } 
+    else {
+        if(res.code == 404){
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Fail",
+                text: "Password is incorrect.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
     }
 
 }
@@ -225,7 +242,7 @@ const logout = async () => {
 .pf-bar-left {
     background: #EEEEEE;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-    height:100vh;
+    height: 100vh;
 }
 
 input {
@@ -242,7 +259,8 @@ label {
     width: 1.2rem;
     height: 1.2rem;
 }
-.pass-validtion{
+
+.pass-validtion {
     position: absolute;
     width: 20rem;
     background: #ffffff;
@@ -251,31 +269,35 @@ label {
 
 @media (max-width:81.25rem) {
 
-    .pf-right{
+    .pf-right {
         width: 100% !important;
         padding: 2rem !important;
         /* background: #000; */
     }
+
     .pf-right div {
         display: flex;
         flex-direction: column !important;
         width: 100% !important;
         /* align-items: center; */
-        
+
 
     }
+
     label {
         width: 100%;
         text-align: start;
         font-size: 1rem;
 
     }
+
     .input-pass .show-pass-icon {
         display: flex;
         flex-direction: row !important;
         justify-content: flex-end !important;
 
     }
+
     input,
     .input-pass,
     .input-pass input,
@@ -283,21 +305,24 @@ label {
         width: 100%;
 
     }
-    .input-pass input{
+
+    .input-pass input {
         z-index: 20;
     }
-    .pass-validtion{
+
+    .pass-validtion {
         width: 20rem !important;
-        margin-top:2.5rem;
+        margin-top: 2.5rem;
         display: flex;
         flex-direction: column !important;
     }
-    .pass-validtion div{
+
+    .pass-validtion div {
         display: flex;
         flex-direction: row !important;
     }
-    
-    
+
+
 }
 
 @media (max-width: 50.5rem) {
@@ -305,7 +330,7 @@ label {
         display: flex;
         flex-direction: column !important;
     }
-    
+
     .pf-bar-left {
         width: 100%;
         height: 31rem !important;
