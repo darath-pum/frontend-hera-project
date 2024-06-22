@@ -5,158 +5,247 @@
             <h1 class="page-title">Upload New Game</h1>
 
             <form action="" ref="form" @submit.prevent="addGame"
-                class="space-y-10 md:space-y-16 my-10 mx-auto max-w-screen-md flex flex-col justify-center item-center">
-                <div class="grid grid-cols-1 md:grid-cols-3 item-center space-y-1 md:space-y-0 space-y-1 md:space-y-0">
-                    <label for="game-title" class="col-span-1 my-auto">
-                        <h1 class="text-md md:text-md md:text-xl  ">Title<span class="text-red-500">*</span>:</h1>
-                    </label>
-                    <div class="relative col-span-1 md:col-span-2">
-                        <input v-model="title" type="text" id="game-title" placeholder="Game Title" maxlength="50" @click="pathName =''"
-                            class="p-2 w-full" :style="pathName == 'title'?'border:2px solid red':''" />
-                        <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ title.length }}/50 <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage }}</span></p>
-                    </div>
+                class="space-y-10 md:space-y-10 my-10 mx-auto max-w-screen-lg flex flex-col justify-center item-center">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-10">
+                        <div class="">
+                            <label for="game-title" class="col-span-1 my-auto">
+                                <h1 class="text-md md:text-md md:text-xl  ">Title<span class="text-red-500">*</span>:
+                                </h1>
+                            </label>
+                            <div class="relative col-span-1 md:col-span-2">
+                                <input v-model="title" type="text" id="game-title" placeholder="Game Title"
+                                    maxlength="50" @click="pathName = ''" class="p-2 w-full"
+                                    :style="pathName == 'title' ? 'border:2px solid red' : ''" />
+                                <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ title.length }}/50
+                                    <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage }}</span>
+                                </p>
+                            </div>
 
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 item-center space-y-1 md:space-y-0">
-                    <label for="game-description" class="col-span-1 my-auto">
-                        <h1 class="text-md md:text-xl ">Description:</h1>
-                    </label>
-                    <div class="relative col-span-2">
-                        <textarea v-model="description" type="text" id="game-description" placeholder="Game Description" @click="pathName =''"
-                            max="500" class="  p-2 w-full min-h-[100px] max-h-[200px]"  :style="pathName == 'description'?'border:2px solid red':''" ></textarea>
-                        <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ description.length }}/500 <span v-if="pathName == 'description'" class="text-red">{{ invalidMessage }}</span></p>
-                    </div>
-                </div>
+                        </div>
+                        <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
+                            :class="[isSelectGame ? 'active' : '']"></div>
+                        <div class="">
+                            <label for="game-category" class="col-span-1 my-auto">
+                                <h1 class="text-md md:text-xl ">Categories:</h1>
+                            </label>
+                            <div @click="showSelectGame"
+                                class="relative cursor-pointer select-cat w-full col-span-2 z-20 flex item-center justify-between px-2 min-h-[45px] ">
+                                <p class="my-auto text-gray-400 select-none w-fit"
+                                    :class="{ 'text-black': genreList != 'Select game categories' }">{{
+                                        genreList
+                                    }}</p>
+                                <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
+                                    :class="{ 'rotate-180': isSelectGame }">
+                                    arrow_drop_down
+                                </span>
+                                <div class="absolute left-0 top-[47px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
+                                    v-if="isSelectGame" @click.stop>
+                                    <div class="max-h-[300px] overflow-y-auto">
+                                        <div class="flex gap-8 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
+                                            @click="addGenre(item.name)" v-for="(item, index) in nameGenres"
+                                            :key="item.id">
+                                            <div class="w-4 h-full flex item-center">
+                                                <input type="checkbox" :id="item.name" :name="item.name"
+                                                    :checked="genres.includes(item.name)"
+                                                    class="w-full h-4 my-auto accent-gray-500" />
+                                            </div>
 
-                <div v-if="isSelectGame" class="dialog-backdrop" @click="isSelectGame = false"
-                    :class="[isSelectGame ? 'active' : '']"></div>
-                <div class="grid grid-cols-1 md:grid-cols-3 item-center space-y-1 md:space-y-0">
-                    <label for="game-category" class="col-span-1 my-auto">
-                        <h1 class="text-md md:text-xl ">Categories:</h1>
-                    </label>
-                    <div @click="showSelectGame"
-                        class="relative cursor-pointer select-cat w-full col-span-2 z-20 flex item-center justify-between px-2 min-h-[45px] ">
-                        <p class="my-auto text-gray-400 select-none w-fit"
-                            :class="{ 'text-black': genreList != 'Select game categories' }">{{
-                                genreList
-                            }}</p>
-                        <span class="material-symbols-outlined w-fit my-auto text-gray-400 select-none"
-                            :class="{ 'rotate-180': isSelectGame }">
-                            arrow_drop_down
-                        </span>
-                        <div class="absolute left-0 top-[47px]  px-2 py-2 bg-white w-[100%] shadow-md select-cat "
-                            v-if="isSelectGame" @click.stop>
-                            <div class="max-h-[300px] overflow-y-auto">
-                                <div class="flex gap-5 item-center px-5 hover:bg-gray-100 h-10 mr-2 rounded-md"
-                                @click="addGenre(item.name)" v-for="(item, index) in nameGenres"
-                                    :key="item.id">
-                                    <div class="w-4 h-full flex item-center">
-                                        <input type="checkbox" :id="item.name" :name="item.name"
-                                            :checked="genres.includes(item.name)"
-                                            class="w-full h-4 my-auto accent-gray-500" />
+                                            <p class="h-fit my-auto">{{ item.name }}</p>
+
+                                        </div>
                                     </div>
-
-                                    <p class="h-fit my-auto">{{ item.name }}</p>
-
                                 </div>
+
                             </div>
+
                         </div>
-
                     </div>
-
-                </div>
-
-
-                <div class="grid grid-cols-1 md:grid-cols-3 item-center space-y-1 md:space-y-0">
-                    <label for="game-description" class="col-span-1 my-auto">
-                        <h1 class="text-md md:text-xl ">Game Icon<span class="text-red-500">*</span>:</h1>
-                    </label>
-                    <div v-if="!gameIconUrl" class="flex items-center justify-center w-full col-span-2" >
-                        <label for="dropzone-file-icon" :style="pathName =='img'?'border:2px solid red !important':''"
-                            class="flex flex-col items-center justify-center w-full h-64 upload-file rounded-lg cursor-pointer bg-gray-50">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6" >
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                        class="font-semibold">Click
-                                        to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 5Mb)
-                                </p>
-                            </div>
-                            <input id="dropzone-file-icon" type="file" class="hidden" @change="onIconFileChange" />
+                    <div class="h-full">
+                        <label for="game-description" class="col-span-1 my-auto">
+                            <h1 class="text-md md:text-xl ">Description:</h1>
                         </label>
-                    </div>
-
-                    <div v-if="gameIconUrl"
-                        class="show-img-url relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64  rounded-lg">
-
-                        <span @click="removeIcon"
-                            class="material-symbols-outlined absolute right-3 top-3 p-1 rounded-md h-fit cursor-pointer bg-red-500 hover:bg-red-400 text-white">
-                            close
-                        </span>
-
-                        <div class="w-32 h-32 overflow-hidden rounded-lg">
-                            <img :src="gameIconUrl" alt="game icon" class="w-full h-full object-cover" />
+                        <div class="relative col-span-2">
+                            <textarea v-model="description" type="text" id="game-description"
+                                placeholder="Game Description" @click="pathName = ''" max="500"
+                                class="  p-2 w-full min-h-[155px] max-h-[155px]"></textarea>
+                            <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ description.length }}/500
+                                <span v-if="pathName == 'description'" class="text-red">{{ invalidMessage }}</span>
+                            </p>
                         </div>
-                        <p class="max-w-[50%] text-sm truncate">{{ iconFileName }}</p>
                     </div>
                 </div>
 
+                <div class="grid xl:grid-cols-12 gap-2 sm:gap-8">
+                    <div class="col-span-6 md:col-span-2 flex flex-col">
+                        <label for="game-description" class="mb-2">
+                            <h1 class="text-md md:text-xl">Icon<span class="text-red-500">*</span>:</h1>
+                        </label>
+                        <div v-if="!gameIconUrl" class="flex flex-grow items-center justify-center">
+                            <label for="dropzone-file-icon"
+                                :style="pathName == 'img' ? 'border:2px solid red !important' : ''"
+                                class="flex flex-col items-center justify-center w-full aspect-square upload-file rounded-md cursor-pointer bg-gray-50">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-8 h-8 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">.png, .jpeg, .jpg, ...</p>
+                                </div>
+                                <input id="dropzone-file-icon" type="file" class="hidden" @change="onIconFileChange" />
+                            </label>
+                        </div>
+                        <div v-if="gameIconUrl" @click="removeIcon"
+                            class="relative flex flex-grow group flex-col items-center justify-center col-span-2 w-full aspect-square rounded-md hover:opacity-70 cursor-pointer">
+                            <span @click="removeIcon"
+                                class="material-symbols-outlined hidden group-hover:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-1 rounded-md h-fit bg-red-500 text-white">
+                                close
+                            </span>
+                            <div class="w-full aspect-square overflow-hidden rounded-md border">
+                                <img :src="gameIconUrl" alt="game icon" class="w-full h-full object-cover" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-6 md:col-span-2 flex flex-col">
+                        <label for="game-color" class="mb-2">
+                            <h1 class="text-md md:text-xl">Color<span class="text-red-500">*</span>:</h1>
+                        </label>
+                        <div
+                            class="border rounded-md overflow-hidden flex-grow flex flex-col justify-center items-center bg-gray-50">
+                            <label for="game-color" class="w-full h-full cursor-pointer "
+                                :style="{ backgroundColor: color }">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6 h-full">
+                                    <p class="text-sm text-gray-500 font-semibold">
+                                        {{ color ? color : "Select color" }}
+                                    </p>
+                                </div>
+                                <input id="game-color" type="color" class="hidden" :value="color" @change="changeColor">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-span-12 md:col-span-8 flex flex-col">
+                        <label for="game-banner" class="mb-2">
+                            <h1 class="text-md md:text-xl">Banner<span class="text-red-500">*</span>:</h1>
+                        </label>
+                        <div v-if="!gameBannerUrl" class="flex flex-grow items-center justify-center w-full">
+                            <label for="game-banner"
+                                :style="pathName == 'banner' ? 'border:2px solid red !important' : ''"
+                                class="flex flex-col items-center justify-center w-full h-full border rounded-md cursor-pointer bg-gray-50">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
+                                            class="font-semibold">Click
+                                            to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">.png, .jpeg, .jpg, ... (MAX.
+                                        10Mb)</p>
+                                </div>
+                                <input id="game-banner" type="file" class="hidden" @change="onUploadGameBanner" />
+                            </label>
+                        </div>
+                        <div v-if="gameBannerUrl" @click="removeIcon"
+                            class="relative flex flex-grow group flex-col border items-center justify-center col-span-2 w-full h-32 rounded-md hover:opacity-70 cursor-pointer">
+                            <span @click="removeGameBanner"
+                                class="material-symbols-outlined hidden group-hover:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-1 rounded-md h-fit bg-red-500 text-white">
+                                close
+                            </span>
+                            <div class="w-full overflow-hidden rounded-md">
+                                <img :src="gameBannerUrl" alt="game icon" class="mx-auto h-full w-auto object-cover" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 item-center space-y-1 md:space-y-0">
-                    <label for="game-description" class="col-span-1 my-auto">
-                        <h1 class="text-md md:text-xl ">Game File<span class="text-red-500">*</span>:</h1>
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <div class="col-span-6 flex flex-col">
+                        <label for="game-video" class="mb-2">
+                            <h1 class="text-md md:text-xl">Video URL<span class="text-red-500">*</span>:</h1>
+                        </label>
+                        <input v-model="videoUrl" type="text" name="" id="game-video" placeholder="Game Video URL"
+                            class="px-2 py-2.5">
+                    </div>
+                    <div class="col-span-6 flex flex-col">
+                        <label for="game-description" class="mb-2">
+                            <h1 class="text-md md:text-xl">Game File<span class="text-red-500">*</span>:</h1>
+                        </label>
+                        <div v-if="!gameFileName" class="flex flex-grow items-center justify-center w-full">
+
+                            <label for="dropzone-file-game"
+                                :style="pathName == 'game' ? 'border:2px solid red !important' : ''"
+                                class="flex flex-col items-center justify-center w-full border h-full rounded-md cursor-pointer bg-gray-50">
+                                <div class="flex flex items-center justify-center gap-5">
+                                    <svg class="w-8 h-8 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">.zip (MAX. 100Mb)</p>
+                                </div>
+                                <input id="dropzone-file-game" type="file" class="hidden" @change="onGameFileChange" />
+                            </label>
+                        </div>
+                        <div v-if="gameFileName"
+                            class="relative flex flex-grow flex items-center justify-center gap-5 w-full border rounded-md">
+
+                            <div class="w-5 h-5 overflow-hidden rounded-md">
+                                <svg fill="#434c5e" viewBox="0 0 32 32" version="1.1" class="w-full h-full"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <title>zip</title>
+                                    <path
+                                        d="M5 30v-27h10v2h-2v2h2v2h-2v2h2v2h-2v2h2v2h-2v2h2v2h2v-2h-2v-2h2v-2h-2v-2h2v-2h-2v-2h2v-2h2.991v6.009h6.009v20.991h-21zM17 18h-4v7h4v-7zM16 23.938h-2v-2h2v2zM21 3h0.245l4.755 4.755v0.183h-5v-4.938z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <p class="max-w-[50%] text-sm truncate">{{ gameFileName }}</p>
+                            <span @click="removeGameFile"
+                                class="material-symbols-outlined absolute right-1.5 p-1 rounded-md h-fit cursor-pointer bg-red-500 hover:bg-red-400 text-white">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-6 flex flex-col">
+                    <label for="game-screenshots" class="mb-2">
+                        <h1 class="text-md md:text-xl">Screenshots:</h1>
                     </label>
-                    <div v-if="!gameFileName" class="flex items-center justify-center w-full col-span-2">
-                        <label for="dropzone-file-game" :style="pathName =='game'?'border:2px solid red !important':''"
-                            class="flex flex-col items-center justify-center w-full h-64 upload-file rounded-lg cursor-pointer bg-gray-50">
+                    <div class="flex gap-5 border rounded-md p-2 flex-wrap">
+                        <label for="game-screenshots"
+                            class="flex flex-col items-center justify-center w-32 h-32 rounded-md cursor-pointer border bg-gray-50">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                        class="font-semibold">Click
-                                        to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">.zip, .rar, ... (MAX. 100Mb)
-                                </p>
+                                <span class="material-symbols-outlined text-5xl text-gray-500">
+                                    add
+                                </span>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">.png, .jpeg, .jpg, ...</p>
                             </div>
-                            <input id="dropzone-file-game" type="file" class="hidden" @change="onGameFileChange" />
+                            <input id="game-screenshots" multiple type="file" class="hidden"
+                                @change="onUploadScreenshots" />
                         </label>
-                    </div>
-                    <div v-if="gameFileName"
-                        class="relative flex flex-col space-y-2 items-center justify-center w-full col-span-2 h-64 border rounded-lg">
-
-                        <span @click="removeGameFile"
-                            class="material-symbols-outlined absolute right-3 top-3 p-1 rounded-md h-fit cursor-pointer bg-red-500 hover:bg-red-400 text-white">
-                            close
-                        </span>
-
-                        <div class="w-32 h-32 overflow-hidden rounded-lg">
-                            <svg fill="#434c5e" viewBox="0 0 32 32" version="1.1" class="w-full h-full"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <title>zip</title>
-                                <path
-                                    d="M5 30v-27h10v2h-2v2h2v2h-2v2h2v2h-2v2h2v2h2v-2h-2v-2h2v-2h-2v-2h2v-2h-2v-2h2v-2h2.991v6.009h6.009v20.991h-21zM17 18h-4v7h4v-7zM16 23.938h-2v-2h2v2zM21 3h0.245l4.755 4.755v0.183h-5v-4.938z">
-                                </path>
-                            </svg>
+                        <div v-for="(url, index) in screenshotUrls" :key="index" class="">
+                            <div class="relative group hover:opacity-80 cursor-pointer">
+                                <span @click="removeScreenshot(index)"
+                                    class="material-symbols-outlined hidden group-hover:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-1 rounded-md h-fit bg-red-500 text-white">
+                                    close
+                                </span>
+                                <img :src="url" alt="game icon" class="w-auto h-32 object-cover rounded-md" />
+                            </div>
                         </div>
-                        <p class="max-w-[50%] text-sm truncate">{{ gameFileName }}</p>
                     </div>
                 </div>
+
 
                 <div class="flex gap-5 justify-end">
-                    <button class="secondary-btn" @click="$router.back()">Cancel</button>
-                    <button class="primary-btn" @click="addGame">
+                    <button class="secondary-btn w-32" @click="$router.back()">Cancel</button>
+                    <button class="primary-btn w-32" @click="addGame">
                         <Loading v-if="loading"></Loading>
-                        <span v-else>Upload</span>
-
+                        <span v-else>Submit</span>
                     </button>
                 </div>
             </form>
@@ -171,28 +260,103 @@ import Loading from '~/components/Loading.vue'
 import Swal from 'sweetalert2'
 const loading = ref(false)
 const title = ref("");
-const img = ref<File|null>(null);
+const img = ref<File | null>(null);
 const description = ref("");
-const game = ref<File|null>(null)
+const game = ref<File | null>(null)
 const gameIconFile = ref("");
 const iconFileName = ref("");
 const gameIconUrl = ref("");
-const categories:any = ref([])
+const categories: any = ref([])
 const gameFile = ref();
 const gameFileName = ref("");
-const genres:any = ref([]);
+const genres: any = ref([]);
 const genreList = ref("Select game categories");
 const isSelectGame = ref(false);
-
 const invalidMessage = ref("")
 const pathName = ref("")
 const nameGenres: any = ref([])
+
+const screenshotFiles = ref<File[]>([]);
+const screenshotUrls = ref<string[]>([]);
+
+const gameBannerFile = ref<File | null>(null);
+const gameBannerUrl = ref<string | null>(null);
+
+const videoUrl = ref("");
+
+
+const color = ref('');
+
+function onUploadGameBanner(e: any) {
+    const file = e.target.files[0];
+
+    gameBannerFile.value = file;
+
+    const errGameBanner = validGameIcon(file)
+    if (errGameBanner) {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Invalid input",
+            text: errGameBanner,
+            showConfirmButton: false,
+            timer: 2000
+        });
+
+        pathName.value = 'banner'
+        gameBannerFile.value = null;
+        return;
+    }
+
+    gameBannerUrl.value = URL.createObjectURL(file);
+}
+
+function removeGameBanner() {
+    gameBannerUrl.value = null;
+    gameBannerFile.value = null;
+}
+
+function onUploadScreenshots(e: any) {
+    const files = e.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const errScreenshot = validGameIcon(file)
+        if (errScreenshot) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Invalid input",
+                text: errScreenshot,
+                showConfirmButton: false,
+                timer: 2000
+            });
+
+            return;
+        }
+        const url = URL.createObjectURL(file);
+        screenshotFiles.value.push(...files);
+        screenshotUrls.value.push(url);
+    }
+
+}
+
+function removeScreenshot(index: number) {
+    screenshotFiles.value.splice(index, 1);
+    screenshotUrls.value.splice(index, 1);
+}
+
 const getAllCategories = async () => {
     const res = await callAPI('/dashboard/categories/getAllCategories');
     console.log('all categories', res);
     nameGenres.value = res.data
 
 }
+
+const changeColor = (e: any) => {
+    color.value = e.target.value;
+};
+
 function onIconFileChange(e: any) {
     const file = e.target.files[0];
     gameIconFile.value = file;
@@ -203,14 +367,15 @@ function onIconFileChange(e: any) {
         Swal.fire({
             position: "center",
             icon: "error",
-            title: "Wrong input",
+            title: "Invalid input",
             text: errGameIcon,
             showConfirmButton: false,
             timer: 2000
         });
+
         pathName.value = 'img'
         return;
-    } 
+    }
     gameIconUrl.value = URL.createObjectURL(file);
 }
 
@@ -231,7 +396,7 @@ function onGameFileChange(e: any) {
         });
         pathName.value = 'game'
         return;
-    } 
+    }
 
     gameFile.value = file;
     gameFileName.value = file.name;
@@ -279,14 +444,14 @@ const addGame = async () => {
     const errGameFile = validGame(game.value)
     if (errTitle) {
         pathName.value = 'title'
-        invalidMessage.value ='Title: ' + errTitle
+        invalidMessage.value = 'Title: ' + errTitle
         console.log(errTitle);
         return;
-        
+
     }
     if (errDescription) {
         pathName.value = 'description'
-        invalidMessage.value ='Description: ' + errDescription
+        invalidMessage.value = 'Description: ' + errDescription
         console.log(errDescription);
         return;
     }
@@ -300,11 +465,11 @@ const addGame = async () => {
             timer: 2000
         });
         pathName.value = 'img'
-  
+
         return;
     }
     if (errGameFile) {
-   
+
         Swal.fire({
             position: "center",
             icon: "error",
@@ -316,7 +481,7 @@ const addGame = async () => {
         pathName.value = 'game'
         return;
     }
-   
+
 
     if (isAddGameCalled) {
         return; // Exit the function if it has already been called
@@ -339,18 +504,18 @@ const addGame = async () => {
     }
     console.log("formData", formData);
     loading.value = true
-    const res = await callAPI('/dashboard/game/create', 'POST', formData)
-    console.log(res);
-    
-    if (res.status == 200) {
-        loading.value = false
-        window.location.href = '/game-admin'
-        isAddGameCalled = false;
-    }
+    // const res = await callAPI('/dashboard/game/create', 'POST', formData)
+    // console.log(res);
+
+    // if (res.status == 200) {
+    //     loading.value = false
+    //     window.location.href = '/game-admin'
+    //     isAddGameCalled = false;
+    // }
 
 }
 
-onMounted(()=>{
+onMounted(() => {
     getAllCategories()
 })
 </script>

@@ -92,14 +92,14 @@
                     </NuxtLink>
                 </div>
                 <div v-if="authStore.role === 'customer'">
-                    <NuxtLink  to="/analytics" class="menu-btn">
-                    <span class="material-symbols-outlined">
-                        trending_up
-                    </span>
-                    <span class="sidebar-hidden">Analytics</span>
-                </NuxtLink>
+                    <NuxtLink to="/analytics" class="menu-btn">
+                        <span class="material-symbols-outlined">
+                            trending_up
+                        </span>
+                        <span class="sidebar-hidden">Analytics</span>
+                    </NuxtLink>
                 </div>
-                
+
             </div>
         </div>
         <div>
@@ -158,16 +158,19 @@ const showGame = () => {
     width: 100%;
     background: #000;
 }
-.sidebar-title .router-link-active{
+
+.sidebar-title .router-link-active {
     background: #00000000;
 }
 
 .sidebar {
     @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color];
 }
-.sidebar{
+
+.sidebar {
     z-index: 100 !important;
 }
+
 .sidebar-title {
     @apply flex flex-col items-center gap-2 border-b py-5;
 }
@@ -181,7 +184,8 @@ const showGame = () => {
     @apply flex justify-between items-center text-black;
 
 }
-.nav-bar{
+
+.nav-bar {
     z-index: 90;
 }
 
@@ -228,7 +232,7 @@ const showGame = () => {
 }
 
 .dropdown .dropdown-btn {
-    @apply flex justify-between items-center gap-3 rounded-lg py-3 px-2 sm:px-5 cursor-pointer;
+    @apply flex justify-between items-center gap-3 rounded-md py-3 px-2 sm:px-5 cursor-pointer;
 
     span {
         @apply select-none;
