@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.js
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -7,5 +7,12 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     }
-  }
+  },
+  app: {
+    head: {
+      link: [
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+      ],
+    },
+  },
 })
