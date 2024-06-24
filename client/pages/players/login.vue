@@ -68,7 +68,7 @@ const phoneNumberErr = ref("");
 const games = ref<any>('');
 const playerLogin = async () => {
   const players = {
-    user_game_id: route.query.game_id,
+    user_game_id: Number(route.query.game_id),
     first_name: firstName.value,
     last_name: lastName.value,
     phone_number: phoneNumber.value,

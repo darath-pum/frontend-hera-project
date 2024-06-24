@@ -508,8 +508,8 @@ const addGame = async () => {
         Swal.fire({
             position: "center",
             icon: "error",
-            title: "Failed to upload game",
-            text: "Please try again",
+            title: "Upload Failed",
+            text: "Something went wrong. Please try again.",
             showConfirmButton: false,
             timer: 2000
         });

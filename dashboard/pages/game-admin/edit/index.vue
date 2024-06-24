@@ -511,6 +511,14 @@ const updateGame = async () => {
         isEditGameCalled = false;
         window.location.href = '/game-admin'
     } else {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Upload Failed",
+            text: "Something went wrong. Please try again.",
+            showConfirmButton: false,
+            timer: 2000
+        });
         loading.value = false
         isEditGameCalled = false;
     }
