@@ -8,13 +8,13 @@
                 <span>Player Total: {{ totalPlayer }}</span>
             </div>
         </div>
-        <canvas id="customerMAP"></canvas>
+        <canvas class="" id=" customerMAP"></canvas>
     </div>
 </template>
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted,ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { format } from "date-fns";
 import { callAPI } from '../../composables/callAPI';
@@ -30,19 +30,19 @@ const data = {
         backgroundColor: "blue",
         borderColor: "blue",
         data: counts,
-        tension:0.3
+        tension: 0.3
     }]
 };
 
 const config: any = {
-  type: "line",
-  data: data,
-  options: {
-    ticks: {
-          // forces step size to be 50 units
-          stepSize: 1
+    type: "line",
+    data: data,
+    options: {
+        ticks: {
+            // forces step size to be 50 units
+            stepSize: 1
         }
-  },
+    },
 };
 
 onMounted(async () => {
@@ -59,7 +59,7 @@ const getMAP = async () => {
     const customerMAP = response.data.player_counts;
     totalPlayer.value = response.data.total_players;
     for (let i = 0; i < customerMAP.length; i++) {
-        counts.push(customerMAP[i].player_count) 
+        counts.push(customerMAP[i].player_count)
         const date = format(new Date(customerMAP[i].day), 'dd-MM');
         dates.push(date);
     }
