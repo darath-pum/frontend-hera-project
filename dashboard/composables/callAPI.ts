@@ -2,9 +2,9 @@
 // import type { IAPIResponse } from "~/types";
 
 export const callAPI = async (path: string, method?: string, body?: any): Promise<IAPIResponse> => {
-  const token = useCookie('token').value || '';
+  const token = useCookie("token").value || "";
   const h: any = {
-    "Authorization": "Bearer " + token,
+    Authorization: "Bearer " + token,
     "Content-Type": "application/json",
     Accept: "application/json",
   };
@@ -25,9 +25,9 @@ export const callAPI = async (path: string, method?: string, body?: any): Promis
   });
   const { code, error, data, message } = res;
   resp.code = code;
-  resp.error = error;
-  resp.data = data;
-  resp.message = message;
+  resp.error = error || "";
+  resp.data = data || "";
+  resp.message = message || "";
   if (error) {
     resp.status = code >= 500 ? 500 : 400;
   }

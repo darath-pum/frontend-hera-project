@@ -9,7 +9,7 @@ export function validDescription(descrition?: string): string | any {
   }
 }
 export function validGameIcon(img: File | null): string | undefined {
-  if (!img) return "Game image icon is required";
+  if (!img) return "Game icon is required";
   const allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "avif"]; // Add more image extensions if needed
   const fileExtension = img.name.split(".").pop()?.toLowerCase();
   if (!fileExtension || !allowedExtensions.includes(fileExtension)) {

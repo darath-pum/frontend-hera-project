@@ -14,11 +14,11 @@
                                 </h1>
                             </label>
                             <div class="relative col-span-1 md:col-span-2">
-                                <input v-model="title" type="text" id="game-title" placeholder="Game Title"
-                                    maxlength="50" @click="pathName = ''" class="p-2 w-full"
-                                    :style="pathName == 'title' ? 'border:2px solid red' : ''" />
+                                <input v-model="title" type="text" id="game-title" placeholder="Game title"
+                                    maxlength="50" @click="pathName = []" class="p-2 w-full"
+                                    :style="pathName.includes('title') ? 'border:2px solid red' : ''" />
                                 <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ title.length }}/50
-                                    <span v-if="pathName == 'title'" class="text-red">{{ invalidMessage }}</span>
+                                    <span v-if="pathName.includes('title')" class="text-red">{{ invalidMessage }}</span>
                                 </p>
                             </div>
 
@@ -67,23 +67,21 @@
                         </label>
                         <div class="relative col-span-2">
                             <textarea v-model="description" type="text" id="game-description"
-                                placeholder="Game Description" @click="pathName = ''" max="500"
+                                placeholder="Game description" @click="pathName = []" max="500"
                                 class="  p-2 w-full min-h-[155px] max-h-[155px]"></textarea>
-                            <p class="absolute -bottom-7 right-0 md:left-0 text-gray-400">{{ description.length }}/500
-                                <span v-if="pathName == 'description'" class="text-red">{{ invalidMessage }}</span>
-                            </p>
+
                         </div>
                     </div>
                 </div>
 
                 <div class="grid xl:grid-cols-12 gap-2 sm:gap-8">
-                    <div class="col-span-6 md:col-span-2 flex flex-col">
+                    <div class="col-span-6 md:col-span-2 flex flex-col relative">
                         <label for="game-description" class="mb-2">
                             <h1 class="text-md md:text-xl">Icon<span class="text-red-500">*</span>:</h1>
                         </label>
-                        <div v-if="!gameIconUrl" class="flex flex-grow items-center justify-center">
+                        <div v-if="!gameIconUrl" class=" flex flex-grow items-center justify-center">
                             <label for="dropzone-file-icon"
-                                :style="pathName == 'img' ? 'border:2px solid red !important' : ''"
+                                :style="pathName.includes('img') ? 'border:2px solid red !important' : ''"
                                 class="flex flex-col items-center justify-center w-full aspect-square upload-file rounded-md cursor-pointer bg-gray-50">
                                 <div class="flex flex-col items-center justify-center">
                                     <svg class="w-8 h-8 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -110,7 +108,7 @@
                     </div>
                     <div class="col-span-6 md:col-span-2 flex flex-col">
                         <label for="game-color" class="mb-2">
-                            <h1 class="text-md md:text-xl">Color<span class="text-red-500">*</span>:</h1>
+                            <h1 class="text-md md:text-xl">Color:</h1>
                         </label>
                         <div
                             class="border rounded-md overflow-hidden flex-grow flex flex-col justify-center items-center bg-gray-50">
@@ -131,7 +129,7 @@
                         </label>
                         <div v-if="!gameBannerUrl" class="flex flex-grow items-center justify-center w-full">
                             <label for="game-banner"
-                                :style="pathName == 'banner' ? 'border:2px solid red !important' : ''"
+                                :style="pathName.includes('banner') ? 'border:2px solid red !important' : ''"
                                 class="flex flex-col items-center justify-center w-full h-full border rounded-md cursor-pointer bg-gray-50">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -149,7 +147,7 @@
                                 <input id="game-banner" type="file" class="hidden" @change="onUploadGameBanner" />
                             </label>
                         </div>
-                        <div v-if="gameBannerUrl" @click="removeIcon"
+                        <div v-if="gameBannerUrl" @click="removeGameBanner"
                             class="relative flex flex-grow group flex-col border items-center justify-center col-span-2 w-full h-32 rounded-md hover:opacity-70 cursor-pointer">
                             <span @click="removeGameBanner"
                                 class="material-symbols-outlined hidden group-hover:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-1 rounded-md h-fit bg-red-500 text-white">
@@ -165,9 +163,9 @@
                 <div class="grid lg:grid-cols-12 gap-8">
                     <div class="col-span-6 flex flex-col">
                         <label for="game-video" class="mb-2">
-                            <h1 class="text-md md:text-xl">Video URL<span class="text-red-500">*</span>:</h1>
+                            <h1 class="text-md md:text-xl">Video URL:</h1>
                         </label>
-                        <input v-model="videoUrl" type="text" name="" id="game-video" placeholder="Game Video URL"
+                        <input v-model="videoUrl" type="text" name="" id="game-video" placeholder="Game video URL"
                             class="px-2 py-2.5">
                     </div>
                     <div class="col-span-6 flex flex-col">
@@ -177,23 +175,23 @@
                         <div v-if="!gameFileName" class="flex flex-grow items-center justify-center w-full">
 
                             <label for="dropzone-file-game"
-                                :style="pathName == 'game' ? 'border:2px solid red !important' : ''"
-                                class="flex flex-col items-center justify-center w-full border h-full rounded-md cursor-pointer bg-gray-50">
+                                :style="pathName.includes('game') ? 'border:2px solid red !important' : ''"
+                                class="flex flex-col items-start justify-center w-full border h-full rounded-md cursor-pointer bg-gray-50 px-5">
                                 <div class="flex flex items-center justify-center gap-5">
-                                    <svg class="w-8 h-8 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2"
                                             d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                     </svg>
 
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">.zip (MAX. 100Mb)</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">.zip, .rar, ... (MAX. 100Mb)</p>
                                 </div>
                                 <input id="dropzone-file-game" type="file" class="hidden" @change="onGameFileChange" />
                             </label>
                         </div>
                         <div v-if="gameFileName"
-                            class="relative flex flex-grow flex items-center justify-center gap-5 w-full border rounded-md">
+                            class="relative flex flex-grow flex items-center justify-start gap-5 w-full border rounded-md">
 
                             <div class="w-5 h-5 overflow-hidden rounded-md">
                                 <svg fill="#434c5e" viewBox="0 0 32 32" version="1.1" class="w-full h-full"
@@ -273,7 +271,7 @@ const genres: any = ref([]);
 const genreList = ref("Select game categories");
 const isSelectGame = ref(false);
 const invalidMessage = ref("")
-const pathName = ref("")
+const pathName = ref<String[]>([])
 const nameGenres: any = ref([])
 
 const screenshotFiles = ref<File[]>([]);
@@ -303,7 +301,7 @@ function onUploadGameBanner(e: any) {
             timer: 2000
         });
 
-        pathName.value = 'banner'
+        pathName.value.push('banner')
         gameBannerFile.value = null;
         return;
     }
@@ -347,7 +345,7 @@ function removeScreenshot(index: number) {
 }
 
 const getAllCategories = async () => {
-    const res = await callAPI('/dashboard/categories/getAllCategories');
+    const res = await callAPI('/dashboard/genre/getAllGenres');
     console.log('all categories', res);
     nameGenres.value = res.data
 
@@ -373,7 +371,7 @@ function onIconFileChange(e: any) {
             timer: 2000
         });
 
-        pathName.value = 'img'
+        pathName.value.push('img')
         return;
     }
     gameIconUrl.value = URL.createObjectURL(file);
@@ -394,7 +392,7 @@ function onGameFileChange(e: any) {
             showConfirmButton: false,
             timer: 2000
         });
-        pathName.value = 'game'
+        pathName.value.push('game')
         return;
     }
 
@@ -439,47 +437,25 @@ let isAddGameCalled = false;
 const addGame = async () => {
 
     const errTitle = validTitle(title.value)
-    const errDescription = validDescription(description.value)
     const errGameImage = validGameIcon(img.value)
+    const errGameBanner = validGameIcon(gameBannerFile.value)
     const errGameFile = validGame(game.value)
-    if (errTitle) {
-        pathName.value = 'title'
-        invalidMessage.value = 'Title: ' + errTitle
-        console.log(errTitle);
-        return;
 
-    }
-    if (errDescription) {
-        pathName.value = 'description'
-        invalidMessage.value = 'Description: ' + errDescription
-        console.log(errDescription);
-        return;
-    }
-    if (errGameImage) {
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Wrong input",
-            text: errGameImage,
-            showConfirmButton: false,
-            timer: 2000
-        });
-        pathName.value = 'img'
 
-        return;
-    }
-    if (errGameFile) {
+    if (errTitle || errGameImage || errGameBanner || errGameFile) {
+        if (errTitle)
+            pathName.value.push('title')
 
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Wrong input",
-            text: errGameFile,
-            showConfirmButton: false,
-            timer: 2000
-        });
-        pathName.value = 'game'
-        return;
+        if (errGameImage)
+            pathName.value.push('img')
+
+        if (errGameBanner)
+            pathName.value.push('banner')
+
+        if (errGameFile)
+            pathName.value.push('game')
+
+        return
     }
 
 
@@ -495,23 +471,51 @@ const addGame = async () => {
     formData.set('categories', JSON.stringify(categories.value))
     if (img.value != null) {
         formData.append('img', img.value)
-        console.log(img.value);
-
     }
     if (game.value != null) {
         formData.append('game', game.value)
-        console.log(game.value);
     }
+    if (gameBannerFile.value != null) {
+        formData.append('banner', gameBannerFile.value)
+    }
+
+    if (videoUrl.value != "") {
+        formData.set('video_url', videoUrl.value)
+    }
+
+    if (screenshotFiles.value.length > 0) {
+        for (let i = 0; i < screenshotFiles.value.length; i++) {
+            formData.append('screenshots', screenshotFiles.value[i])
+        }
+    }
+
+    if (color.value != "") {
+        formData.set('color', color.value)
+    } else {
+        formData.set('color', "#FFFFFF")
+    }
+
     console.log("formData", formData);
     loading.value = true
-    // const res = await callAPI('/dashboard/game/create', 'POST', formData)
-    // console.log(res);
+    const res = await callAPI('/dashboard/game/create', 'POST', formData)
+    console.log(res);
 
-    // if (res.status == 200) {
-    //     loading.value = false
-    //     window.location.href = '/game-admin'
-    //     isAddGameCalled = false;
-    // }
+    if (res.status == 200) {
+        loading.value = false
+        window.location.href = '/game-admin'
+        isAddGameCalled = false;
+    } else {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Failed to upload game",
+            text: "Please try again",
+            showConfirmButton: false,
+            timer: 2000
+        });
+        isAddGameCalled = false;
+        loading.value = false
+    }
 
 }
 
