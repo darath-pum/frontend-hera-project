@@ -40,7 +40,7 @@
                                 @click="login">
                                 <Loading v-if="loading"></Loading>
                                 <span v-else>Login</span>
-                                
+
                             </button>
 
                         </div>
@@ -63,7 +63,6 @@
 </template>
 
 <script setup lang="ts">
-import Swal from 'sweetalert2'
 import { ref, onMounted } from 'vue';
 import { callAPI } from '../../composables/callAPI';
 // import { useCookie } from '@nuxtjs/composition-api'
@@ -117,31 +116,27 @@ const login = async () => {
         // const token = ; 
         loading.value = false
         const cookie = useCookie('token', {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)})
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        })
         cookie.value = res.data.token
         // cookie.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Expires in 7 days
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Success",
-            text: "You have logged in successfully.",
-            showConfirmButton: false,
-            timer: 1500
-        });
+        swAlert("success","Success","You have logged in successfully.",1500);
 
         setTimeout(() => {
             window.location.href = "/"
         }, 2000);
-    
+
     } else {
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Wrong credentials!",
-            text: "Please check your email and password.",
-            showConfirmButton: false,
-            timer: 1500
-        })
+        if (res.code == 400) {
+            swAlert("error","","User has been locked.",1500)
+            loading.value = false
+
+        }
+        if (res.code == 404) {
+            swAlert("error",'Wrong Credentials',"Email and password is incorrect.", 1500)
+            loading.value = false
+
+        }
     }
 
 

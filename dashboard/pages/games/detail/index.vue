@@ -43,10 +43,10 @@
                 <div class="qr-code flex flex-col gap-5 justify-center items-center sm:items-start pb-24">
                     <h1 class="text-xl font-semibold">Game QR Code</h1>
                     <div>
-                        <qrcode-vue :value="game.img_url" :size="200" level="H"></qrcode-vue>
+                        <qrcode-vue :value="`http://192.168.11.122:3001/players/login?game_id=${game.id}`" :size="200" level="H"></qrcode-vue>
                     </div>
 
-                    <a href="http://192.168.11.122:3201/public/hera/image/image-zCnhA6-20240601094056.png" download>
+                    <a :href="`http://192.168.11.122:3000/players/login?game_id=${game.id}`" download>
                         
                         <button class="secondary-btn mt-1">Download QR Code</button>
                     </a>

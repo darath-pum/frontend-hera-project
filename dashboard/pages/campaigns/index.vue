@@ -64,7 +64,7 @@
                                         <span>Edit</span>
                                     </div>
                                 </NuxtLink>
-                                <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`' class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white">
+                                <NuxtLink :to='`/prizes-pool?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined">

@@ -6,6 +6,11 @@
             to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.</p>
 
+        <div class="flex flex-row justify-end">
+            <NuxtLink :to="`/prizes-pool?campaign=${$route.query.campaign}`">
+                <button class="primary-btn">Edit prize pool</button>
+            </NuxtLink>
+        </div>
         <form action="" class="flex flex-col gap-7">
             <div class="g-one">
                 <div class="title">
@@ -77,11 +82,11 @@
                 </div>
             </div>
         </form>
-        <div class="flex flex-row justify-end gap-2 -mt-7">
+        <div class="flex flex-row justify-end gap-5 -mt-7">
 
-            <button class="secondary-btn" @click="$router.back()">Cancel</button>
+            <button class="secondary-btn w-20" @click="$router.back()">Cancel</button>
 
-            <button class="primary-btn" @click="editCampaign">
+            <button class="primary-btn w-20" @click="editCampaign">
                 <Loading v-if="loading"></Loading>
                 <span v-else>Save</span>
             </button>
@@ -113,15 +118,6 @@ const userGames:any = ref<any>()
 const allGamesUser = ref<any>([])
 const gameUserGameId = ref()
 
-
-async function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-}
 
 const getCampaignById = async () => {
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
@@ -250,9 +246,7 @@ onMounted(async () => {
 
 </script>
 <style scoped>
-form {
-    margin-top: 4rem !important;
-}
+
 
 .g-one,
 .g-two,

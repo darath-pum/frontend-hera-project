@@ -3,7 +3,7 @@
         <h1 class="page-title">List all games</h1>
 
         <div class="flex flex-col items-center gap-4 mt-10">
-            <div class="flex justify-between items-center w-full gap-5">
+            <div class="flex justify-between items-end w-full gap-5">
 
                 <div class="select flex flex-col items-center justify-center">
                     <label for="" class="text-start w-full font-semibold">Selete user:</label>
@@ -17,7 +17,8 @@
                         </span>
                     </div>
                 </div>
-                <div>
+                <div class="flex flex-row gap-5">
+                    <button v-if="usergame_ids.length >0" class="primary-btn w-55" @click="unAssignGame">Unassign game</button>
                     <AddUserGame :userId="user_id" :arrGameId="arrGameId"></AddUserGame>
                 </div>
 
@@ -25,16 +26,19 @@
         </div>
        
         <div class="list-cards  flex flex-row justify-between">
-            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item.id">
-                <div class="flex flex-row items-start">
-                    <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
-                        <img :src="item.img_url" alt="" class="w-full h-full object-cover">
+            <div class="game-card shadow-sm border-b-2" v-for="(item) in games" :key="item.id" :style="usergame_ids.includes(item.id)?'border:2px solid var(--primary-color)':''">
+                <div class="flex flex-row items-start justify-between">
+                    <div class="flex flex-row items-start">
+                        <div class="w-24 h-24 min-w-24 overflow-hidden rounded-lg">
+                            <img :src="item.img_url" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col pl-5 gap-1">
+                            <h2 class="text-md font-semibold line-clamp-1">{{ item.title }}</h2>
+                            <span class="text-sm line-clamp-3">{{ item.description }}</span>
+                        </div>
+
                     </div>
-                    <div class="flex flex-col pl-5 gap-1">
-                        <h2 class="text-md font-semibold line-clamp-1">{{ item.title }}</h2>
-                        <span class="text-sm line-clamp-3">Considering factors such as objectives, budget, target
-                            audience.</span>
-                    </div>
+                    <div class="flex flex-row justify-end"><input type="checkbox" class="cursor-pointer" style="width: 1.2rem; height: 1.2rem;" @click="selectGame(item.id)"></div>
                 </div>
                 <div class="card-footer flex flex-row justify-end">
                     <div class="btn-view-detail">
@@ -65,6 +69,8 @@ const user_id = ref(useRoute().query.user)
 const users = ref()
 const games = ref<IGame[]>([])
 const arrGameId:any = ref([])
+const usergame_ids:any = ref([])
+
 
 
 const getAllGames = async () => {
@@ -83,6 +89,9 @@ const getAllGames = async () => {
     }
 }
 
+
+
+
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
     console.log(res.data);
@@ -90,11 +99,32 @@ const getAllUsers = async () => {
         users.value = res.data
     }
 }
-
+const selectGame = (id:number)=>{
+    if(!usergame_ids.value.includes(id)){
+        usergame_ids.value.push(id)
+        console.log("after add",usergame_ids.value);
+        
+    }else{
+        const indexOne = usergame_ids.value.indexOf(id);
+        usergame_ids.value.splice(indexOne, 1);
+        console.log("after delete",usergame_ids.value);
+        
+    }
+}
+const unAssignGame = async()=>{
+    console.log(usergame_ids.value);
+    
+    const res = await callAPI('/dashboard/game/user/delete', 'DELETE',{usergame_ids:usergame_ids.value})
+    console.log(res);
+    await getAllGames()
+    usergame_ids.value = []
+    
+}
 onMounted(() => {
     getAllUsers()
     getAllGames()
 })
+
 
 
 </script>

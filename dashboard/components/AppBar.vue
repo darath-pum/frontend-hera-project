@@ -84,6 +84,12 @@
                         </span>
                         <span>Campaign</span>
                     </NuxtLink>
+                    <NuxtLink to="/prizes-pool" v-if="isLd" class="menu-btn dropdown-item">
+                        <span class="material-symbols-outlined">
+                            rewarded_ads
+                        </span>
+                        <span>Prize pool</span>
+                    </NuxtLink>
                     <NuxtLink to="/prizes" v-if="isLd" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
                             rewarded_ads
@@ -216,7 +222,7 @@ const showGame = () => {
 }
 
 .menu-btn.router-link-active {
-    @apply bg-[#e5e9f0] text-[--primary-color] mx-0;
+    @apply bg-[#e5e9f0] text-[--primary-color] mx-0; 
 }
 
 .menu-btn .material-symbols-outlined {

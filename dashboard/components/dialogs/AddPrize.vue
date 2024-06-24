@@ -65,14 +65,7 @@ const resetInput = () => {
     name_kh.value = ''
     image_url.value = ''
 }
-async function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-}
+
 const handleImage = async (e: any) => {
     const file = e.target.files[0]
     image.value = file

@@ -14,7 +14,7 @@
         <div v-if="isShow" class="dialog-backdrop" @click="isShow = false" :class="[isShow ? 'active' : '']"></div>
         <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false"
             :class="[isShow ? 'active' : '']">
-            <div @click.stop class="flex pf-popup flex-col gap-2">
+            <div class="flex pf-popup flex-col gap-2">
                 <img :src="pf_image" alt="">
 
                 <h1>{{ authStore.first_name }}</h1>

@@ -1,11 +1,11 @@
 <template>
     <div class="">
-        <button class="primary-btn" @click="showDlialog">Add user's game</button>
+        <button class="primary-btn w-55" @click="showDlialog">Assign game</button>
         <div v-if="isShow" class="dialog" @click="closeDialog">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUsersGame">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
-                    <h1>Add user's game</h1>
+                    <h1>Assign game</h1>
                     <span class="material-symbols-outlined cursor-pointer" @click="closeDialog">
                         cancel
                     </span>

@@ -16,8 +16,8 @@
                 <h1 class="text-red">Delete</h1>
                 <p class="text-[#000000]">Do you want to delete this {{ itemName }}?</p>
                 <div class="btn-save flex flex-row gap-2 justify-center">
-                    <button class="primary-btn" @click="isShow = false">No</button>
-                    <button class="secondary-btn" @click="handleDelete">Yes</button>
+                    <button class="primary-btn w-14" @click="isShow = false">No</button>
+                    <button class="secondary-btn w-14" @click="handleDelete">Yes</button>
                 </div>
             </div>
         </div>
@@ -129,14 +129,7 @@ const handleDelete = async () => {
     visibility: hidden;
 }
 
-/* .prize-dialog {
-    transition: 1s;
-    transform: translateY(0px);
-}
-.prize-dialog{
-    transition: 0.1s;
-    transform: translateY(0px);
-} */
+
 
 #dilog-delete {
     width: 20rem;
@@ -159,7 +152,11 @@ const handleDelete = async () => {
 
 }
 
+.btn-save button {
+    font-size: 0.8rem;
+    padding: 0.5rem;
 
+}
 
 #dilog-delete h1 {
     font-size: 24px;

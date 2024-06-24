@@ -13,6 +13,7 @@ interface IUser{
     email:string;
     role:string;
     pf_img_url:string;
+    is_locked:boolean;
 }
 
 interface IGame {

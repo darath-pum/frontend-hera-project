@@ -20,11 +20,10 @@ body {
 }
 
 :root {
-  --primary-color: #1A2130;
-
+  --primary-color: #212121;
   --secondary-color: #6c757d;
   --third-color: #ffff;
-  --radius: 10px;
+  --radius: 5px;
 }
 
 .input-form {
@@ -108,7 +107,7 @@ body {
 .router-link-active {
   background: #ffffff7e;
   /* width: 100%; */
-  border-radius: var(--radius);
+  border-radius: var(--radius) !important;
   margin: 0rem 1rem 0rem 1rem;
 }
 /* ==================================== */
@@ -117,7 +116,7 @@ body {
   width: 100%;
   color: #000000;
   padding: 3rem 2rem;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .page-title {
