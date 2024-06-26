@@ -346,7 +346,6 @@ function removeScreenshot(index: number) {
 
 const getAllCategories = async () => {
     const res = await callAPI('/dashboard/genre/getAllGenres');
-    console.log('all categories', res);
     nameGenres.value = res.data
 
 }
@@ -380,7 +379,6 @@ function onIconFileChange(e: any) {
 function onGameFileChange(e: any) {
     const file = e.target.files[0];
     game.value = file
-    console.log(file.type);
     const errGameFile = validGame(game.value)
 
     if (errGameFile) {
@@ -406,7 +404,6 @@ const showSelectGame = () => {
 const addGenre = (genre: string) => {
     if (!genres.value.includes(genre)) {
         genres.value.push(genre);
-        console.log(genres.value);
         categories.value.push(genre)
     } else {
         const index = genres.value.indexOf(genre);
@@ -495,10 +492,8 @@ const addGame = async () => {
         formData.set('color', "#FFFFFF")
     }
 
-    console.log("formData", formData);
     loading.value = true
     const res = await callAPI('/dashboard/game/create', 'POST', formData)
-    console.log(res);
 
     if (res.status == 200) {
         loading.value = false
