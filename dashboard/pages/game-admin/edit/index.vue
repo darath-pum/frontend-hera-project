@@ -296,7 +296,6 @@ const changeColor = (e: any) => {
 
 const getAllCategories = async () => {
     const res = await callAPI('/dashboard/genre/getAllGenres');
-    console.log('all categories', res);
     genres.value = res.data
 }
 
@@ -353,8 +352,6 @@ function onUploadScreenshots(e: any) {
         screenshotFiles.value.push(file);
         screenshotUrls.value.push(url);
 
-        console.log(screenshotUrls.value)
-        console.log(screenshotFiles.value.length)
     }
 }
 
@@ -379,7 +376,6 @@ function removeScreenshot(url: string) {
 
 const getGameById = async () => {
     const res = await callAPI(`/dashboard/game/getInfo/${gameId}`);
-    console.log(res);
 
     title.value = res.data.title
     description.value = res.data.description
@@ -492,7 +488,6 @@ const updateGame = async () => {
         formData.append('banner', gameBannerFile.value)
     }
 
-    console.log(screenshotFiles.value.length)
     if (screenshotFiles.value.length > 0) {
         for (let i = 0; i < screenshotFiles.value.length; i++) {
             formData.append('screenshots', screenshotFiles.value[i])
@@ -501,10 +496,8 @@ const updateGame = async () => {
 
     formData.set('color', color.value)
 
-    console.log("formData", formData);
     loading.value = true
     const res = await callAPI(`/dashboard/game/update/${gameId}`, 'PUT', formData);
-    console.log(res);
 
     if (res.status == 200) {
         loading.value = false
