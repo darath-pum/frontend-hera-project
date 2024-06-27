@@ -9,7 +9,7 @@
             </div>
 
             <div class="sidebar-title">
-                <NuxtLink to="/">
+                <NuxtLink to="/   ">
                     <div class="sidebar-title-logo">
                         <span class="material-symbols-outlined">
                             dashboard
@@ -57,7 +57,7 @@
                         </span>
                         <span>Games</span>
                     </NuxtLink>
-                    <NuxtLink to="/user's-game" v-if="isGame" class="menu-btn dropdown-item">
+                    <NuxtLink to="/users_game" v-if="isGame" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
                             rewarded_ads
                         </span>
@@ -84,6 +84,12 @@
                         </span>
                         <span>Campaign</span>
                     </NuxtLink>
+                    <NuxtLink to="/prizes-pool" v-if="isLd" class="menu-btn dropdown-item">
+                        <span class="material-symbols-outlined">
+                            rewarded_ads
+                        </span>
+                        <span>Prize pool</span>
+                    </NuxtLink>
                     <NuxtLink to="/prizes" v-if="isLd" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
                             rewarded_ads
@@ -92,14 +98,14 @@
                     </NuxtLink>
                 </div>
                 <div v-if="authStore.role === 'customer'">
-                    <NuxtLink  to="/analytics" class="menu-btn">
-                    <span class="material-symbols-outlined">
-                        trending_up
-                    </span>
-                    <span class="sidebar-hidden">Analytics</span>
-                </NuxtLink>
+                    <NuxtLink to="/analytics" class="menu-btn">
+                        <span class="material-symbols-outlined">
+                            trending_up
+                        </span>
+                        <span class="sidebar-hidden">Analytics</span>
+                    </NuxtLink>
                 </div>
-                
+
             </div>
         </div>
         <div>
@@ -130,7 +136,7 @@ import { useAuthStore } from '~/store/auth';
 
 const authStore = useAuthStore()
 
-console.log(authStore.role)
+
 
 const isLd = ref(false);
 
@@ -138,7 +144,7 @@ const isSideBarShow = ref(false);
 
 const toggleSidebar = () => {
     isSideBarShow.value = !isSideBarShow.value
-    console.log(isSideBarShow.value)
+
 }
 
 const showLd = () => {
@@ -158,16 +164,19 @@ const showGame = () => {
     width: 100%;
     background: #000;
 }
-.sidebar-title .router-link-active{
+
+.sidebar-title .router-link-active {
     background: #00000000;
 }
 
 .sidebar {
     @apply fixed h-full w-[14rem] lg:w-[18rem] text-white bg-[--primary-color];
 }
-.sidebar{
+
+.sidebar {
     z-index: 100 !important;
 }
+
 .sidebar-title {
     @apply flex flex-col items-center gap-2 border-b py-5;
 }
@@ -181,7 +190,8 @@ const showGame = () => {
     @apply flex justify-between items-center text-black;
 
 }
-.nav-bar{
+
+.nav-bar {
     z-index: 90;
 }
 

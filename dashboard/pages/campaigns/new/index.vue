@@ -78,13 +78,13 @@
             </div>
         </form>
 
-        <div class="flex flex-row justify-end gap-2 -mt-7">
+        <div class="flex flex-row justify-end gap-5 -mt-7">
 
 
-            <button class="secondary-btn" @click="$router.back()">Cancel</button>
-            <button class="primary-btn" @click="addCampaign">
+            <button class="secondary-btn " @click="$router.back()">Cancel</button>
+            <button class="primary-btn w-20" @click="addCampaign">
                 <Loading v-if="loading"></Loading>
-                <span v-else>Save</span>
+                <span v-else>Submit</span>
             </button>
         </div>
     </div>
@@ -109,19 +109,11 @@ const end_date = ref('');
 const user_game_id = ref<any[]>([])
 const loading = ref(false)
 
-async function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-}
+
 const handleImage = async (event: any) => {
     const file = event.target.files[0];
     image.value = file
     image_url.value = await getBase64(file)
-    console.log(image.value);
     const errCpImage = validCpImage(image.value)
     if (errCpImage) {
         pathName.value = 'image'
@@ -139,7 +131,6 @@ const userGames = ref<any[]>([])
 const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
-        console.log("getAllUserGame", res.data);
         userGames.value = res.data
 
     }
@@ -151,7 +142,6 @@ const addUserGame = (title: string, id: number) => {
     if (!user_game_id.value.includes(id)) {
         allGamesUser.value.push(title);
         user_game_id.value.push(id);
-        // console.log(allGamesUser.value);
 
     } else {
         const index = user_game_id.value.indexOf(id);
@@ -159,7 +149,6 @@ const addUserGame = (title: string, id: number) => {
         user_game_id.value.splice(index, 1);
     }
     gamesList.value = allGamesUser.value.join(', ');
-    console.log(user_game_id.value);
 
 };
 const addCampaign = async () => {

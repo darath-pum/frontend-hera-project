@@ -4,7 +4,7 @@
             class="pf-g flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
             <span class="hidden md:block">{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
-                <img id="profile-image" :src="pf_image" alt="">
+                <img id="profile-image" :src="!pf_image?profileDefault:pf_image" alt="">
             </div>
             <span class="material-symbols-outlined cursor-pointer select-none">
                 arrow_drop_down
@@ -14,13 +14,13 @@
         <div v-if="isShow" class="dialog-backdrop" @click="isShow = false" :class="[isShow ? 'active' : '']"></div>
         <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false"
             :class="[isShow ? 'active' : '']">
-            <div @click.stop class="flex pf-popup flex-col gap-2">
+            <div class="flex pf-popup flex-col gap-2">
                 <img :src="pf_image" alt="">
 
                 <h1>{{ authStore.first_name }}</h1>
                 <p class="">{{ authStore.email }}</p>
                 <div class="btn-save flex flex-col gap-5 justify-center">
-                    <NuxtLink to="/my-account">
+                    <NuxtLink to="/my_account">
                         <button class="primary-btn w-full">Your Account</button>
 
                     </NuxtLink>
@@ -49,7 +49,7 @@ const showPopup = () => {
 
 const logout = async () => {
     const res = await callAPI('/dashboard/user/logout', 'POST')
-    console.log(res);
+
 
 
     token.value = ''
@@ -133,16 +133,6 @@ const logout = async () => {
     @apply shadow-lg border;
 }
 
-/* .pf-popup::before{
-    position: absolute;
-    content: "";
-    width: 100vw;
-    height: 100vh;
-    z-index: -1 !important;
-    top: 0;
-    left: 0;
-    background: #000000c9;
-} */
 
 .pf-popup h1 {
     font-size: 1.5rem;

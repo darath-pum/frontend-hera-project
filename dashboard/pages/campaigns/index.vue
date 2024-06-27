@@ -64,7 +64,7 @@
                                         <span>Edit</span>
                                     </div>
                                 </NuxtLink>
-                                <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`' class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white">
+                                <NuxtLink :to='`/prizes-pool?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
 
                                         <span class="material-symbols-outlined">
@@ -107,14 +107,12 @@ const campaigns = ref<ICampaign[]>([])
 const isBtn = ref(false)
 const campaignId = ref()
 const showBtnAction = (id: any) => {
-    console.log(id);
     campaignId.value = id
     isBtn.value = !isBtn.value
 }
 
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
-    console.log('compaigns', res);
 
     if (res.status == 200) {
         campaigns.value = res.data
@@ -149,11 +147,6 @@ th {
     background: var(--primary-color);
     color: #FFFFFF;
     padding: 0.5rem;
-}
-
-tr {
-    /* border-bottom: 5px solid #FFFFFF; */
-    /* border-top: 5px solid #FFFFFF; */
 }
 
 td {

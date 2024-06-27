@@ -6,6 +6,11 @@
             to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.</p>
 
+        <div class="flex flex-row justify-end">
+            <NuxtLink :to="`/prizes-pool?campaign=${$route.query.campaign}`">
+                <button class="primary-btn">Edit prize pool</button>
+            </NuxtLink>
+        </div>
         <form action="" class="flex flex-col gap-7">
             <div class="g-one">
                 <div class="title">
@@ -17,7 +22,7 @@
                     :class="[isSelectGame ? 'active' : '']"></div>
                 <div class="item-center w-full">
                     <label for="game-category" class="col-span-1 my-auto">
-                        <h1>Categories:</h1>
+                        <h1>Games:</h1>
                     </label>
                     <div @click="showSelectGame"
                         class="select-game relative cursor-pointer select-cat w-full top-[3px] col-span-2 z-50 flex item-center justify-between">
@@ -77,11 +82,11 @@
                 </div>
             </div>
         </form>
-        <div class="flex flex-row justify-end gap-2 -mt-7">
+        <div class="flex flex-row justify-end gap-5 -mt-7">
 
-            <button class="secondary-btn" @click="$router.back()">Cancel</button>
+            <button class="secondary-btn w-20" @click="$router.back()">Cancel</button>
 
-            <button class="primary-btn" @click="editCampaign">
+            <button class="primary-btn w-20" @click="editCampaign">
                 <Loading v-if="loading"></Loading>
                 <span v-else>Save</span>
             </button>
@@ -114,19 +119,8 @@ const allGamesUser = ref<any>([])
 const gameUserGameId = ref()
 
 
-async function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-}
-
 const getCampaignById = async () => {
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
-    console.log(res);
-
     campaign.value = res.data
     title.value = res.data.title
     desc.value = res.data.desc
@@ -134,7 +128,7 @@ const getCampaignById = async () => {
     end_date.value = res.data.end_date.substring(0, 10)
     img_url.value = res.data.img_url
     gameUserGameId.value = res.data.user_game_id
-    console.log("user game id", gameUserGameId.value);
+
 
 
 
@@ -143,7 +137,6 @@ const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
         userGames.value = res.data
-        console.log("usersGame", userGames.value);
         for (let index:number = 0; index < (userGames.value).length; index++) {
             const guid:number = userGames.value[index].id;
             for (let i = 0; i < (gameUserGameId.value).length; i++) {
@@ -173,16 +166,14 @@ const addUserGame = (title: string, id: number) => {
         user_game_id.value.splice(index, 1);
     }
     gamesList.value = allGamesUser.value.join(', ');
-    console.log(user_game_id.value);
+
 
 };
 
 const handleImage = async (event: any) => {
     const file = event.target.files[0];
     image.value = file
-
     img_url.value = await getBase64(file)
-    console.log(img_url.value);
     const errCpImage = validCpImageEdit(image.value)
     if (errCpImage) {
         pathName.value = 'image'
@@ -230,7 +221,6 @@ const editCampaign = async () => {
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
     loading.value = true
     const res = await callAPI(`/dashboard/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
-    console.log(res);
     
     if (res.status == 200) {
         loading.value = false
@@ -250,9 +240,7 @@ onMounted(async () => {
 
 </script>
 <style scoped>
-form {
-    margin-top: 4rem !important;
-}
+
 
 .g-one,
 .g-two,
