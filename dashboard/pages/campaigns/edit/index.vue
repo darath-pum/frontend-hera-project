@@ -55,7 +55,7 @@
                 <div class="start-date">
                     <label for="">Start Date: <span v-if="pathName == 'start_date'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="date" v-model="start_date" :style="pathName == 'start_date'?'border:2px solid red':''" @click="pathName = ''">
+                    <input type="date" v-model="start_date" :max="maxEndDate" :style="pathName == 'start_date'?'border:2px solid red':''" @click="pathName = ''">
                 </div>
                 <div class="end-date">
                     <label for="">End Date: <span v-if="pathName == 'end_date'" class="text-red">{{ invalidMessage
@@ -230,6 +230,12 @@ const editCampaign = async () => {
 const minStartDate = computed(() => {
     if (start_date.value) {
         const startDate = new Date(start_date.value);
+        return startDate.toISOString().split("T")[0];
+    }
+});
+const maxEndDate = computed(() => {
+    if (end_date.value) {
+        const startDate = new Date(end_date.value);
         return startDate.toISOString().split("T")[0];
     }
 });

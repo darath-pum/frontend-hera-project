@@ -57,6 +57,7 @@
                   id="fromDate"
                   style="border: 1px solid"
                   class=" mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :max="maxEndDate"
                 />
                 <input
                   type="time"
@@ -81,6 +82,7 @@
                   id="toDate"
                   style="border: 1px solid"
                   class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :min="minStartDate"
                 />
                 <input
                   type="time"
@@ -305,6 +307,20 @@ onMounted(async () => {
   if (!route.query.gameId && gameLists.value.length !== 0) {
     window.location.href = `/analytics?gameId=${gameId.value}`;
   }
+});
+
+
+const minStartDate = computed(() => {
+    if (fromDate.value) {
+        const startDate = new Date(fromDate.value);
+        return startDate.toISOString().split("T")[0];
+    }
+});
+const maxEndDate = computed(() => {
+    if (toDate.value) {
+        const startDate = new Date(toDate.value);
+        return startDate.toISOString().split("T")[0];
+    }
 });
 </script>
 
