@@ -67,7 +67,9 @@
                               
                                 <DeleteItem :itemName="'Campaign'" :campaignId="item.id" class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white"
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
-
+                                </div>
+                            </span>
+                        </div>
 
                     </a>
                     <div id="more-action">
