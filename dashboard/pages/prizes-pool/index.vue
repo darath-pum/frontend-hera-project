@@ -40,7 +40,7 @@
             </div>
             <div class="flex flex-row justify-between gap-2 items-center">
                 <button v-if="prizesPool.length > 0" class="primary-btn w-55" @click="goToEdit">Edit campaign</button>
-                <AddPrizePool :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
+                <AddPrizePool v-if="prizesPool.length > 0"  :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
             </div>
         </div>
         <table>
