@@ -42,7 +42,6 @@ const props = defineProps([
     "getAllGames"
 ])
 const selectedItems = ref(props.selectedItems)
-console.log("selectedItems", selectedItems.value);
 
 const itemName = ref(props.itemName)
 const prize_id = props.prizeId
@@ -87,7 +86,6 @@ const handleDelete = async () => {
 
     }
     const res = await callAPI(option, 'DELETE')
-    console.log(res);
     if (props.functionName == 'deleteUser') {
         await props.getAllUsers()
 

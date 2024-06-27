@@ -158,7 +158,6 @@ const getAllPrizesPool = async () => {
     const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
     loading.value = false
     if (res.status == 200) {
-        console.log("prize pool", res);
         prizesPool.value = res.data;
         backUpPrizes = res.data
         selectedItems.value = [];
@@ -190,10 +189,6 @@ const updateQty = (id: number, newQty: number) => {
     }
 
     prizesPool.value = [...updatedPrizesPool];
-
-
-    console.log('updated prize pool', prizesPool.value);
-    console.log("before add", prize_pool.value);
     showEditQty(0)
 
 };
@@ -203,13 +198,12 @@ const saveQty = async () => {
         prize_pool: prize_pool.value
     }
     const res = await callAPI(`/dashboard/prizepool/updatePrizePool/${campaignId.value}`, 'PUT', body)
-    console.log("saveQty", res);
+
     window.location.reload()
     await getAllPrizesPool()
 }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
-    console.log('compaigns', res);
 
     if (res.status == 200) {
         campaigns.value = res.data
@@ -228,18 +222,12 @@ onMounted(async () => {
 const addId = (id: number, qty: number) => {
     if (!selectedItems.value.includes(id)) {
         selectedItems.value.push(id)
-        console.log('fdsagfdsaghhdfsa', selectedItems.value);
         prize_pool.value.push({ id, qty: qty });
-        console.log('after add', prize_pool.value);
     }
     else {
         const indexOne = selectedItems.value.indexOf(id);
         selectedItems.value.splice(indexOne, 1);
-        console.log('after delete', selectedItems.value);
         prize_pool.value.splice(indexOne, 1);
-
-
-        console.log('after delete', prize_pool.value);
         for (let index = 0; index < backUpPrizes.length; index++) {
             const element = backUpPrizes[index];
             let isFound = <boolean>(false);
@@ -275,7 +263,6 @@ const allChecked = computed({
         if (value) {
             selectedItems.value = prizesPool.value.map((item) => item.id);
             prize_pool.value = prizesPool.value.map((item) => ({ id: item.id, qty: item.qty }));
-            console.log('gfdsgfdshfdshf', selectedItems.value, prize_pool.value);
         } else {
             selectedItems.value = [];
             prize_pool.value = [];

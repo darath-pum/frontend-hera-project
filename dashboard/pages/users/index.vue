@@ -53,12 +53,12 @@
                     <td>
                         <div class="flex flex-row justify-center gap-3 select-none">
 
-                            <EditUser class="p-1 hover:bg-gray-500 hover:text-white rounded" v-if="item.role !== 'admin'" :userId="item.id" :getAllUsers="getAllUsers">
+                            <EditUser  v-if="authStore.id !==item.id" class="p-1 hover:bg-gray-500 hover:text-white rounded"  :userId="item.id" :getAllUsers="getAllUsers">
                             </EditUser>
 
-                            <DeleteItem class="p-1 hover:bg-gray-500 hover:text-white rounded"  v-if="item.role !== 'admin'" :itemName="'User'" :userId="item.id"
+                            <DeleteItem v-if="authStore.id !==item.id" class="p-1 hover:bg-gray-500 hover:text-white rounded"   :itemName="'User'" :userId="item.id"
                                 :functionName="'deleteUser'" :getAllUsers="getAllUsers"></DeleteItem>
-                            <div v-if="item.is_locked == false"
+                            <div v-if="item.is_locked == false && authStore.id !==item.id"
                                 class="flex flex-row items-center gap-1 cursor-pointer text-green p-1 hover:bg-gray-500 rounded"
                                 @click="lockUser(item.id,item.is_locked)">
                                 <span class="material-symbols-outlined">
@@ -68,7 +68,7 @@
                                 </span>
                                 <span>lock</span>
                             </div>
-                            <div v-if="item.is_locked == true"
+                            <div v-if="item.is_locked == true  && authStore.id !==item.id"
                                 class="flex flex-row items-center gap-1 cursor-pointer text-red hover:text-white p-1 hover:bg-gray-500 rounded"
                                 @click="lockUser(item.id,item.is_locked)">
                                 <span class="material-symbols-outlined">
@@ -76,7 +76,7 @@
                                 </span>
                                 <span>Unlock</span>
                             </div>
-                            <span v-if="item.role == 'admin'" class="p-1">No action</span>
+                            <span v-if="authStore.id ==item.id" class="p-1">No action</span>
                         </div>
                     </td>
                 </tr>
@@ -96,15 +96,13 @@ import Loading from "~/components/Loading.vue"
 import EmptyData from "~/components/EmptyData.vue"
 import Sorting from "@/components/sorting/Sorting.vue";
 import { ref, onMounted } from "vue"
-
-const isLocked = ref(false)
+import { useAuthStore } from "~/store/auth"
+const authStore = useAuthStore()
 const loading = ref(true)
 const users = ref<IUser[]>([])
 const sortedColumnName = ref("");
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
-    console.log(res.data);
-
     if (res.status == 200) {
         users.value = res.data
         loading.value = false
@@ -126,7 +124,6 @@ const lockUser = async (id: number, is_locked:boolean) => {
     }
     const res = await callAPI(`/dashboard/user/lockUser/${id}`,"PUT",body);
     await getAllUsers()
-    console.log(res);
     
 }
 onMounted(() => {
@@ -148,8 +145,6 @@ th {
     color: #FFFFFF;
     padding: 0.5rem;
     cursor: pointer;
-    /* border-left: 1px solid #ffffff; */
-
 }
 
 td {

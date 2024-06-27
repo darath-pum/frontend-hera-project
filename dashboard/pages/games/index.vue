@@ -64,8 +64,7 @@ await getAllGames()
 onMounted(async() => {
     await getAllGames()
 })
-const isEnable = ref(false);
-const gameId = ref();
+
 
 
 </script>

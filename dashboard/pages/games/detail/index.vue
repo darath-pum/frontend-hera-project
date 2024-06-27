@@ -43,14 +43,23 @@
                 <div class="qr-code flex flex-col gap-5 justify-center items-center sm:items-start pb-24">
                     <h1 class="text-xl font-semibold">Game QR Code</h1>
                     <div>
-                        <qrcode-vue :value="`http://192.168.11.122:3001/players/login?game_id=${game.id}`" :size="200" level="H"></qrcode-vue>
+                        <qrcode-vue :value="`http://192.168.11.122:3001/players/login?game_id=${game.id}`" :size="200"
+                            level="H"></qrcode-vue>
                     </div>
 
                     <a :href="`http://192.168.11.122:3000/players/login?game_id=${game.id}`" download>
-                        
+
                         <button class="secondary-btn mt-1">Download QR Code</button>
                     </a>
 
+                    <div class="flex flex-row gap-2">
+                        <input type="text" v-model="link" class="p-[0.4rem] rounded w-[25rem]"
+                            :style="isCopy == true ? 'border:1px solid gray; color:gray' : 'border:1px solid var(--primary-color);'">
+                        <button :class="isCopy == true ? 'disable-btn w-20' : 'primary-btn w-20'" @click="copyText">
+                            <span v-if="isCopy == false">Copy</span>
+                            <span v-else>Copied</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,19 +72,20 @@ import { useRoute } from "vue-router";
 import { useAuthStore } from '~/store/auth'
 import QrcodeVue from "qrcode.vue";
 
+const isCopy = ref(false)
 const authStore = useAuthStore()
 const game: any = ref([]);
 const route = useRoute()
 const gameId: any = (route.query.gameId)
-
+const link = ref('')
 const categories = ref()
+
 const getGameDetail = async () => {
-    console.log(gameId);
 
     const res = await callAPI(`/dashboard/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
-    console.log(res.data.img_url);
     categories.value = (res.data.categories)
+    link.value = `http://192.168.11.122:3000/players/login?game_id=${res.data.id}`
 
 }
 const updateGameStatus = async (id: number, isEniable: boolean) => {
@@ -85,6 +95,17 @@ const updateGameStatus = async (id: number, isEniable: boolean) => {
 
 }
 
+const copyText = async () => {
+    if (link.value != "") {
+        await navigator.clipboard.writeText(link.value);
+        isCopy.value = true;
+    } else {
+        isCopy.value = false;
+    }
+    setTimeout(() => {
+        isCopy.value = false
+    }, 2000)
+};
 onMounted(() => {
     getGameDetail();
 })

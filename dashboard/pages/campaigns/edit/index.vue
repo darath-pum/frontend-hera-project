@@ -22,7 +22,7 @@
                     :class="[isSelectGame ? 'active' : '']"></div>
                 <div class="item-center w-full">
                     <label for="game-category" class="col-span-1 my-auto">
-                        <h1>Categories:</h1>
+                        <h1>Games:</h1>
                     </label>
                     <div @click="showSelectGame"
                         class="select-game relative cursor-pointer select-cat w-full top-[3px] col-span-2 z-50 flex item-center justify-between">
@@ -121,8 +121,6 @@ const gameUserGameId = ref()
 
 const getCampaignById = async () => {
     const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
-    console.log(res);
-
     campaign.value = res.data
     title.value = res.data.title
     desc.value = res.data.desc
@@ -130,7 +128,7 @@ const getCampaignById = async () => {
     end_date.value = res.data.end_date.substring(0, 10)
     img_url.value = res.data.img_url
     gameUserGameId.value = res.data.user_game_id
-    console.log("user game id", gameUserGameId.value);
+
 
 
 
@@ -139,7 +137,6 @@ const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
         userGames.value = res.data
-        console.log("usersGame", userGames.value);
         for (let index:number = 0; index < (userGames.value).length; index++) {
             const guid:number = userGames.value[index].id;
             for (let i = 0; i < (gameUserGameId.value).length; i++) {
@@ -169,16 +166,14 @@ const addUserGame = (title: string, id: number) => {
         user_game_id.value.splice(index, 1);
     }
     gamesList.value = allGamesUser.value.join(', ');
-    console.log(user_game_id.value);
+
 
 };
 
 const handleImage = async (event: any) => {
     const file = event.target.files[0];
     image.value = file
-
     img_url.value = await getBase64(file)
-    console.log(img_url.value);
     const errCpImage = validCpImageEdit(image.value)
     if (errCpImage) {
         pathName.value = 'image'
@@ -226,7 +221,6 @@ const editCampaign = async () => {
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
     loading.value = true
     const res = await callAPI(`/dashboard/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
-    console.log(res);
     
     if (res.status == 200) {
         loading.value = false

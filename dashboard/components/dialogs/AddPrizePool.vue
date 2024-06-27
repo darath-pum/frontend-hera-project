@@ -79,10 +79,7 @@ const addPrizePool = async () => {
         qty: qty.value
     }
     loading.value = true
-    console.log(body);
-
     const res = await callAPI('/dashboard/prizepool/createPrizePool', 'POST', body);
-    console.log(res);
 
     if (res.status == 200) {
         loading.value = false

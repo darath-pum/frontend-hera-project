@@ -114,7 +114,6 @@ const handleImage = async (event: any) => {
     const file = event.target.files[0];
     image.value = file
     image_url.value = await getBase64(file)
-    console.log(image.value);
     const errCpImage = validCpImage(image.value)
     if (errCpImage) {
         pathName.value = 'image'
@@ -132,7 +131,6 @@ const userGames = ref<any[]>([])
 const getAllUserGame = async () => {
     const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
-        console.log("getAllUserGame", res.data);
         userGames.value = res.data
 
     }
@@ -144,7 +142,6 @@ const addUserGame = (title: string, id: number) => {
     if (!user_game_id.value.includes(id)) {
         allGamesUser.value.push(title);
         user_game_id.value.push(id);
-        // console.log(allGamesUser.value);
 
     } else {
         const index = user_game_id.value.indexOf(id);
@@ -152,7 +149,6 @@ const addUserGame = (title: string, id: number) => {
         user_game_id.value.splice(index, 1);
     }
     gamesList.value = allGamesUser.value.join(', ');
-    console.log(user_game_id.value);
 
 };
 const addCampaign = async () => {

@@ -63,9 +63,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { callAPI } from '../../composables/callAPI';
-// import { useCookie } from '@nuxtjs/composition-api'
 import Loading from '~/components/Loading.vue'
 
 const loading = ref(false)
@@ -76,26 +75,17 @@ const isErrorPassword = ref(false);
 
 const errEmailMsg = ref("");
 const errPasswordMsg = ref("");
-//   const token = localStorage.getItem('token')
-// onMounted(()=>{
-//       const token = useCookie('token');
-
-//       console.log(token.value);
-
-
-//       if (token.value) {
-
-//         window.location.href='/'
-//       }
-//   })
 const clearErrors = () => {
     isErrorEmail.value = false;
     isErrorPassword.value = false;
     errEmailMsg.value = "";
     errPasswordMsg.value = "";
 }
-
+let isLogin = true
 const login = async () => {
+    if (!isLogin) {
+        return;
+    }
     if (!email.value.trim() || !password.value) {
         isErrorEmail.value = email.value.trim() == "" ? true : false;
         errEmailMsg.value = 'Please enter email address';
@@ -109,34 +99,35 @@ const login = async () => {
         email: email.value,
         password: password.value
     }
-    // const token = useCookie('token');
+
     loading.value = true
+    isLogin = false
     const res = await callAPI('/dashboard/user/login', 'POST', data);
     if (res.status === 200) {
-        // const token = ; 
+
         loading.value = false
         const cookie = useCookie('token', {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         })
         cookie.value = res.data.token
-        // cookie.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Expires in 7 days
         swAlert("success","Success","You have logged in successfully.",1500);
-
         setTimeout(() => {
             window.location.href = "/"
         }, 2000);
+        isLogin= true
 
     } else {
         if (res.code == 400) {
             swAlert("error","","User has been locked.",1500)
             loading.value = false
-
         }
         if (res.code == 404) {
             swAlert("error",'Wrong Credentials',"Email and password is incorrect.", 1500)
             loading.value = false
 
         }
+        isLogin= true
+
     }
 
 
@@ -144,9 +135,7 @@ const login = async () => {
 </script>
 
 <style scoped>
-/* input {
-    @apply ;
-} */
+
 
 .bg-login {
     background-color: #0A0401;

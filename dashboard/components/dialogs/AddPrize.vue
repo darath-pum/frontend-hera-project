@@ -13,19 +13,20 @@
                 <div class="n-kh">
                     <label for="">Name(Khmer): <span v-if="pathName == 'name_kh'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="text" v-model="name_kh" :style="pathName == 'name_kh'?'border:2px solid red':''">
+                    <input type="text" v-model="name_kh" :style="pathName == 'name_kh' ? 'border:2px solid red' : ''">
                 </div>
                 <div class="n-eg">
                     <label for="">Name(English): <span v-if="pathName == 'name_en'" class="text-red">{{ invalidMessage
                             }}</span></label>
-                    <input type="text" v-model="name_en" :style="pathName == 'name_en'?'border:2px solid red':''">
+                    <input type="text" v-model="name_en" :style="pathName == 'name_en' ? 'border:2px solid red' : ''">
 
                 </div>
                 <div class="image">
                     <label for="">Image: <span v-if="pathName == 'image'" class="text-red">{{ invalidMessage
                             }}</span></label>
                     <input type="file" @change="handleImage">
-                    <div class="select-image flex flex-row justify-center items-center" :style="pathName == 'image'?'border:2px solid red':''">
+                    <div class="select-image flex flex-row justify-center items-center"
+                        :style="pathName == 'image' ? 'border:2px solid red' : ''">
                         <img :src="image_url" alt="" v-if="image_url">
                         <img src="/image-icon.png" alt="" v-else>
                         <span class="close bg-black rounded-full material-symbols-outlined" v-if="image_url"
@@ -57,8 +58,8 @@ const invalidMessage = ref('')
 const props = defineProps(["editPrize", "getAllPrizes"])
 const name_en = ref('');
 const name_kh = ref('');
-const image = ref<File|null>(null);
-const image_url:any = ref('');
+const image = ref<File | null>(null);
+const image_url: any = ref('');
 
 const resetInput = () => {
     name_en.value = ''
@@ -90,8 +91,6 @@ const addPrize = async () => {
     const errKhName = validPrizeKhN(name_kh.value);
     const errEnName = validPrizeEnN(name_en.value);
     if (errKhName) {
-        console.log('fdsafdsad');
-
         pathName.value = "name_kh"
         invalidMessage.value = errKhName
         return;
@@ -117,7 +116,7 @@ const addPrize = async () => {
     formData.set('name_en', name_en.value);
     formData.set('name_kh', name_kh.value);
     if (image.value !== null) {
-        
+
         formData.append('image', image.value);
     }
     loading.value = true
@@ -128,7 +127,7 @@ const addPrize = async () => {
         isShow.value = false
         resetInput()
         isAddPrizeCalled = false;
-    }else{
+    } else {
         loading.value = false
 
     }
@@ -211,22 +210,25 @@ label {
 .btn-save button {
     width: 100%;
 }
+
 @media (max-width: 35.5rem) {
     form h1 {
-        font-size:1.2rem;
+        font-size: 1.2rem;
         font-weight: 600;
     }
 
-    form{
-        width:100%;
+    form {
+        width: 100%;
         height: 100vh;
         border-radius: 0;
     }
-    input{
+
+    input {
         padding: 0.5rem;
         font-size: 0.7rem;
     }
-    label{
+
+    label {
         font-size: 0.7rem;
     }
 }
