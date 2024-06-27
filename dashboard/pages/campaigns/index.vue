@@ -40,7 +40,7 @@
                 <td>{{ item.start_date.substring(0, 10) }}</td>
                 <td>{{ item.end_date.substring(0, 10) }}</td>
                 <td class="flex flex-row justify-center items-center gap-5">
-                    <a :href="`/luckydraw?campaign_id=${item.id}`" class="flex flex-row justify-center gap-5">
+                    <a :href="`/luckydraw?campaign_id=${item.id}`" target="_blank" class="flex flex-row justify-center gap-5">
                         <div class="flex flex-row items-center gap-1 cursor-pointer">
                             <span class="material-symbols-outlined">
                                 play_circle
