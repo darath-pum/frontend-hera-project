@@ -238,7 +238,7 @@ const showGame = () => {
 }
 
 .dropdown .dropdown-btn {
-    @apply flex justify-between items-center gap-3 rounded-lg py-3 px-2 sm:px-5 cursor-pointer;
+    @apply flex justify-between items-center gap-3 rounded-md py-3 px-2 sm:px-5 cursor-pointer;
 
     span {
         @apply select-none;

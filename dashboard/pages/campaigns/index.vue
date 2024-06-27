@@ -13,47 +13,37 @@
             </div>
         </div>
         <table>
-                <tr>
-                    <th>No.</th>
-                    <th>Image</th>
-                    <Sorting :data="campaigns" :name="'Title'" :columnName="'title'"
-                        v-model:sortedColumn="sortedColumnName">
-                    </Sorting>
-                    <Sorting :data="campaigns" :name="'Start Date'" :columnName="'start_date'"
-                        v-model:sortedColumn="sortedColumnName">
-                    </Sorting>
-                    <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'"
-                        v-model:sortedColumn="sortedColumnName">
-                    </Sorting>
-             
-                    <th>Action</th>
-                </tr>
- 
-                <tr v-for="(item, index) in campaigns" :key="item.id">
-                    <td>{{ index + 1 }}</td>
-                    <td>
-                        <div class="p-image flex flex-row justify-center">
-                            <img :src="item.img_url || campaingDefault" alt="">
-                        </div>
-                    </td>
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.start_date.substring(0, 10) }}</td>
-                    <td>{{ item.end_date.substring(0, 10) }}</td>
-                    <td class="flex flex-row justify-center items-center gap-5">
-                        <div class="flex flex-row justify-center gap-5">
-                            <div class="flex flex-row items-center gap-1 cursor-pointer">
-                                <span class="material-symbols-outlined">
-                                    play_circle
-                                </span>
-                                <span>Play</span>
-                            </div>
-                          
-                        </div>
-                        <div id="more-action">
-                            <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
-                                @click="showBtnAction(item.id)" @click.stop>
-                                more_horiz
-                            </span>
+            <tr>
+                <th>No.</th>
+                <th>Image</th>
+                <Sorting :data="campaigns" :name="'Title'" :columnName="'title'"
+                    v-model:sortedColumn="sortedColumnName">
+                </Sorting>
+                <Sorting :data="campaigns" :name="'Start Date'" :columnName="'start_date'"
+                    v-model:sortedColumn="sortedColumnName">
+                </Sorting>
+                <Sorting :data="campaigns" :name="'End Date'" :columnName="'end_date'"
+                    v-model:sortedColumn="sortedColumnName">
+                </Sorting>
+
+                <th>Action</th>
+            </tr>
+
+            <tr v-for="(item, index) in campaigns" :key="item.id">
+                <td>{{ index + 1 }}</td>
+                <td>
+                    <div class="p-image flex flex-row justify-center">
+                        <img :src="item.img_url || campaingDefault" alt="">
+                    </div>
+                </td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.start_date.substring(0, 10) }}</td>
+                <td>{{ item.end_date.substring(0, 10) }}</td>
+                <td class="flex flex-row justify-center items-center gap-5">
+                    <a :href="`/luckydraw?campaign_id=${item.id}`" target="_blank" class="flex flex-row justify-center gap-5">
+                        <div class="flex flex-row items-center gap-1 cursor-pointer">
+                            <span class="material-symbols-outlined">
+                                play_circle
                             <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
                                 <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
@@ -79,12 +69,46 @@
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
 
 
-                            </div>
+                    </a>
+                    <div id="more-action">
+                        <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
+                            @click="showBtnAction(item.id)" @click.stop>
+                            more_horiz
+                        </span>
+                        <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
+                            <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`'
+                                class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
+                                <div class="cursor-pointer">
+
+                                    <span class="material-symbols-outlined cursor-pointer">
+                                        edit
+                                    </span>
+                                    <span>Edit</span>
+                                </div>
+                            </NuxtLink>
+                            <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`'
+                                class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white">
+                                <div class="cursor-pointer">
+
+                                    <span class="material-symbols-outlined">
+                                        rewarded_ads
+                                    </span>
+                                    <span>Prize pool</span>
+                                </div>
+
+                            </NuxtLink>
+
+                            <DeleteItem :itemName="'Campaign'" :campaignId="item.id"
+                                class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white"
+                                :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
+
 
                         </div>
 
-                    </td>
-                </tr>
+                    </div>
+
+                </td>
+            </tr>
             <!-- </tbody> -->
         </table>
         <div class="w-full flex flex-row justify-center">
@@ -123,7 +147,7 @@ const getAllCampaigns = async () => {
 }
 
 
-onMounted(async() => {
+onMounted(async () => {
 
     await getAllCampaigns()
 });
@@ -194,6 +218,7 @@ td:nth-child(6) {
         width: 7.5rem;
         height: 8rem;
     }
+
     .campaign-btn {
         margin-top: -2rem !important;
     }
