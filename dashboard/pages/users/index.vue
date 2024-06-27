@@ -11,16 +11,15 @@
                 <tr>
                     <th>No.</th>
                     <th>Image</th>
-                    <Sorting :data="users" :name="'Name'" :columnName="'first_name'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="users" :name="'Name'" :columnName="'first_name'"
+                        v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <Sorting :data="users" :name="'Email'" :columnName="'email'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="users" :name="'Email'" :columnName="'email'"
+                        v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <Sorting :data="users" :name="'Role'" :columnName="'role'" 
-                         v-model:sortedColumn="sortedColumnName">
+                    <Sorting :data="users" :name="'Role'" :columnName="'role'" v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                 
+
                     <th>Action</th>
                 </tr>
             </thead>
@@ -52,18 +51,32 @@
                     <td :class="item.role == 'admin' ? 'text-red capitalize' : 'text-green capitalize'">{{ item.role }}
                     </td>
                     <td>
-                        <div class="flex flex-row justify-center gap-5">
-                            <!-- <div class="flex flex-row items-center gap-1 cursor-pointer">
-                                <span class="material-symbols-outlined">
-                                    edit
-                                </span>
-                                <span>Edit</span>
-                            </div> -->
-                            <EditUser v-if="item.role !=='admin'" :userId="item.id" :getAllUsers="getAllUsers"></EditUser>
+                        <div class="flex flex-row justify-center gap-3 select-none">
 
-                            <DeleteItem v-if="item.role !=='admin'" :itemName="'User'" :userId="item.id" :functionName="'deleteUser'"
-                                :getAllUsers="getAllUsers"></DeleteItem>
-                            <span v-if="item.role =='admin'">No action</span>
+                            <EditUser  v-if="authStore.id !==item.id" class="p-1 hover:bg-gray-500 hover:text-white rounded"  :userId="item.id" :getAllUsers="getAllUsers">
+                            </EditUser>
+
+                            <DeleteItem v-if="authStore.id !==item.id" class="p-1 hover:bg-gray-500 hover:text-white rounded"   :itemName="'User'" :userId="item.id"
+                                :functionName="'deleteUser'" :getAllUsers="getAllUsers"></DeleteItem>
+                            <div v-if="item.is_locked == false && authStore.id !==item.id"
+                                class="flex flex-row items-center gap-1 cursor-pointer text-green p-1 hover:bg-gray-500 rounded"
+                                @click="lockUser(item.id,item.is_locked)">
+                                <span class="material-symbols-outlined">
+                                    <span class="material-symbols-outlined">
+                                        lock_open
+                                    </span>
+                                </span>
+                                <span>lock</span>
+                            </div>
+                            <div v-if="item.is_locked == true  && authStore.id !==item.id"
+                                class="flex flex-row items-center gap-1 cursor-pointer text-red hover:text-white p-1 hover:bg-gray-500 rounded"
+                                @click="lockUser(item.id,item.is_locked)">
+                                <span class="material-symbols-outlined">
+                                    lock
+                                </span>
+                                <span>Unlock</span>
+                            </div>
+                            <span v-if="authStore.id ==item.id" class="p-1">No action</span>
                         </div>
                     </td>
                 </tr>
@@ -83,19 +96,35 @@ import Loading from "~/components/Loading.vue"
 import EmptyData from "~/components/EmptyData.vue"
 import Sorting from "@/components/sorting/Sorting.vue";
 import { ref, onMounted } from "vue"
-
+import { useAuthStore } from "~/store/auth"
+const authStore = useAuthStore()
 const loading = ref(true)
 const users = ref<IUser[]>([])
 const sortedColumnName = ref("");
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
-    console.log(res.data);
-
     if (res.status == 200) {
         users.value = res.data
         loading.value = false
 
     }
+}
+
+
+const lockUser = async (id: number, is_locked:boolean) => {
+    let body = {}
+    if (is_locked == false) {
+        body = {
+            is_locked:true
+        }
+    }else{
+        body = {
+            is_locked:false
+        }
+    }
+    const res = await callAPI(`/dashboard/user/lockUser/${id}`,"PUT",body);
+    await getAllUsers()
+    
 }
 onMounted(() => {
     getAllUsers()
@@ -116,8 +145,6 @@ th {
     color: #FFFFFF;
     padding: 0.5rem;
     cursor: pointer;
-    /* border-left: 1px solid #ffffff; */
-
 }
 
 td {

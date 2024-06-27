@@ -17,6 +17,12 @@ import { Chart } from "chart.js/auto";
 import { onMounted,ref } from "vue";
 import { useRoute } from "vue-router";
 import { format } from "date-fns";
+
+const fromDate = ref('')
+const fromTime = ref('')
+const toDate = ref('')
+const toTime = ref('')
+
 const gameID = useRoute().query.gameId;
 const playerTotal = ref();
 const counts: number[] = [];
@@ -57,11 +63,28 @@ const getDAP = async () => {
     const dateTime = format(new Date(customerDAP[i].time), 'p')
     times.push(dateTime);
   }
-  
 }
+
+
+//================= DAP customer page by datatime ==============//
+// const getDAPDateTime = async() => {
+//   const from = "2024-06-20T00:00:00+07:00";
+//   const to = "2024-06-22T23:59:00+07:00";
+//   const response = await fetch('/dashboard/analytics/customer/getDAPByDate/40', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({ from, to })
+//     })
+//     console.log(response);
+//     const data = await response.json();
+//     console.log(data);
+// }
 
 onMounted(async () => {
   await getDAP();
+  // getDAPDateTime ();
   const canvasElement = document.getElementById(
     "customerDAP"
   ) as HTMLCanvasElement | null;

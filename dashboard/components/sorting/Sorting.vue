@@ -83,6 +83,10 @@ th{
 
   user-select: none;
 }
+th:hover{
+  background: gray !important;
+  cursor: pointer;
+}
 .arrow {
   float: right;
   width: 12px;

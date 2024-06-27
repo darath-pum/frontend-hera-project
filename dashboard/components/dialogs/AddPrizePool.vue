@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize">
-        <button class="primary-btn" @click="isShow = true">Add prize pool</button>
+        <button class="primary-btn w-55" @click="isShow = true">Add prize pool</button>
         <div v-if="isShow" class="dialog" @click="isShow = false">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addPrizePool">
                 <div class="form-header flex flex-row justify-between ">
@@ -79,10 +79,7 @@ const addPrizePool = async () => {
         qty: qty.value
     }
     loading.value = true
-    console.log(body);
-
     const res = await callAPI('/dashboard/prizepool/createPrizePool', 'POST', body);
-    console.log(res);
 
     if (res.status == 200) {
         loading.value = false
@@ -123,7 +120,7 @@ form h1 {
 input,
 select,
 .select-pizes {
-    border: 1px solid #000000;
+    border: 1px solid var(--primary-color);
     padding: 0.6rem;
     border-radius: 5px;
     background: #ffffff8a;

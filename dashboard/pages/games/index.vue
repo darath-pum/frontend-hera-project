@@ -11,8 +11,7 @@
                     </div>
                     <div class="flex flex-col pl-5 gap-1">
                         <h2 class="text-md font-semibold line-clamp-1">{{ item.title }}</h2>
-                        <span class="text-sm line-clamp-3">Considering factors such as objectives, budget, target
-                            audience.</span>
+                        <span class="text-sm line-clamp-3">{{ item.description }}</span>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -65,8 +64,7 @@ await getAllGames()
 onMounted(async() => {
     await getAllGames()
 })
-const isEnable = ref(false);
-const gameId = ref();
+
 
 
 </script>

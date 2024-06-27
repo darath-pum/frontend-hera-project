@@ -1,6 +1,6 @@
 <template>
     <div class="prize-setting container">
-        <h1 class="page-title">Gamge Setting</h1>
+        <h1 class="page-title">Games</h1>
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="prize-btn">
                 <NuxtLink to="/game-admin/new">
