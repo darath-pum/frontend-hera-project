@@ -289,6 +289,7 @@ const convertToCSVMAPSess = (myData: any[]) => {
 };
 
 onMounted(async () => {
+  await getGame();
   formDataStore.loadFromStorage();
   fromDate.value =
     formDataStore.fromDate ||
@@ -302,7 +303,6 @@ onMounted(async () => {
       .toISOString()
       .split("T")[0];
   toTime.value = formDataStore.toTime || "11:59";
-  await getGame();
 
   if (!route.query.gameId && gameLists.value.length !== 0) {
     window.location.href = `/analytics?gameId=${gameId.value}`;
