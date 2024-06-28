@@ -36,8 +36,10 @@
         <div class="mt-5">
           <AnalyticCard />
         </div>
-        <div class="flex-none  min-md:flex lg:flex-none xl:flex flex-row items-end justify-between">
-          <div class="flex mt-5 items-center">
+        <div
+          class="flex-none min-md:flex lg:flex-none xl:flex flex-row items-end justify-between"
+        >
+          <div class="flex mt-10 items-center">
             <div class="from-date-time">
               <p
                 for="fromDate"
@@ -50,8 +52,10 @@
                   type="date"
                   v-model="fromDate"
                   id="fromDate"
-                  style="border: 1px solid"
-                  class=" mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :style="{
+                    border: isError ? '1px solid red' : '1px solid black',
+                  }"
+                  class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
                   :max="maxEndDate"
                 />
                 <input
@@ -75,7 +79,9 @@
                   type="date"
                   v-model="toDate"
                   id="toDate"
-                  style="border: 1px solid"
+                  :style="{
+                    border: isError ? '1px solid red' : '1px solid black',
+                  }"
                   class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
                   :min="minStartDate"
                 />
@@ -84,12 +90,12 @@
                   v-model="toTime"
                   id="toTime"
                   style="border: 1px solid"
-                  class=" mt-3  cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
                 />
               </div>
             </div>
           </div>
-          <div class="flex mt-5 ">
+          <div class="flex mt-5">
             <button class="primary-btn" @click.prevent="submitForm">
               Search
             </button>
@@ -153,14 +159,26 @@ const DAPDataSess = ref<any>([]);
 const MAPDataSess = ref<any>([]);
 const authStore = useAuthStore();
 const isLoading = ref(true);
-onMounted(() => {});
-const submitForm = () => {
-  formDataStore.setFormData({
+const isError = ref(false);
+const submitForm = async () => {
+  const minDate = new Date("2020-01-01");
+  if (new Date(fromDate.value) < minDate || new Date(toDate.value) < minDate) {
+    isError.value = true;
+    alert("Date is invalid");
+    return;
+  }
+  if (fromDate.value > toDate.value) {
+    isError.value = true;
+    alert("Date is invalid");
+    return;
+  }
+  await formDataStore.setFormData({
     fromDate: fromDate.value,
     fromTime: fromTime.value,
     toDate: toDate.value,
     toTime: toTime.value,
   });
+
   window.location.reload();
 };
 
@@ -229,7 +247,7 @@ const exportDataToCsv = () => {
 
 // Function to convert DAP data to CSV format
 const convertToCSVDAP = (myData: any[]) => {
-  const headers = ["Day", "Player count"];
+  const headers = ["Date", "Player count"];
   const rows = ["Daily active player (DAP)", " ", headers.join(",")];
 
   myData.forEach((row) => {
@@ -280,43 +298,43 @@ const convertToCSVMAPSess = (myData: any[]) => {
     rows.push(r.join(","));
   });
 
-  rows.push(`Total: ${playerSessDAP.value}`);
+  rows.push(`Total: ${playerSessMAP.value}`);
   return rows.join("\n");
 };
 
 onMounted(async () => {
   await getGame();
-  formDataStore.loadFromStorage();
+  if (!route.query.gameId && gameLists.value.length !== 0) {
+    window.location.href = `/analytics?gameId=${gameId.value}`;
+  }
+
+  await formDataStore.loadFromStorage();
   fromDate.value =
     formDataStore.fromDate ||
     new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000)
       .toISOString()
       .split("T")[0];
+
   fromTime.value = formDataStore.fromTime || "00:00";
+
   toDate.value =
     formDataStore.toDate ||
-    new Date(new Date().getTime() - 0 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0];
-  toTime.value = formDataStore.toTime || "11:59";
+    new Date(new Date().getTime()).toISOString().split("T")[0];
 
-  if (!route.query.gameId && gameLists.value.length !== 0) {
-    window.location.href = `/analytics?gameId=${gameId.value}`;
-  }
+  toTime.value = formDataStore.toTime || "23:59";
 });
-
 
 const minStartDate = computed(() => {
-    if (fromDate.value) {
-        const startDate = new Date(fromDate.value);
-        return startDate.toISOString().split("T")[0];
-    }
+  if (fromDate.value) {
+    const startDate = new Date(fromDate.value);
+    return startDate.toISOString().split("T")[0];
+  }
 });
 const maxEndDate = computed(() => {
-    if (toDate.value) {
-        const startDate = new Date(toDate.value);
-        return startDate.toISOString().split("T")[0];
-    }
+  if (toDate.value) {
+    const endDate = new Date(toDate.value);
+    return endDate.toISOString().split("T")[0];
+  }
 });
 </script>
 

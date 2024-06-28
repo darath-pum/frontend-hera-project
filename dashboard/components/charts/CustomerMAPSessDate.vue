@@ -54,10 +54,13 @@ const config: any = {
 
 //======== Function find From input date and To input date =======//
 const formDataStore = useFormDataStore();
-fromDate.value = formDataStore.fromDate;
-toDate.value = formDataStore.toDate;
-fromTime.value = formDataStore.fromTime;
-toTime.value = formDataStore.toTime;
+onMounted(() => {
+  formDataStore.loadFromStorage();
+  fromDate.value = formDataStore.fromDate;
+  toDate.value = formDataStore.toDate;
+  fromTime.value = formDataStore.fromTime;
+  toTime.value = formDataStore.toTime;
+});
 function formatDate(date: Date): string {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -69,7 +72,7 @@ pastDate.setDate(currentDate.getDate() - 6);
 //================= Get MAP customer  by datatime ==============//
 const getSessMAPDateTime = async () => {
   const fromTimeValue = fromTime.value || "00:00";
-  const toTimeValue = toTime.value || "00:00";
+  const toTimeValue = toTime.value || "23:59";
   const fromDateValue = fromDate.value || formatDate(pastDate);
   const toDateValue = toDate.value || formatDate(currentDate);
   const dateTime = {

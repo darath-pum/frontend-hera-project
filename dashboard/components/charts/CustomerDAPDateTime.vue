@@ -52,10 +52,13 @@ const config: any = {
 
 //======== Function find From input date and To input date =======//
 const formDataStore = useFormDataStore();
-fromDate.value = formDataStore.fromDate;
-toDate.value = formDataStore.toDate;
-fromTime.value = formDataStore.fromTime;
-toTime.value = formDataStore.toTime;
+onMounted(() => {
+  formDataStore.loadFromStorage();
+  fromDate.value = formDataStore.fromDate;
+  toDate.value = formDataStore.toDate;
+  fromTime.value = formDataStore.fromTime;
+  toTime.value = formDataStore.toTime;
+});
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -72,13 +75,14 @@ pastDate.setDate(currentDate.getDate() - 6);
 //================= DAP customer  by datatime ==============//
 const getDAPDateTime = async () => {
   const fromTimeValue = fromTime.value || "00:00";
-  const toTimeValue = toTime.value || "11:59";
+  const toTimeValue = toTime.value || "23:59";
   const fromDateValue = fromDate.value || formatDate(pastDate);
   const toDateValue = toDate.value || formatDate(currentDate);
   const dateTime = {
     from: fromDateValue + "T" + fromTimeValue + ":" + "00" + "+07:00",
     to: toDateValue + "T" + toTimeValue + ":" + "00" + "+07:00",
   };
+  console.log("date", dateTime);
 
   const response = await callAPI(
     `/dashboard/analytics/customer/getDAPByDate/${gameID}`,
