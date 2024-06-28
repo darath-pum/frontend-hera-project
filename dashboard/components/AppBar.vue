@@ -44,7 +44,7 @@
                             <span class="material-symbols-outlined">
                                 draw
                             </span>
-                            <span class="sidebar-hidden">Game admin</span>
+                            <span class="sidebar-hidden">Games</span>
                         </div>
                         <span class="material-symbols-outlined" :class="{ 'rotate-180': isGame }">
                             arrow_drop_down
@@ -55,7 +55,7 @@
                         <span class="material-symbols-outlined">
                             sports_esports
                         </span>
-                        <span>Games</span>
+                        <span>All Games</span>
                     </NuxtLink>
                     <NuxtLink to="/users_game" v-if="isGame" class="menu-btn dropdown-item">
                         <span class="material-symbols-outlined">
@@ -203,7 +203,7 @@ const showGame = () => {
     @apply flex justify-center items-center gap-5;
 
     span {
-        @apply select-none block md:hidden p-2 border rounded-lg bg-slate-100 cursor-pointer hover:bg-slate-200;
+        @apply select-none block md:hidden p-2 border rounded-md bg-slate-100 cursor-pointer hover:bg-slate-200;
     }
 }
 
@@ -218,7 +218,7 @@ const showGame = () => {
 
 .menu-btn,
 .main-tool {
-    @apply flex flex-row items-center gap-3 rounded-lg py-3 px-2 sm:px-5;
+    @apply flex flex-row items-center gap-3 rounded-md py-3 px-2 sm:px-5;
 
     span {
         @apply select-none truncate;

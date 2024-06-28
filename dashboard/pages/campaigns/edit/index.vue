@@ -1,10 +1,10 @@
 <template>
     <div class="add-campaign container">
         <h1 class="page-title">Edit Campaign</h1>
-        <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
+        <!-- <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
             marketing campaigns
             to achieve
-            specific objectives, targeting the right audience, and optimizing performance for desired results.</p>
+            specific objectives, targeting the right audience, and optimizing performance for desired results.</p> -->
 
         <div class="flex flex-row justify-end">
             <NuxtLink :to="`/prizes-pool?campaign=${$route.query.campaign}`">

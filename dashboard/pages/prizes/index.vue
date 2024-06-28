@@ -1,10 +1,10 @@
 <template>
     <div class="prize-setting container">
         <h1 class="page-title">Prizes Setting</h1>
-        <p class="desc page-description">
+        <!-- <p class="desc page-description">
             Prize setting involves determining the value or amount of a prize for a competition or event, considering
             factors such as objectives, budget, target audience, and perceived value.
-        </p>
+        </p> -->
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="prize-btn">
                 

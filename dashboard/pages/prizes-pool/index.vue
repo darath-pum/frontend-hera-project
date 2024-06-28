@@ -16,8 +16,8 @@
         </p> -->
         <div class="select flex flex-col items-start justify-start">
             <label for="" class="text-start w-full font-semibold">Selete campaign:</label>
-            <select class="select-campaign" name="" id="" v-model="campaignId">
-                <option value="Select campaign" disabled>Select campaign</option>
+            <select class="select-campaign" selected="0" name="" id="" v-model="campaignId">
+                <option value="Select campaign" id="0" selected disabled>Select campaign</option>
                 <option v-for="(item, index) in campaigns" :key="item.id" :value="item.id" @click="getAllPrizesPool">
                     <NuxtLink :to="`/prizes-pool?campaign=${item.id}`"> {{ item.title }}</NuxtLink>
                 </option>
@@ -131,7 +131,7 @@ const campaigns = ref<ICampaign[]>()
 const loading = ref(true)
 const sortedColumnName = ref('')
 const router = useRouter()
-const campaignId = ref(useRoute().query.campaign);
+const campaignId = ref(useRoute().query.campaign || 0);
 const authStore = useAuthStore();
 const prizePoolId = ref(0);
 const selectedItems: any = ref([]);
@@ -163,10 +163,7 @@ const getAllPrizesPool = async () => {
         selectedItems.value = [];
         let dataPrizePool: any = prizesPool.value;
         for (let index = 0; index < dataPrizePool.length; index++) {
-
             arrIdPrize.value.push(dataPrizePool[index].prize_id)
-
-
         }
 
     }

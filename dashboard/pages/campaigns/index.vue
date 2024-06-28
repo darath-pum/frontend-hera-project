@@ -1,10 +1,10 @@
 <template>
     <div class="prize-setting container" @click="showBtnAction(0)" @click.stop>
-        <h1 class="page-title">Campaigns Setting</h1>
-        <p class="desc page-description">
+        <h1 class="page-title">Campaigns</h1>
+        <!-- <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.
-        </p>
+        </p> -->
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="campaign-btn">
                 <NuxtLink to="/campaigns/new">
@@ -198,7 +198,7 @@ td:nth-child(1) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
