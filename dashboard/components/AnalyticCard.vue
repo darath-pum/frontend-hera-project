@@ -101,7 +101,7 @@
   }
   
   .card-item {
-    @apply p-3 bg-white rounded-lg border shadow-sm space-y-2 border-l-4 border-l-blue-500;
+    @apply p-3 bg-white rounded-md border shadow-sm space-y-2 border-l-4 border-l-blue-500;
   }
   
   .item2 {

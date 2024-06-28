@@ -1,10 +1,10 @@
 <template>
     <div class="prize-setting container" @click="showBtnAction(0)" @click.stop>
-        <h1 class="page-title">Campaigns Setting</h1>
-        <p class="desc page-description">
+        <h1 class="page-title">Campaigns</h1>
+        <!-- <p class="desc page-description">
             Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
             specific objectives, targeting the right audience, and optimizing performance for desired results.
-        </p>
+        </p> -->
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="campaign-btn">
                 <NuxtLink to="/campaigns/new">
@@ -74,7 +74,7 @@
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
                                 </div> -->
                     <div id="more-action">
-                        <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
+                        <span class="material-symbols-outlined cursor-pointer select-none hover:text-red mt-[5px]"
                             @click="showBtnAction(item.id)" @click.stop>
                             more_horiz
                         </span>
@@ -192,14 +192,14 @@ td:nth-child(1) {
     margin-left: -6rem;
     position: absolute;
     background: #FFFFFF;
-    height: 8.5rem;
+    height: auto;
     width: 9rem;
     gap: 0.4rem;
-    padding: 1rem;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    border-radius: 10px;
+    align-items: center;
+    border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 

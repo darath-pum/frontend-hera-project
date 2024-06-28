@@ -18,12 +18,10 @@
         <div class="desc flex flex-row items-center">
           <span class="material-symbols-outlined text-green"> north </span>
           <p v-if="authStore.role === 'admin'">
-            <span class="text-green">%{{ userPercentage }}</span> of new users
-            from last month
+            <span class="text-green">%{{ userPercentage }}</span>last month
           </p>
           <p v-else>
-            <span class="text-green">% {{ playerPercentage }}</span> of new
-            players from last month
+            <span class="text-green">% {{ playerPercentage }}</span> from last month
           </p>
         </div>
       </div>
@@ -45,9 +43,9 @@
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
             <span v-if="authStore.role === 'admin'" class="card-title"
-              >Active user</span
+              >Active User</span
             >
-            <span v-else class="card-title">Active player</span>
+            <span v-else class="card-title">Active Player</span>
             <h2 v-if="authStore.role === 'customer'">{{ activeTotal }}</h2>
             <h2 v-else>{{ acUserTotal }}</h2>
           </div>
@@ -58,11 +56,10 @@
         <div class="desc flex flex-row items-center">
           <span class="material-symbols-outlined text-green"> north </span>
           <p v-if="authStore.role === 'customer'">
-            <span class="text-green">%{{ activePercent }}</span> of active
-            players from last month
+            <span class="text-green">%{{ activePercent }}</span> from last month
           </p>
           <p v-else>
-            <span class="text-green">%{{ acUserPercent }}</span> of active users
+            <span class="text-green">%{{ acUserPercent }}</span>
             from last month
           </p>
         </div>
@@ -73,7 +70,7 @@
       >
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
-            <span class="card-title">player session</span>
+            <span class="card-title">Player Session</span>
             <h2>{{ sessTotal }}</h2>
           </div>
           <div>
@@ -83,8 +80,7 @@
         <div class="desc flex flex-row items-center">
           <span class="material-symbols-outlined text-green"> north </span>
           <p>
-            <span class="text-green">%{{ sessPercent }}</span> of player session
-            from last month
+            <span class="text-green">%{{ sessPercent }}</span> from last month
           </p>
         </div>
       </div>
@@ -184,7 +180,7 @@ onMounted(() => {
 }
 
 .card-item {
-  @apply p-3 bg-white rounded-lg border shadow-sm space-y-2 border-l-4 border-l-blue-500;
+  @apply p-3 bg-white rounded-md border shadow-sm space-y-2 border-l-4 border-l-blue-500;
 }
 
 .item2 {

@@ -1,10 +1,10 @@
 <template>
     <div class="add-campaign container">
         <h1 class="page-title">Add Campaign</h1>
-        <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
+        <!-- <p class="desc page-description">Campaign management involves strategic planning, execution, and analysis of
             marketing campaigns
             to achieve
-            specific objectives, targeting the right audience, and optimizing performance for desired results.</p>
+            specific objectives, targeting the right audience, and optimizing performance for desired results.</p> -->
 
         <form action="" class="flex flex-col gap-7" ref="form">
             <div class="g-one">

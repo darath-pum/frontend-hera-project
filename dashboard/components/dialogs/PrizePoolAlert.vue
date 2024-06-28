@@ -71,7 +71,7 @@ const handleClose = (isGo: boolean) => {
     height: 17rem;
     background: #ffffff;
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 5px;
     text-align: center;
 }
 

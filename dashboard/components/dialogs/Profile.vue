@@ -37,7 +37,7 @@ import { useAuthStore } from "~/store/auth";
 
 const authStore = useAuthStore()
 const pf_image = ref('')
-onMounted(()=>{
+onMounted(() => {
     pf_image.value = authStore.pf_img_url
 })
 const isShow = ref(false)
@@ -47,10 +47,20 @@ const showPopup = () => {
     isShow.value = !isShow.value
 }
 
+function removeItem(item: string) {
+    if (process.client) {
+        localStorage.removeItem(item)
+        return true
+    } else {
+        return false
+    }
+}
+
 const logout = async () => {
     const res = await callAPI('/dashboard/user/logout', 'POST')
 
 
+    removeItem('token')
 
     token.value = ''
     window.location.href = ('/login')
@@ -112,7 +122,8 @@ const logout = async () => {
     margin: auto;
     object-fit: cover;
 }
-.btn-save a{
+
+.btn-save a {
     width: 100%;
     margin: 0;
 
@@ -127,7 +138,7 @@ const logout = async () => {
     z-index: 10 !important;
     background: #ffffff;
     padding: 2rem 2rem;
-    border-radius: 10px;
+    border-radius: 5px;
     text-align: center;
     color: black;
     @apply shadow-lg border;

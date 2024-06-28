@@ -20,7 +20,7 @@
           v-model="password"
           @input="onInput"
           placeholder="Enter new password"
-          class="w-full p-[10px]  rounded-[10px] border border-slate-300"
+          class="w-full p-[10px]  rounded-[5px] border border-slate-300"
         />
         <span class="text-red ">{{ passErr }}</span>
       </div>
@@ -35,7 +35,7 @@
           :type="!isComPassword ? 'password' : 'text'"
           v-model="comfirmPassword"
           placeholder="Enter comfirm password"
-          class="w-full p-[10px]  rounded-[10px] border border-slate-300"
+          class="w-full p-[10px]  rounded-[5px] border border-slate-300"
         />
         <span  class="text-red">{{ passComfirmErr }}</span>
       </div>
@@ -45,7 +45,7 @@
       </div>
       <div class="mt-12" @click.prevent="activateAccount">
         <button
-          class="flex flex-row justify-center items-center  w-full p-[10px]  rounded-[10px] bg-[#292929] text-[20px] text-white"
+          class="flex flex-row justify-center items-center  w-full p-[10px]  rounded-[5px] bg-[#292929] text-[20px] text-white"
         >
         <Loading v-if="loading"></Loading>
         <span v-else>Activate Account</span>

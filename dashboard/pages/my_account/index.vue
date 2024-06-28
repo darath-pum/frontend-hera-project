@@ -7,7 +7,8 @@
                     <input type="file" @change="handleImage"
                         class="absolute rounded-full opacity-0 cursor-pointer bg-red"
                         style="border-radius: 100%; width: 13rem; height: 13rem;">
-                    <img :src="!pf_image?profileDefault:pf_image" alt="" class="w-52 h-52 rounded-full object-cover bg-gray-50/50">
+                    <img :src="!pf_image ? profileDefault : pf_image" alt=""
+                        class="w-52 h-52 rounded-full object-cover bg-gray-50/50">
                 </div>
                 <span
                     class="material-symbols-outlined bg-[#FFBF78] w-10 h-10 p-1 flex flex-row justify-center items-center rounded-full -mt-12 ml-32">
@@ -54,7 +55,9 @@
                 <input type="email" class="p-2 border w-[70%]" v-model="authStore.email" disabled>
             </div>
             <div class="pf-btn flex flex-row justify-end w-full">
-                <button :class="first_name !=authStore.first_name || last_name != authStore.last_name?'primary-btn':'disable-btn'" @click="updateUserInfo" >Save info</button>
+                <button
+                    :class="first_name != authStore.first_name || last_name != authStore.last_name ? 'primary-btn' : 'disable-btn'"
+                    @click="updateUserInfo">Save info</button>
             </div>
             <div class="pf-h-change-pass">
                 <h1>Change Password</h1>
@@ -85,7 +88,7 @@
                             <input id="pass-checkbox" type="checkbox" :checked="hasUppercase">
                             <span for="">Uppercase <span>A-Z</span></span>
                         </div>
-                       
+
                         <div class="flex flex-row items-center gap-3">
                             <input id="pass-checkbox" type="checkbox" :checked="hasLowercase">
                             <span for="">Lowercase <span>a-z</span></span>
@@ -106,7 +109,8 @@
                 </div>
             </div>
             <div class="pf-btn flex flex-row justify-end w-full">
-                <button :class="isPasswordChecked == true && new_password !==''?'primary-btn':'disable-btn'" @click="changePassword">Save password</button>
+                <button :class="isPasswordChecked == true && new_password !== '' ? 'primary-btn' : 'disable-btn'"
+                    @click="changePassword">Save password</button>
             </div>
         </div>
     </div>
@@ -201,9 +205,9 @@ const changePassword = async () => {
             timer: 1500
         });
         window.location.reload();
-    } 
+    }
     else {
-        if(res.code == 404){
+        if (res.code == 404) {
             Swal.fire({
                 position: "center",
                 icon: "error",
