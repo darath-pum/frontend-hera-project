@@ -1,9 +1,9 @@
 <template>
   <div
-    class="form-container max-sm:bg-[#91c6c6] flex justify-center items-center w-screen h-screen">
+    class="form-container  flex justify-center items-center w-screen  h-screen">
     <form
       action=""
-      class="bg-[#91c6c6] w-full px-5 lg:px-8 pb-16 pt-12 md:max-w-[500px]"
+      class="w-full h-full lg:h-[73%] md:h-[70%] xl:h-[73%] px-5 lg:px-8 pb-16 pt-12 md:max-w-[500px]" :style="{background:games.color}"
     >
       <h2 class="text-4xl text-center mb-3 text-white">Register</h2>
       <div class="flex justify-center items-center">
@@ -46,7 +46,7 @@
         </div>
         <div @click.prevent="playerLogin" class="mt-9">
           <button
-            class="bg-teal-700 text-white select-none p-2 rounded-xl w-full"
+            class="bg-black text-white select-none p-2 rounded-xl w-full"
           >
             Submit
           </button>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 const route = useRoute();
 const firstName = ref("");
 const lastName = ref("");
@@ -75,7 +75,7 @@ const playerLogin = async () => {
   };
   try {
     const res: any = await $fetch(
-      "http://192.168.11.122:3200/client/player/playerRegister",
+      "http://192.168.11.122:3200/api/player/playerRegister",
       {
         method: "POST",
         body: JSON.stringify(players),
@@ -106,7 +106,7 @@ const playerLogin = async () => {
 const getGamebyId = async () => {
   try {
     const res: any = await $fetch(
-      `http://192.168.11.122:3200/dashboard/game/getUserGameInfo/${route.query.game_id}`,
+      `http://192.168.11.122:3200/api/game/getUserGameInfo/${route.query.game_id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -114,6 +114,8 @@ const getGamebyId = async () => {
       }
     );
     games.value = res.data;
+
+    
   } catch (err) {}
 };
 const clearErrFirst = () => {
@@ -141,6 +143,5 @@ img {
   height: 150px;
   margin-top: 30px;
   margin-bottom: 30px;
-  border: 2px solid teal;
 }
 </style>
