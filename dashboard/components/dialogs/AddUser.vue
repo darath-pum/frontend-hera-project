@@ -94,7 +94,7 @@ const addUser = async () => {
         email: email.value
     }
     loading.value = true
-    const res = await callAPI('/dashboard/user/createUserWoPw', 'POST', body)
+    const res = await callAPI('/api/user/createUserWoPw', 'POST', body)
     if (res.status == 200) {
         await props.getAllUsers();
         isAddUserCalled = false;

@@ -65,7 +65,7 @@ import { ref, onMounted } from "vue"
 const loading = ref(true)
 const prizes = ref<IPrize[]>([])
 const getAllPrizes = async () => {
-    const res = await callAPI('/dashboard/prize/getAllPrizes')
+    const res = await callAPI('/api/prize/getAllPrizes')
     if (res.status == 200) {
         prizes.value = res.data
         loading.value = false

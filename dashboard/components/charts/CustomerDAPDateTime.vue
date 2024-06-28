@@ -85,7 +85,7 @@ const getDAPDateTime = async () => {
   console.log("date", dateTime);
 
   const response = await callAPI(
-    `/dashboard/analytics/customer/getDAPByDate/${gameID}`,
+    `/api/analytics/customer/getDAPByDate/${gameID}`,
     "POST",
     dateTime
   );

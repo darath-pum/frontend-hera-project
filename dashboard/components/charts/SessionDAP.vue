@@ -50,7 +50,7 @@ onMounted(async () => {
 
 //================= session DAP of customer page ==============//
 const getSessionDAP = async () => {
-    const response = await callAPI(`/dashboard/analytics/customer/getDGPS/${gameID}`);
+    const response = await callAPI(`/api/analytics/customer/getDGPS/${gameID}`);
     const sessionDAP = response.data.play_time_counts;
     avgTotalDAP.value = response.data.avg_play_sessions;
     for (let i = 0; i < sessionDAP.length; i++) {

@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const token = useCookie('token');
   if (to.path !== "/login" && to.path !== "/activate-account" && to.path !== "/send-email" && to.path !== "/reset-password") {
     try {
-      const res = await $fetch<any>(getAPIURL("/dashboard/user/getUserSession"), {
+      const res = await $fetch<any>(getAPIURL("/api/user/getUserSession"), {
         headers: { 
           "Content-Type": "application/json", 
           "Authorization": "Bearer " + token.value,

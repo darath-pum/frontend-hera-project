@@ -54,7 +54,7 @@ const config: any = {
 //================= DAP customer page ==============//
 const getDAP = async () => {
   const response = await callAPI(
-    `/dashboard/analytics/customer/getDAP/${gameID}`
+    `/api/analytics/customer/getDAP/${gameID}`
   );
   const customerDAP = response.data.player_counts;
   playerTotal.value = response.data.total_players;
@@ -70,7 +70,7 @@ const getDAP = async () => {
 // const getDAPDateTime = async() => {
 //   const from = "2024-06-20T00:00:00+07:00";
 //   const to = "2024-06-22T23:59:00+07:00";
-//   const response = await fetch('/dashboard/analytics/customer/getDAPByDate/40', {
+//   const response = await fetch('/api/analytics/customer/getDAPByDate/40', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json'

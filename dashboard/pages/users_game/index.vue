@@ -84,7 +84,7 @@ const getAllGames = async () => {
         return;
     }
     
-    const res = await callAPI(`/dashboard/game/user/getUserGames/${user_id.value}`)
+    const res = await callAPI(`/api/game/user/getUserGames/${user_id.value}`)
     router.push(`/users_game?user=${user_id.value}`)
     if (res.status == 200) {
         games.value = res.data
@@ -102,7 +102,7 @@ const getAllGames = async () => {
 
 
 const getAllUsers = async () => {
-    const res = await callAPI('/dashboard/user/getUsers')
+    const res = await callAPI('/api/user/getUsers')
     if (res.status == 200) {
         users.value = res.data
     }
@@ -118,7 +118,7 @@ const selectGame = (id: number) => {
     }
 }
 const unAssignGame = async () => {
-    const res = await callAPI('/dashboard/game/user/delete', 'DELETE', { usergame_ids: usergame_ids.value })
+    const res = await callAPI('/api/game/user/delete', 'DELETE', { usergame_ids: usergame_ids.value })
     await getAllGames()
     usergame_ids.value = []
 

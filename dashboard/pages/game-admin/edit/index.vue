@@ -295,7 +295,7 @@ const changeColor = (e: any) => {
 
 
 const getAllCategories = async () => {
-    const res = await callAPI('/dashboard/genre/getAllGenres');
+    const res = await callAPI('/api/genre/getAllGenres');
     genres.value = res.data
 }
 
@@ -375,7 +375,7 @@ function removeScreenshot(url: string) {
 }
 
 const getGameById = async () => {
-    const res = await callAPI(`/dashboard/game/getInfo/${gameId}`);
+    const res = await callAPI(`/api/game/getInfo/${gameId}`);
 
     title.value = res.data.title
     description.value = res.data.description
@@ -497,7 +497,7 @@ const updateGame = async () => {
     formData.set('color', color.value)
 
     loading.value = true
-    const res = await callAPI(`/dashboard/game/update/${gameId}`, 'PUT', formData);
+    const res = await callAPI(`/api/game/update/${gameId}`, 'PUT', formData);
 
     if (res.status == 200) {
         loading.value = false

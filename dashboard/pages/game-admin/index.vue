@@ -76,7 +76,7 @@ const loading = ref(true)
 const games = ref<IGame[]>([])
 const sortedColumnName = ref("");
 const getAllGames = async () => {
-    const res = await callAPI('/dashboard/game/getAll')
+    const res = await callAPI('/api/game/getAll')
     if (res.status == 200) {
         games.value = res.data
         loading.value = false

@@ -58,7 +58,7 @@ onMounted(async () => {
 //================= DAP customer home page ==============//
 const getDAP = async () => {
   const response = await callAPI(
-    "/dashboard/analytics/customer/getTotalDAPByUserId"
+    "/api/analytics/customer/getTotalDAPByUserId"
   );
   const playerCounts = response.data.player_counts;
   playerTotal.value = response.data.total_players;

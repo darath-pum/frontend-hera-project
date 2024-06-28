@@ -95,7 +95,7 @@ const onInput = () => {
 const checkToken = async () => {
   const data = { token: route.query.v_tkn };
   const response = await callAPI(
-    "/dashboard/user/verifyResetToken",
+    "/api/user/verifyResetToken",
     "POST",
     data
   );
@@ -116,7 +116,7 @@ const resetPassword = async () => {
   };
   loading.value = true
   const response = await callAPI(
-    "/dashboard/user/resetUserPassword",
+    "/api/user/resetUserPassword",
     "PUT",
     data
   );

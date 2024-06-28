@@ -83,7 +83,7 @@ const showDlialog = () => {
     getAllGamesUser()
 }
 const getAllUsers = async () => {
-    const res = await callAPI('/dashboard/user/getUsers')
+    const res = await callAPI('/api/user/getUsers')
 
 
     if (res.status == 200) {
@@ -93,7 +93,7 @@ const getAllUsers = async () => {
     }
 }
 const getAllGames = async () => {
-    const res = await callAPI('/dashboard/game/getAll')
+    const res = await callAPI('/api/game/getAll')
     if (res.status == 200) {
         games.value = res.data
 
@@ -111,7 +111,7 @@ const addUsersGame = async () => {
         game_id: game_id.value
     }
     loading.value = true
-    const res = await callAPI('/dashboard/game/user/create', 'POST', body);
+    const res = await callAPI('/api/game/user/create', 'POST', body);
     if (res.status == 200) {
         loading.value = false
         isAddUserGameCalled = false
@@ -131,7 +131,7 @@ const getAllGamesUser = async () => {
     if(!route.query.use){
         return;
     }
-    const res = await callAPI(`/dashboard/game/user/getUserGames/${route.query.user}`)
+    const res = await callAPI(`/api/game/user/getUserGames/${route.query.user}`)
 
     if (res.status == 200) {
   

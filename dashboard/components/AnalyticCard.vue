@@ -69,17 +69,17 @@
   const acSessPlayer = ref("");
 
   const getPlayer = async () => {
-    const response = await callAPI(`/dashboard/analytics/customer/getSummaryOfPlayersByUserGameId/${userGameId}`);
+    const response = await callAPI(`/api/analytics/customer/getSummaryOfPlayersByUserGameId/${userGameId}`);
     playerTotal.value = response.data.total;
     playerPercent.value = response.data.percentage;
   };
   const getAcPlayer = async () => {
-    const response = await callAPI(`/dashboard/analytics/customer/getSummaryOfAPByUserGameId/${userGameId}`);
+    const response = await callAPI(`/api/analytics/customer/getSummaryOfAPByUserGameId/${userGameId}`);
     acPlayer.value = response.data.total;
     activePercent.value = response.data.percentage;
   }
   const getSessPlayer = async() => {
-    const response = await callAPI(`/dashboard/analytics/customer/getGamePlaySessionsByUserGameId/${userGameId}`);
+    const response = await callAPI(`/api/analytics/customer/getGamePlaySessionsByUserGameId/${userGameId}`);
     sessPlayer.value = response.data.total;
     acSessPlayer.value = response.data.percentage;
   }

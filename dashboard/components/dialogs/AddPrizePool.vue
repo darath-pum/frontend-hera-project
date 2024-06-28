@@ -61,7 +61,7 @@ const qty = ref()
 const prize_id = ref()
 
 const getAllPrizes = async () => {
-    const res = await callAPI('/dashboard/prize/getAllPrizes')
+    const res = await callAPI('/api/prize/getAllPrizes')
     if (res.status == 200) {
         prizes.value = res.data
     }
@@ -79,7 +79,7 @@ const addPrizePool = async () => {
         qty: qty.value
     }
     loading.value = true
-    const res = await callAPI('/dashboard/prizepool/createPrizePool', 'POST', body);
+    const res = await callAPI('/api/prizepool/createPrizePool', 'POST', body);
 
     if (res.status == 200) {
         loading.value = false

@@ -124,7 +124,7 @@ const login = async () => {
 
     loading.value = true
     isLogin = false
-    const res = await callAPI('/dashboard/user/login', 'POST', data);
+    const res = await callAPI('/api/user/login', 'POST', data);
     if (res.status === 200) {
 
         loading.value = false

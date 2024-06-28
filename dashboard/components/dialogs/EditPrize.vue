@@ -80,7 +80,7 @@ const handleImage = async (e: any) => {
 
 
 const getPrizeById = async () => {
-    const res = await callAPI(`/dashboard/prize/getPrizebyId/${prizeId.value}`)
+    const res = await callAPI(`/api/prize/getPrizebyId/${prizeId.value}`)
     name_en.value = res.data.name_en
     name_kh.value = res.data.name_kh
     image_url.value = res.data.image
@@ -100,7 +100,7 @@ const editPrize = async () => {
     formData.set('name_kh', name_kh.value);
     formData.append('image', image.value);
     loading.value = true
-    const res = await callAPI(`/dashboard/prize/updatePrize/${prizeId.value}`, 'PUT', formData);
+    const res = await callAPI(`/api/prize/updatePrize/${prizeId.value}`, 'PUT', formData);
     if (res.status == 200) {
         loading.value = false
         isShow.value = false

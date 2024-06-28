@@ -154,7 +154,7 @@ const handleClose = (isGo:boolean)=>{
     isGoToCpEdit.value = isGo
 }
 const getAllPrizesPool = async () => {
-    const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
+    const res = await callAPI(`/api/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
     loading.value = false
     router.push(`/prizes-pool?campaign=${campaignId.value}`)
     if (res.status == 200) {
@@ -194,13 +194,13 @@ const saveQty = async () => {
     let body = {
         prize_pool: prize_pool.value
     }
-    const res = await callAPI(`/dashboard/prizepool/updatePrizePool/${campaignId.value}`, 'PUT', body)
+    const res = await callAPI(`/api/prizepool/updatePrizePool/${campaignId.value}`, 'PUT', body)
 
     await getAllPrizesPool()
     window.location.reload()
 }
 const getAllCampaigns = async () => {
-    const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
+    const res = await callAPI(`/api/campaign/getUserCampaigns/${authStore.id}`)
 
     if (res.status == 200) {
         campaigns.value = res.data

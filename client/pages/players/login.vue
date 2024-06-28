@@ -106,7 +106,7 @@ const playerLogin = async () => {
 const getGamebyId = async () => {
   try {
     const res: any = await $fetch(
-      `http://192.168.11.122:3200/dashboard/game/getUserGameInfo/${route.query.game_id}`,
+      `http://192.168.11.122:3200/api/game/getUserGameInfo/${route.query.game_id}`,
       {
         headers: {
           "Content-Type": "application/json",

@@ -102,7 +102,7 @@ const loading = ref(true)
 const users = ref<IUser[]>([])
 const sortedColumnName = ref("");
 const getAllUsers = async () => {
-    const res = await callAPI('/dashboard/user/getUsers')
+    const res = await callAPI('/api/user/getUsers')
     if (res.status == 200) {
         users.value = res.data
         loading.value = false
@@ -122,7 +122,7 @@ const lockUser = async (id: number, is_locked:boolean) => {
             is_locked:false
         }
     }
-    const res = await callAPI(`/dashboard/user/lockUser/${id}`,"PUT",body);
+    const res = await callAPI(`/api/user/lockUser/${id}`,"PUT",body);
     await getAllUsers()
     
 }
