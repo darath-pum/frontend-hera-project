@@ -176,6 +176,7 @@ const getGame = async () => {
   );
   const games = response.data;
   for (let i = 0; i < games.length; i++) {
+    
     gameLists.value.push(games[i]);
     gameId.value = games[0].id;
   }
@@ -289,6 +290,7 @@ const convertToCSVMAPSess = (myData: any[]) => {
 };
 
 onMounted(async () => {
+  await getGame();
   formDataStore.loadFromStorage();
   fromDate.value =
     formDataStore.fromDate ||
