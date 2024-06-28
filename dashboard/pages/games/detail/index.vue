@@ -15,7 +15,7 @@
         </div>
         <div class="detail-info flex flex-col sm:flex-row gap-10 xl:gap-20 sm:justify-center">
             <div class="flex flex-col items-center gap-10">
-                <div class="w-48 h-48 lg:w-64 lg:h-64 rounded-lg overflow-hidden">
+                <div class="w-48 h-48 lg:w-64 lg:h-64 rounded-md overflow-hidden">
                     <img :src="game.img_url" alt="" class="w-full h-full object-cover">
                 </div>
                 <div class="btn-action flex flex-row justify-end md:w-full" v-if="authStore.role !== 'admin'">

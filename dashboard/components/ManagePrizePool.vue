@@ -165,7 +165,7 @@ td {
 
 #input-qty {
   border: 2px solid #000000;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 2px 0.5rem;
   width: 30%;
 }

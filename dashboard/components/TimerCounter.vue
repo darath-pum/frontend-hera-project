@@ -12,8 +12,8 @@
   let timerDisplay = ref();
   
   // Initialize the timer variables
-  let minutes = 0;
-  let seconds = 10;
+  let minutes = 1;
+  let seconds = 0;
   
   // Function to update the timer display
   function updateTimer() {

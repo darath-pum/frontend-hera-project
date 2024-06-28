@@ -4,12 +4,7 @@
     class="flex justify-center mt-[10rem]"
   >
     <div>
-      <span
-        class="material-symbols-outlined text-[8rem] text-red select-none flex justify-center"
-        >cancel</span
-      >
-      <h1 class="text-[2rem]">No Game Found</h1>
-      <p class="flex justify-center">You don't have a game</p>
+      <EmptyData :contain="'Game'"></EmptyData>
     </div>
   </div>
   <div class="pb-15 container" v-if="gameLists.length !== 0">

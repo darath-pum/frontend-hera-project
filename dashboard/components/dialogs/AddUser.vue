@@ -149,7 +149,7 @@ form {
     height: 25rem;
     background: #ffffff;
     padding: 2rem 2rem;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 form h1 {

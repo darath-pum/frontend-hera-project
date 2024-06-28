@@ -134,7 +134,7 @@ const handleDelete = async () => {
     height: 14rem;
     background: #ffffff;
     padding: 2rem 2rem;
-    border-radius: 10px;
+    border-radius: 5px;
     text-align: center;
 }
 

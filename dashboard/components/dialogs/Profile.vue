@@ -138,7 +138,7 @@ const logout = async () => {
     z-index: 10 !important;
     background: #ffffff;
     padding: 2rem 2rem;
-    border-radius: 10px;
+    border-radius: 5px;
     text-align: center;
     color: black;
     @apply shadow-lg border;

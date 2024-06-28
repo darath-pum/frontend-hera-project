@@ -20,7 +20,7 @@ body {
 }
 
 :root {
-  --primary-color: #322C2B;
+  --primary-color: #1d1d1d;
   --secondary-color: #6c757d;
   --third-color: #ffff;
   --radius: 5px;
@@ -149,7 +149,7 @@ body {
   }
   .page-bg {
     padding: 2rem 1rem;
-    border-radius: 10px;
+    border-radius: 5px;
   }
   .page-title {
     font-size: 18px;

@@ -1,10 +1,10 @@
 <template>
     <div class="empty flex flex-col justify-center items-center">
-        <div class="bg-img flex flex-row justify-center w-4/12 rounded-lg">
+        <div class="bg-img flex flex-row justify-center w-4/12 rounded-md">
             <img src="/images/empty-icon.png" alt="">
         </div>
         <div class="flex flex-row justify-center">
-            <h1 class="text-3xl font-semibold text-grey">Not Found {{ textContain }}</h1>
+            <h1 class="text-3xl font-semibold text-grey">{{ textContain }} not found</h1>
         </div>
     </div>
 </template>

@@ -15,7 +15,7 @@
         </div>
         <input @focus="inputSelected(true)" @blur="inputSelected(false)" :type="!isPassword ? 'password' : 'text'"
           @input="onInput" v-model="password" placeholder="Enter new password"
-          class="w-full p-[10px] rounded-[10px] border border-slate-300" />
+          class="w-full p-[10px] rounded-[5px] border border-slate-300" />
           <span class="text-red ">{{ passErr }}</span>
       </div>
       <div class="mt-12">
@@ -27,7 +27,7 @@
             @click="visOffComfirm">visibility_off</span>
         </div>
         <input @focus="clearErrors()" :type="!isComPassword ? 'password' : 'text'" v-model="comfirmPassword"
-          placeholder="Enter comfirm password" class="w-full p-[10px] rounded-[10px] border border-slate-300" />
+          placeholder="Enter comfirm password" class="w-full p-[10px] rounded-[5px] border border-slate-300" />
         <span class="text-red">{{ comfirmPassErr }}</span>
       </div>
       <div class="block min-sm:hidden md:block lg:hidden mt-6">
@@ -35,7 +35,7 @@
           :hasDigit="hasDigit" :hasSpecialChar="hasSpecialChar" />
       </div>
       <div class="mt-12" @click.prevent="resetPassword()">
-        <button class="flex flex-row justify-center items-center w-full p-[10px] rounded-[10px] bg-[#292929] text-[20px] text-white">
+        <button class="flex flex-row justify-center items-center w-full p-[10px] rounded-[5px] bg-[#292929] text-[20px] text-white">
           <Loading v-if="loading"></Loading>
           <span v-else>Reset Password</span>
         </button>
@@ -46,7 +46,7 @@
         <span class="material-symbols-outlined text-[8rem] text-red mb-10 select-none">cancel</span>
         <h1 class="text-2xl mb-7">Link is expired</h1>
         <p>To reset your password, return to the login page and select "Forgot Your Passoword" to send a new email.</p>
-        <NuxtLink to="/login"> <button class="bg-black p-[10px] w-[30rem] mt-7 rounded-[10px]">Go to login</button>
+        <NuxtLink to="/login"> <button class="bg-black p-[10px] w-[30rem] mt-7 rounded-[5px]">Go to login</button>
         </NuxtLink>
       </div>
     </div>

@@ -8,14 +8,14 @@
             <div>
                 <h1 class="text-[20px] font-bold mb-3">Your Email</h1>
                 <input type="email" @focus="clearErrors()" v-model="email" placeholder="Enter email"
-                    class="w-full p-[10px] rounded-[10px] mb-2 border border-slate-300">
+                    class="w-full p-[10px] rounded-[5px] mb-2 border border-slate-300">
                 <span class="text-red  ">{{ messErr }}</span>
                 <p class="text-lg " v-if="!isStartTimer">The reset password link will be sent for you to reset a new password. Please do not
                     share this link to others.</p>
-                <p class="text-center" v-else> Please wait for 1 hour before you can send again. We appreciate your patience and understanding.</p>
+                <p class="text-center" v-else> Please wait for 1 minute before you can send again. We appreciate your patience and understanding.</p>
             </div>
             <div class="mt-12" @click.prevent="sendEmail()">
-                <button class=" flex flex-row justify-center items-center w-full p-[10px] rounded-[10px] bg-[#292929] text-[20px] text-white " :style="isStartTimer?'background:grey !important;':''" :disabled="isStartTimer">
+                <button class=" flex flex-row justify-center items-center w-full p-[10px] rounded-[5px] bg-[#292929] text-[20px] text-white " :style="isStartTimer?'background:grey !important;':''" :disabled="isStartTimer">
                     <Loading v-if="loading"></Loading>
                     <span v-else>
                         <TimerCounter v-if="isStartTimer" @event-time="handleTimer"></TimerCounter>
