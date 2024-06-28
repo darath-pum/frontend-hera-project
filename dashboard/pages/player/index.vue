@@ -16,7 +16,7 @@
         <input
           @focus="clearErrFirst()"
           v-model="firstName"
-          class="p-2 rounded-xl w-full pl-10"
+          class="p-2 w-full pl-10"
           type="text"
           placeholder="First name"
         />
@@ -27,7 +27,7 @@
           <input
             @focus="clearErrlast()"
             v-model="lastName"
-            class="p-2 rounded-xl w-full pl-10"
+            class="p-2 w-full pl-10"
             type="text"
             placeholder="Last name"
           />
@@ -39,14 +39,14 @@
           <input
             @focus="clearErrPhone()"
             v-model="phoneNumber"
-            class="p-2 rounded-xl w-full pl-10"
+            class="p-2 w-full pl-10"
             type="text"
             placeholder="Phone number"
           />
         </div>
         <div @click.prevent="playerLogin" class="mt-9">
           <button
-            class="bg-black text-white select-none p-2 rounded-xl w-full"
+            class="bg-black text-white rounded-md select-none p-2 w-full"
           >
             Submit
           </button>
@@ -143,5 +143,10 @@ img {
   height: 150px;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+input {
+  background-color: white;
+  border-radius: 5px;
 }
 </style>
