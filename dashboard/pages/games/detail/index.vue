@@ -82,7 +82,7 @@ const categories = ref()
 
 const getGameDetail = async () => {
 
-    const res = await callAPI(`/dashboard/game/user/detail/${parseInt(gameId)}`)
+    const res = await callAPI(`/api/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
     categories.value = (res.data.categories)
     link.value = `http://192.168.11.122:3000/players/login?game_id=${res.data.id}`
@@ -90,7 +90,7 @@ const getGameDetail = async () => {
 }
 const updateGameStatus = async (id: number, isEniable: boolean) => {
 
-    const res = await callAPI(`/dashboard/game/user/updateStatus/${id}`, 'PUT', { is_enabled: isEniable })
+    const res = await callAPI(`/api/game/user/updateStatus/${id}`, 'PUT', { is_enabled: isEniable })
     await getGameDetail()
 
 }

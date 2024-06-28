@@ -51,7 +51,7 @@ onMounted(async () => {
 
 //================= session MAP of customer page ==============//
 const getSessionMAP = async () => {
-    const response = await callAPI(`/dashboard/analytics/customer/getMGPS/${gameID}`);
+    const response = await callAPI(`/api/analytics/customer/getMGPS/${gameID}`);
     const sessionMAP = response.data.play_time_counts;
     avgTotalMAP.value = response.data.avg_play_sessions;
     for (let i = 0; i < sessionMAP.length; i++) {

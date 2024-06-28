@@ -129,7 +129,7 @@ const handleImage = async (event: any) => {
 const userGames = ref<any[]>([])
 
 const getAllUserGame = async () => {
-    const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
+    const res = await callAPI(`/api/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
         userGames.value = res.data
 
@@ -198,7 +198,7 @@ const addCampaign = async () => {
     formData.set("end_date", new Date(end_date.value).toISOString());
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
     loading.value = true
-    const res = await callAPI('/dashboard/campaign/createCampaign', 'POST', formData);
+    const res = await callAPI('/api/campaign/createCampaign', 'POST', formData);
     if (res.status == 200) {
         loading.value = false
         window.location.href = '/campaigns';

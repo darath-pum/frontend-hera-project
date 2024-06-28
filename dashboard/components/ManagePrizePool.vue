@@ -91,7 +91,7 @@ const handleToParent = (pPools:any)=>{
 }
 
 // const getAllPrizesPool = async () => {
-//   const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId}`);
+//   const res = await callAPI(`/api/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId}`);
 //   if(res.status == 200){
 //     console.log("prize pool", res.data);
 //     prizesPool.value = res.data;

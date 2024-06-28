@@ -120,7 +120,7 @@ const addPrize = async () => {
         formData.append('image', image.value);
     }
     loading.value = true
-    const res = await callAPI('/dashboard/prize/createPrize', 'POST', formData);
+    const res = await callAPI('/api/prize/createPrize', 'POST', formData);
     if (res.status == 200) {
         loading.value = false
         await props.getAllPrizes()

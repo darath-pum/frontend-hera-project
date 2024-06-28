@@ -160,7 +160,7 @@ const handleImage = async (e: any) => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('pf_img_url', file)
-    const res = await callAPI('/dashboard/user/updateUserProfileImage', 'PUT', formData);
+    const res = await callAPI('/api/user/updateUserProfileImage', 'PUT', formData);
     window.location.reload();
 }
 const updateUserInfo = async () => {
@@ -168,7 +168,7 @@ const updateUserInfo = async () => {
         first_name: first_name.value,
         last_name: last_name.value
     }
-    const res = await callAPI('/dashboard/user/updateUserInfos', 'PUT', body);
+    const res = await callAPI('/api/user/updateUserInfos', 'PUT', body);
     if (res.status == 200) {
         Swal.fire({
             position: "center",
@@ -194,7 +194,7 @@ const changePassword = async () => {
         hasSpecialChar.value == false) {
         return;
     }
-    const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
+    const res = await callAPI('/api/user/updateUserPassword', 'PUT', body)
     if (res.status == 200) {
         Swal.fire({
             position: "center",
@@ -222,7 +222,7 @@ const changePassword = async () => {
 }
 
 const logout = async () => {
-    const res = await callAPI('/dashboard/user/logout', 'POST')
+    const res = await callAPI('/api/user/logout', 'POST')
     localStorage.removeItem("token");
     window.location.href = ('/login')
 

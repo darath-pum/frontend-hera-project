@@ -55,7 +55,7 @@ onMounted(async () => {
 
 //================= MAP customer page ==============//
 const getMAP = async () => {
-    const response = await callAPI(`/dashboard/analytics/customer/getMAP/${gameID}`);
+    const response = await callAPI(`/api/analytics/customer/getMAP/${gameID}`);
     const customerMAP = response.data.player_counts;
     totalPlayer.value = response.data.total_players;
     for (let i = 0; i < customerMAP.length; i++) {

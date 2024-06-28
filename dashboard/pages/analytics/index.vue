@@ -185,7 +185,7 @@ const submitForm = async () => {
 //===================== Get user's game data ==================//
 const getGame = async () => {
   const response = await callAPI(
-    `/dashboard/game/user/getUserGames/${authStore.id}`
+    `/api/game/user/getUserGames/${authStore.id}`
   );
   const games = response.data;
   for (let i = 0; i < games.length; i++) {

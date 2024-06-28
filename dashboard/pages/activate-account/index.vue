@@ -110,7 +110,7 @@ const onInput = () => {
 const checkToken = async () => {
   const data = { token: route.query.v_tkn };
   const response = await callAPI(
-    "/dashboard/user/verifyActivateToken",
+    "/api/user/verifyActivateToken",
     "POST",
     data
   );
@@ -128,7 +128,7 @@ const activateAccount = async () => {
     password: password.value,
   };
   loading.value = true
-  const response = await callAPI("/dashboard/user/loginNewUser", "POST", data);
+  const response = await callAPI("/api/user/loginNewUser", "POST", data);
   
   if (
     response.code === 200 &&

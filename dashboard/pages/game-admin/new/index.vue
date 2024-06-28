@@ -345,7 +345,7 @@ function removeScreenshot(index: number) {
 }
 
 const getAllCategories = async () => {
-    const res = await callAPI('/dashboard/genre/getAllGenres');
+    const res = await callAPI('/api/genre/getAllGenres');
     nameGenres.value = res.data
 
 }
@@ -493,7 +493,7 @@ const addGame = async () => {
     }
 
     loading.value = true
-    const res = await callAPI('/dashboard/game/create', 'POST', formData)
+    const res = await callAPI('/api/game/create', 'POST', formData)
 
     if (res.status == 200) {
         loading.value = false

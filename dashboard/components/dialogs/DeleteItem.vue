@@ -71,11 +71,11 @@ const showDelete = () => {
 
 const handleDelete = async () => {
     const options:any = {
-        deleteCampaign: `/dashboard/campaign/deleteCampaign/${props.campaignId}`,
-        deletePrize: `/dashboard/prize/deletePrize/${props.prizeId}`,
-        deleteUser: `/dashboard/user/deleteUserById/${props.userId}`,
-        deleteGame: `/dashboard/game/delete/${props.gameId}`,
-        deletePrizePool: `/dashboard/prizepool/deletePrizePool/${props.cpId}`
+        deleteCampaign: `/api/campaign/deleteCampaign/${props.campaignId}`,
+        deletePrize: `/api/prize/deletePrize/${props.prizeId}`,
+        deleteUser: `/api/user/deleteUserById/${props.userId}`,
+        deleteGame: `/api/game/delete/${props.gameId}`,
+        deletePrizePool: `/api/prizepool/deletePrizePool/${props.cpId}`
     }
     const option = options[props.functionName];
 

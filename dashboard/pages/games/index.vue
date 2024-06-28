@@ -45,7 +45,7 @@ const loading = ref(true)
 const authStore = useAuthStore()
 const games = ref<IGame[]>([])
 const getAllGames = async () => {
-    const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`)
+    const res = await callAPI(`/api/game/user/getUserGames/${authStore.id}`)
     if (res.status == 200) {
         games.value = res.data
         console.log("all games", games.value);
@@ -55,7 +55,7 @@ const getAllGames = async () => {
 
 const updateGameStatus = async(id:number,isEniable:boolean)=>{
 
-const res = await callAPI(`/dashboard/game/user/updateStatus/${id}`,'PUT',{is_enabled:isEniable})
+const res = await callAPI(`/api/game/user/updateStatus/${id}`,'PUT',{is_enabled:isEniable})
 await getAllGames()
 
 }

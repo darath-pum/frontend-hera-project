@@ -80,7 +80,7 @@ const getSessMAPDateTime = async () => {
     to: new Date(`${toDateValue}T${toTimeValue}+07:00`).toISOString(),
   };
   const response = await callAPI(
-    `/dashboard/analytics/customer/getMGPSByDate/${gameID}`,
+    `/api/analytics/customer/getMGPSByDate/${gameID}`,
     "POST",
     dateTime
   );

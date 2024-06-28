@@ -57,7 +57,7 @@ function removeItem(item: string) {
 }
 
 const logout = async () => {
-    const res = await callAPI('/dashboard/user/logout', 'POST')
+    const res = await callAPI('/api/user/logout', 'POST')
 
 
     removeItem('token')

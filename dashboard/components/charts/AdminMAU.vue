@@ -52,7 +52,7 @@ onMounted(async () => {
 
 //================= MAU admin page ==============//
 const getMAU = async () => {
-    const response = await callAPI("/dashboard/analytics/admin/getMAU");
+    const response = await callAPI("/api/analytics/admin/getMAU");
     const adminMAU = response.data.user_counts;
     userTotal.value = response.data.total_users;
     for (let i = 0; i < adminMAU.length; i++) {

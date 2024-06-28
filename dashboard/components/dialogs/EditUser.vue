@@ -55,7 +55,7 @@ const email = ref('')
 const props = defineProps(["userId", "getAllUsers"])
 
 const getUserById = async () => {
-    const res = await callAPI(`/dashboard/user/getUserById/${props.userId}`)
+    const res = await callAPI(`/api/user/getUserById/${props.userId}`)
 
     first_name.value = res.data.first_name
     last_name.value = res.data.last_name
@@ -67,7 +67,7 @@ const editUser = async () => {
         last_name: last_name.value,
     }
     loading.value = true
-    const res = await callAPI(`/dashboard/user/editUserInfos/${props.userId}`, 'PUT', body);
+    const res = await callAPI(`/api/user/editUserInfos/${props.userId}`, 'PUT', body);
     if (res.status == 200) {
         loading.value = false
         isShow.value = false

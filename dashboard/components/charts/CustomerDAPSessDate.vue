@@ -82,7 +82,7 @@ const getSessDAPDateTime = async () => {
     to: toDateValue + "T" + toTimeValue + ":" + "00" + "+07:00",
   };
   const response = await callAPI(
-    `/dashboard/analytics/customer/getDGPSByDate/${gameID}`,
+    `/api/analytics/customer/getDGPSByDate/${gameID}`,
     "POST",
     dateTime
   );

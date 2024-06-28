@@ -57,7 +57,7 @@
   //================= DAP customer home page ==============//
   const getMAP = async () => {
     const response = await callAPI(
-      "/dashboard/analytics/customer/getTotalMAPByUserId"
+      "/api/analytics/customer/getTotalMAPByUserId"
     );
     const playerCounts = response.data.player_counts;
     playerTotal.value = response.data.total_players;

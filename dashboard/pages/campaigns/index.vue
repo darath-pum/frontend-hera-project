@@ -139,7 +139,7 @@ const showBtnAction = (id: any) => {
 }
 
 const getAllCampaigns = async () => {
-    const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
+    const res = await callAPI(`/api/campaign/getUserCampaigns/${authStore.id}`)
 
     if (res.status == 200) {
         campaigns.value = res.data

@@ -55,7 +55,7 @@ onMounted(async () => {
 
 //================= DAU admin page ==============//
 const getDAU = async () => {
-  const response = await callAPI("/dashboard/analytics/admin/getDAU");
+  const response = await callAPI("/api/analytics/admin/getDAU");
   const adminDAU = response.data.user_counts;
   userTotal.value = response.data.total_users;
   for (let i = 0; i < adminDAU.length; i++) {

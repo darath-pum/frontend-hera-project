@@ -120,7 +120,7 @@ const gameUserGameId = ref()
 
 
 const getCampaignById = async () => {
-    const res = await callAPI(`/dashboard/campaign/getCampaignByID/${campaignId}`);
+    const res = await callAPI(`/api/campaign/getCampaignByID/${campaignId}`);
     campaign.value = res.data
     title.value = res.data.title
     desc.value = res.data.desc
@@ -134,7 +134,7 @@ const getCampaignById = async () => {
 
 }
 const getAllUserGame = async () => {
-    const res = await callAPI(`/dashboard/game/user/getUserGames/${authStore.id}`);
+    const res = await callAPI(`/api/game/user/getUserGames/${authStore.id}`);
     if (res.status == 200) {
         userGames.value = res.data
         for (let index:number = 0; index < (userGames.value).length; index++) {
@@ -220,7 +220,7 @@ const editCampaign = async () => {
     
     formData.set("user_game_id", JSON.stringify(user_game_id.value))
     loading.value = true
-    const res = await callAPI(`/dashboard/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
+    const res = await callAPI(`/api/campaign/updateCampaign/${campaignId}`, 'PUT', formData);
     
     if (res.status == 200) {
         loading.value = false

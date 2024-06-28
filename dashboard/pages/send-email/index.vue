@@ -42,7 +42,7 @@ const messErr = ref('');
 const sendEmail = async () => {
     const data = { email: email.value };
     loading.value = true
-    const response = await callAPI('/dashboard/user/sendResetPassword', 'POST', data);
+    const response = await callAPI('/api/user/sendResetPassword', 'POST', data);
     if (response.code === 200) {
         loading.value = false
         Swal.fire({

@@ -80,7 +80,7 @@ const getMAPDateTime = async () => {
     to: new Date(`${toDateValue}T${toTimeValue}+07:00`).toISOString(),
   };
   const response = await callAPI(
-    `/dashboard/analytics/customer/getMAPByDate/${gameID}`,
+    `/api/analytics/customer/getMAPByDate/${gameID}`,
     "POST",
     dateTime
   );
