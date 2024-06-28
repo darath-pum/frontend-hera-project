@@ -7,7 +7,8 @@
                     <input type="file" @change="handleImage"
                         class="absolute rounded-full opacity-0 cursor-pointer bg-red"
                         style="border-radius: 100%; width: 13rem; height: 13rem;">
-                    <img :src="pf_image" alt="" class="w-52 h-52 rounded-full object-cover bg-gray-50/50">
+                    <img :src="!pf_image ? profileDefault : pf_image" alt=""
+                        class="w-52 h-52 rounded-full object-cover bg-gray-50/50">
                 </div>
                 <span
                     class="material-symbols-outlined bg-[#FFBF78] w-10 h-10 p-1 flex flex-row justify-center items-center rounded-full -mt-12 ml-32">
@@ -194,8 +195,6 @@ const changePassword = async () => {
         return;
     }
     const res = await callAPI('/dashboard/user/updateUserPassword', 'PUT', body)
-    console.log(res);
-
     if (res.status == 200) {
         Swal.fire({
             position: "center",
@@ -222,23 +221,9 @@ const changePassword = async () => {
 
 }
 
-function removeItem(item: string) {
-    if (process.client) {
-        localStorage.removeItem(item)
-        return true
-    } else {
-        return false
-    }
-}
-
 const logout = async () => {
     const res = await callAPI('/dashboard/user/logout', 'POST')
-    console.log(res);
-
-
-
-    removeItem('token')
-
+    localStorage.removeItem("token");
     window.location.href = ('/login')
 
 }

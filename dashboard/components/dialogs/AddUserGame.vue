@@ -1,11 +1,11 @@
 <template>
     <div class="">
-        <button class="primary-btn" @click="showDlialog">Add user's game</button>
+        <button class="primary-btn w-55" @click="showDlialog">Assign game</button>
         <div v-if="isShow" class="dialog" @click="closeDialog">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addUsersGame">
                 <div class="form-header flex flex-row justify-between ">
                     <span></span>
-                    <h1>Add user's game</h1>
+                    <h1>Assign game</h1>
                     <span class="material-symbols-outlined cursor-pointer" @click="closeDialog">
                         cancel
                     </span>
@@ -84,7 +84,7 @@ const showDlialog = () => {
 }
 const getAllUsers = async () => {
     const res = await callAPI('/dashboard/user/getUsers')
-    console.log(res.data);
+
 
     if (res.status == 200) {
         users.value = res.data
@@ -96,7 +96,7 @@ const getAllGames = async () => {
     const res = await callAPI('/dashboard/game/getAll')
     if (res.status == 200) {
         games.value = res.data
-        console.log("all games", games.value);
+
     }
 }
 
@@ -110,7 +110,6 @@ const addUsersGame = async () => {
         user_id: parseInt(user_id.value),
         game_id: game_id.value
     }
-    console.log(body);
     loading.value = true
     const res = await callAPI('/dashboard/game/user/create', 'POST', body);
     if (res.status == 200) {
@@ -129,6 +128,9 @@ const addUsersGame = async () => {
 
 
 const getAllGamesUser = async () => {
+    if(!route.query.use){
+        return;
+    }
     const res = await callAPI(`/dashboard/game/user/getUserGames/${route.query.user}`)
 
     if (res.status == 200) {

@@ -88,7 +88,7 @@ onMounted(() => {
 form {
     width: 35rem;
     height: 25rem;
-    background: #D9D9D9;
+    background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 10px;
 }
@@ -96,6 +96,7 @@ form {
 form h1 {
     font-size: 30px;
     font-weight: 600;
+    color: #000000;
 }
 
 .username div:nth-child(1),
