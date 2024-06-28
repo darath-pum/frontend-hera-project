@@ -493,11 +493,14 @@ const addGame = async () => {
     }
 
     loading.value = true
+
+
+
     const res = await callAPI('/api/game/create', 'POST', formData)
 
     if (res.status == 200) {
         loading.value = false
-        window.location.href = '/game-admin'
+        // window.location.href = '/game-admin'
         isAddGameCalled = false;
     } else {
         Swal.fire({

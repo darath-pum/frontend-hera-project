@@ -131,7 +131,7 @@ const campaigns = ref<ICampaign[]>()
 const loading = ref(true)
 const sortedColumnName = ref('')
 const router = useRouter()
-const campaignId = ref(useRoute().query.campaign || 0);
+const campaignId = ref(useRoute().query.campaign);
 const authStore = useAuthStore();
 const prizePoolId = ref(0);
 const selectedItems: any = ref([]);
@@ -165,6 +165,7 @@ const getAllPrizesPool = async () => {
         for (let index = 0; index < dataPrizePool.length; index++) {
             arrIdPrize.value.push(dataPrizePool[index].prize_id)
         }
+        // window.location.reload();
         
     }
 };
