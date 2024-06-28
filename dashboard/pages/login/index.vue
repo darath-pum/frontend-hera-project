@@ -82,6 +82,28 @@ const clearErrors = () => {
     errPasswordMsg.value = "";
 }
 
+
+
+function setItem(item: string, value: string) {
+    if (process.client) {
+        localStorage.setItem(item, value)
+
+        return true
+    } else {
+        return false
+    }
+}
+
+function removeItem(item: string) {
+    if (process.client) {
+        localStorage.removeItem(item)
+        return true
+    } else {
+        return false
+    }
+}
+
+let isLogin = true
 const login = async () => {
     if (!isLogin) {
         return;
@@ -110,29 +132,28 @@ const login = async () => {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         })
         cookie.value = res.data.token
-        // cookie.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Expires in 7 days
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Success",
-            text: "You have logged in successfully.",
-            showConfirmButton: false,
-            timer: 1500
-        });
 
+        swAlert("success", "Success", "You have logged in successfully.", 1500);
         setTimeout(() => {
             window.location.href = "/"
         }, 2000);
+        isLogin = true
+
+        setItem('token', res.data.token)
 
     } else {
-        Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Wrong credentials!",
-            text: "Please check your email and password.",
-            showConfirmButton: false,
-            timer: 1500
-        })
+        if (res.code == 400) {
+            swAlert("error", "", "User has been locked.", 1500)
+            loading.value = false
+        }
+        if (res.code == 404) {
+            swAlert("error", 'Wrong Credentials', "Email and password is incorrect.", 1500)
+            loading.value = false
+
+        }
+        isLogin = true
+
+        removeItem('token')
     }
 
 
