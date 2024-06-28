@@ -19,7 +19,7 @@
             <select class="select-campaign" name="" id="" v-model="campaignId">
                 <option value="Select campaign" disabled>Select campaign</option>
                 <option v-for="(item, index) in campaigns" :key="item.id" :value="item.id" @click="getAllPrizesPool">
-                    <NuxtLink :to="`/prizes-pool?campaign=${item.id}`"> {{ item.title }}</NuxtLink>
+                    <NuxtLink :to="`/prizes-pool?campaign=${item.id}`" > {{ item.title }}</NuxtLink>
                 </option>
             </select>
             <div class="select-icon">
@@ -40,7 +40,7 @@
             </div>
             <div class="flex flex-row justify-between gap-2 items-center">
                 <button v-if="prizesPool.length > 0" class="primary-btn w-55" @click="goToEdit">Edit campaign</button>
-                <AddPrizePool v-if="prizesPool.length > 0"  :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
+                <AddPrizePool v-if="campaignId"  :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
             </div>
         </div>
         <table>
@@ -123,7 +123,7 @@ import DeleteItem from "~/components/dialogs/DeleteItem.vue";
 import PrizePoolAlert from "~/components/dialogs/PrizePoolAlert.vue";
 import EmptyData from "~/components/EmptyData.vue";
 import Loading from "~/components/Loading.vue";
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { useAuthStore } from "~/store/auth";
 import { useRoute, useRouter } from "vue-router";
 
@@ -154,21 +154,21 @@ const handleClose = (isGo:boolean)=>{
     isGoToCpEdit.value = isGo
 }
 const getAllPrizesPool = async () => {
-    router.push(`/prizes-pool?campaign=${campaignId.value}`)
     const res = await callAPI(`/dashboard/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
     loading.value = false
+    router.push(`/prizes-pool?campaign=${campaignId.value}`)
     if (res.status == 200) {
         prizesPool.value = res.data;
         backUpPrizes = res.data
         selectedItems.value = [];
         let dataPrizePool: any = prizesPool.value;
         for (let index = 0; index < dataPrizePool.length; index++) {
-
+            
             arrIdPrize.value.push(dataPrizePool[index].prize_id)
-
-
+            
+            
         }
-
+        
     }
 };
 
@@ -199,8 +199,8 @@ const saveQty = async () => {
     }
     const res = await callAPI(`/dashboard/prizepool/updatePrizePool/${campaignId.value}`, 'PUT', body)
 
-    window.location.reload()
     await getAllPrizesPool()
+    window.location.reload()
 }
 const getAllCampaigns = async () => {
     const res = await callAPI(`/dashboard/campaign/getUserCampaigns/${authStore.id}`)
@@ -215,8 +215,8 @@ const getAllCampaigns = async () => {
 
 
 onMounted(async () => {
-    await getAllCampaigns()
     await getAllPrizesPool();
+    await getAllCampaigns()
 });
 
 const addId = (id: number, qty: number) => {
