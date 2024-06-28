@@ -36,7 +36,6 @@ canvas {
   margin: 0 auto;
   position: relative;
   border: 2px solid black;
-  margin-top: 5rem;
 }
 
 #Cocos3dGameContainer,

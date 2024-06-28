@@ -40,7 +40,7 @@
                                 @click="login">
                                 <Loading v-if="loading"></Loading>
                                 <span v-else>Login</span>
-                                
+
                             </button>
 
                         </div>
@@ -96,6 +96,27 @@ const clearErrors = () => {
     errPasswordMsg.value = "";
 }
 
+
+
+function setItem(item: string, value: string) {
+    if (process.client) {
+        localStorage.setItem(item, value)
+
+        return true
+    } else {
+        return false
+    }
+}
+
+function removeItem(item: string) {
+    if (process.client) {
+        localStorage.removeItem(item)
+        return true
+    } else {
+        return false
+    }
+}
+
 const login = async () => {
     if (!email.value.trim() || !password.value) {
         isErrorEmail.value = email.value.trim() == "" ? true : false;
@@ -117,8 +138,13 @@ const login = async () => {
         // const token = ; 
         loading.value = false
         const cookie = useCookie('token', {
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)})
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        })
         cookie.value = res.data.token
+
+        setItem('token', res.data.token)
+
+
         // cookie.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Expires in 7 days
         Swal.fire({
             position: "center",
@@ -132,7 +158,7 @@ const login = async () => {
         setTimeout(() => {
             window.location.href = "/"
         }, 2000);
-    
+
     } else {
         Swal.fire({
             position: "center",
@@ -142,6 +168,8 @@ const login = async () => {
             showConfirmButton: false,
             timer: 1500
         })
+
+        removeItem('token')
     }
 
 
