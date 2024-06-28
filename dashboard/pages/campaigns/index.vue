@@ -44,7 +44,12 @@
                         <div class="flex flex-row items-center gap-1 cursor-pointer">
                             <span class="material-symbols-outlined">
                                 play_circle
-                            <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
+                            
+                            </span>
+                        </div>
+
+                    </a>
+                    <!-- <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
                                 <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
                                     <div class="cursor-pointer">
 
@@ -67,11 +72,7 @@
                               
                                 <DeleteItem :itemName="'Campaign'" :campaignId="item.id" class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white"
                                     :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
-                                </div>
-                            </span>
-                        </div>
-
-                    </a>
+                                </div> -->
                     <div id="more-action">
                         <span class="material-symbols-outlined cursor-pointer select-none hover:text-red"
                             @click="showBtnAction(item.id)" @click.stop>
@@ -88,7 +89,7 @@
                                     <span>Edit</span>
                                 </div>
                             </NuxtLink>
-                            <NuxtLink :to='`/campaigns/prize-pool?campaign=${item.id}`'
+                            <NuxtLink :to='`/prizes-pool?campaign=${item.id}`'
                                 class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white">
                                 <div class="cursor-pointer">
 
