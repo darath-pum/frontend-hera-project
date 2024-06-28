@@ -16,12 +16,15 @@ export const useFormDataStore = defineStore('formData', {
       this.saveToStorage();
     },
     loadFromStorage() {
-      const storedData = JSON.parse(localStorage.getItem('formData') || '');
+      const storedData = localStorage.getItem('formData');
       if (storedData) {
-        this.fromDate = storedData.fromDate;
-        this.fromTime = storedData.fromTime;
-        this.toDate = storedData.toDate;
-        this.toTime = storedData.toTime;
+        const parsedData = JSON.parse(storedData);
+        this.fromDate = parsedData.fromDate || '';
+        this.fromTime = parsedData.fromTime || '';
+        this.toDate = parsedData.toDate || '';
+        this.toTime = parsedData.toTime || '';
+      } else {
+        this.setDefaultValues();
       }
     },
     saveToStorage() {
@@ -31,6 +34,13 @@ export const useFormDataStore = defineStore('formData', {
         toDate: this.toDate,
         toTime: this.toTime,
       }));
+    },
+    setDefaultValues() {
+      this.fromDate = '';
+      this.fromTime = '';
+      this.toDate = '';
+      this.toTime = '';
+      this.saveToStorage();
     }
   }
 });

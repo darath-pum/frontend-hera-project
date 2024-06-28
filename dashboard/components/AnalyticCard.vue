@@ -13,8 +13,7 @@
           <div class="desc flex flex-row items-center">
             <span class="material-symbols-outlined text-green"> north </span>
             <p >
-              <span class="text-green">% {{ playerPercent }}</span> of new
-              players from last month
+              <span class="text-green">% {{ playerPercent }}</span> from last month
             </p>
           </div>
         </div>
@@ -31,8 +30,7 @@
           <div class="desc flex flex-row items-center">
             <span class="material-symbols-outlined text-green"> north </span>
             <p>
-              <span class="text-green">%{{ activePercent }}</span> of active
-              players from last month
+              <span class="text-green">%{{ activePercent }}</span> from last month
             </p>
           </div>
         </div>
@@ -41,8 +39,8 @@
         >
           <div class="title-image flex flex-row justify-between">
             <div class="flex flex-col gap-2">
-              <span class="card-title">player session</span>
-              <h2>{{ sessPlayer }}</h2>
+              <span class="card-title">Player session</span>
+              <h2>{{ sessPlayer }} min</h2>
             </div>
             <div>
               <i class="material-icons text-5xl">play_circle_filled</i>
@@ -51,8 +49,7 @@
           <div class="desc flex flex-row items-center">
             <span class="material-symbols-outlined text-green"> north </span>
             <p>
-              <span class="text-green">%{{ acSessPlayer }}</span> of player session
-              from last month
+              <span class="text-green">%{{ acSessPlayer }}</span> from last month
             </p>
           </div>
         </div>
