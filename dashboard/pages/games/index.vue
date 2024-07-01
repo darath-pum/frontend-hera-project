@@ -48,7 +48,6 @@ const getAllGames = async () => {
     const res = await callAPI(`/api/game/user/getUserGames/${authStore.id}`)
     if (res.status == 200) {
         games.value = res.data
-        console.log("all games", games.value);
         loading.value = false
     }
 }

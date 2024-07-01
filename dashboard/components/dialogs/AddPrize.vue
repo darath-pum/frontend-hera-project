@@ -139,7 +139,7 @@ const addPrize = async () => {
 form {
     width: 30rem;
     height: 34rem;
-    background: #D9D9D9;
+    background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 5px;
 }

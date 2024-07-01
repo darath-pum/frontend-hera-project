@@ -1,6 +1,6 @@
 <template>
     <div class="add-prize">
-        <button class="primary-btn w-55" @click="isShow = true">Add prize pool</button>
+        <button class="primary-btn w-55" @click="showDlialog">Add prize pool</button>
         <div v-if="isShow" class="dialog" @click="isShow = false">
             <form action="" @click.stop class="flex flex-col gap-4" @submit.prevent="addPrizePool">
                 <div class="form-header flex flex-row justify-between ">
@@ -48,18 +48,23 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router";
 import Loading from "~/components/Loading.vue"
+import { useAuthStore } from "~/store/auth";
 
-const props = defineProps(["arrIdPrize"])
-const arrIdPrize = ref(props.arrIdPrize)
+const authStore = useAuthStore()
+const arrIdPrize:any = ref([])
 const loading = ref(false)
 const route = useRoute()
-const campaign_id: any = route.query.campaign
+const campaign_id:any =(route.query.campaign)
 const isShow = ref(false)
 const prizes = ref()
 const qty = ref()
 
 const prize_id = ref()
 
+const showDlialog = async()=>{
+    isShow.value = true
+    await getAllPrizesPool();
+}
 const getAllPrizes = async () => {
     const res = await callAPI('/api/prize/getAllPrizes')
     if (res.status == 200) {
@@ -92,8 +97,19 @@ const addPrizePool = async () => {
 
 }
 
+const getAllPrizesPool = async () => { 
+    const res = await callAPI(`/api/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${route.query.campaign}`);
+    if (res.status == 200) {
+        arrIdPrize.value = []
+        for (let index = 0; index < res.data.length; index++) {
+            arrIdPrize.value.push(res.data[index].prize_id)
+            
+        }
+    }
+};
 onMounted(async () => {
     await getAllPrizes()
+    // await getAllPrizesPool()
 })
 </script>
 

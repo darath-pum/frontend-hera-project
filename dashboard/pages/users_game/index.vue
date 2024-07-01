@@ -125,6 +125,7 @@ const unAssignGame = async () => {
 }
 onMounted(() => {
     getAllUsers()
+    getAllGames()
 })
 
 

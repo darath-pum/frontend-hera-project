@@ -55,13 +55,13 @@ import Loading from "~/components/Loading.vue"
 
 const loading = ref(false)
 const isShow = ref(false)
-const props = defineProps(["id", "getAllPrizes"])
+const props = defineProps(["id"])
 const prizeId = ref(props.id)
 
 const pathName = ref('')
 const invalidMessage = ref('')
-const name_en = ref();
-const name_kh = ref();
+const name_en = ref('');
+const name_kh = ref('');
 const image = ref();
 const image_url = ref();
 
@@ -104,7 +104,7 @@ const editPrize = async () => {
     if (res.status == 200) {
         loading.value = false
         isShow.value = false
-        await props.getAllPrizes()
+        window.location.href='/prizes'
         isEditPrizeCalled = false;
     }else{
         loading.value = false
@@ -122,7 +122,7 @@ onMounted(() => {
 form {
     width: 30rem;
     height: 34rem;
-    background: #D9D9D9;
+    background: #ffffff;
     padding: 2rem 2rem;
     border-radius: 5px;
 }

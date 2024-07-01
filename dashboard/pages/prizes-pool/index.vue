@@ -10,10 +10,7 @@
             <h1 class="page-title">Prizes Pool</h1>
 
         </div>
-        <!-- <p class="desc page-description">
-            Prize setting involves determining the value or amount of a prize for a competition or event, considering
-            factors such as objectives, budget, target audience, and perceived value.
-        </p> -->
+
         <div class="select flex flex-col items-start justify-start">
             <label for="" class="text-start w-full font-semibold">Selete campaign:</label>
             <select class="select-campaign" selected="0" name="" id="" v-model="campaignId">
@@ -32,7 +29,6 @@
             <div class="flex flex-row justify-between gap-2 items-center">
                 <button :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'disable-btn cursor-pointer'"
                     @click="saveQty">Save</button>
-                <!-- <button class="secondary-btn" @click="deletePrizePool">Delete</button> -->
                 <DeleteItem :itemName="'Prize pool'" :cpId="campaignId" :selectedItems="selectedItems"
                     :functionName="'deletePrizePool'"
                     :class="selectedItems.length > 0 ? 'primary-btn cursor-pointer' : 'disable-btn cursor-pointer'">
@@ -40,7 +36,7 @@
             </div>
             <div class="flex flex-row justify-between gap-2 items-center">
                 <button v-if="prizesPool.length > 0" class="primary-btn w-55" @click="goToEdit">Edit campaign</button>
-                <AddPrizePool v-if="campaignId"  :getAllPrizesPool="getAllPrizesPool" :arrIdPrize="arrIdPrize"></AddPrizePool>
+                <AddPrizePool v-if="campaignId"  :getAllPrizesPool="getAllPrizesPool"></AddPrizePool>
             </div>
         </div>
         <table>
@@ -49,21 +45,17 @@
                     <th>
                         <div class="flex flex-row justify-center gap-2">
                             <input id="checkbox" type="checkbox" v-model="allChecked" />
-                            <!-- <label for="checkbox">Select All</label> -->
                         </div>
                     </th>
                     <th>Image</th>
-                    <!-- <th>Name(Khmer)</th> -->
+
                     <Sorting :data="prizesPool" :name="'Name(Khmer)'" :columnName="'prize_name_kh'"
                         v-model:sortedColumn="sortedColumnName">
                     </Sorting>
                     <Sorting :data="prizesPool" :name="'Name(English)'" :columnName="'prize_name_en'"
                         v-model:sortedColumn="sortedColumnName">
                     </Sorting>
-                    <Sorting :data="prizesPool" :name="'Quantity'" :columnName="'qty'"
-                        v-model:sortedColumn="sortedColumnName">
-                    </Sorting>
-                    <!-- <th>Quantity</th> -->
+                    <th>Quantity</th>
                     <th>Used</th>
                 </tr>
             </thead>
@@ -73,7 +65,6 @@
                         <div class="flex flex-row justify-center gap-2">
                             <input id="checkbox-{{ index }}" type="checkbox" v-model="selectedItems" :value="item.id"
                                 @click="addId(item.id, item.qty)" />
-                            <!-- <label :for="'checkbox-' + index"></label> -->
                         </div>
                     </td>
                     <td>
@@ -85,8 +76,6 @@
                     <td>{{ item.prize_name_en }}</td>
                     <td>
                         <div class="flex flex-row items-center justify-center gap-2">
-                            <!-- <p v-if=" prizePoolId == item.id && (newQty <0  || (typeof (newQty)== 'string'))" class="absolute -mt-20 bg-red p-2">Qty must be equal or more than 0 and no -->
-                            <!-- text.</p> -->
                             <input id="input-qty" min="0" class="outline-none" v-model.number="item.qty"
                                 @keyup.enter="updateQty(item.id, item.qty)" v-if="prizePoolId == item.id" type="number"
                                 :style="item.qty < 0 || (typeof (item.qty) == 'string') ? 'border:1px solid red' : 'border:1px solid green'" />
@@ -96,11 +85,6 @@
                                 @click="updateQty(item.id, item.qty)">
                                 check
                             </span>
-                            <!-- <span v-if="prizePoolId == item.id"
-                  class="material-symbols-outlined cursor-pointer bg-[var(--primary-color)] text-[#ffffff] rounded-full"
-                  @click="showEditQty(0)">
-                  close
-                </span> -->
                             <span v-else class="material-symbols-outlined cursor-pointer" @click="showEditQty(item.id)">
                                 edit
                             </span>
@@ -138,7 +122,6 @@ const selectedItems: any = ref([]);
 let backUpPrizes: any = []
 const prize_pool: any = ref([]);
 const prizesPool = ref<IPrizePool[]>([]);
-const arrIdPrize: any = ref([])
 const isGoToCpEdit = ref(false)
 
 const goToEdit = () => {
@@ -154,19 +137,16 @@ const handleClose = (isGo:boolean)=>{
     isGoToCpEdit.value = isGo
 }
 const getAllPrizesPool = async () => {
+    if (!campaignId.value) {
+        return false;
+    }
     const res = await callAPI(`/api/prizepool/getAllPrizePools?user_id=${authStore.id}&campaign_id=${campaignId.value}`);
     loading.value = false
     router.push(`/prizes-pool?campaign=${campaignId.value}`)
     if (res.status == 200) {
         prizesPool.value = res.data;
         backUpPrizes = res.data
-        selectedItems.value = [];
-        let dataPrizePool: any = prizesPool.value;
-        for (let index = 0; index < dataPrizePool.length; index++) {
-            arrIdPrize.value.push(dataPrizePool[index].prize_id)
-        }
-        // window.location.reload();
-        
+        selectedItems.value = [];  
     }
 };
 
