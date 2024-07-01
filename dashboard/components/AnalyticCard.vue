@@ -37,7 +37,7 @@
     <div class="card-item item4 flex flex-col justify-between">
       <div class="title-image flex flex-row justify-between">
         <div class="flex flex-col gap-2">
-          <span class="card-title">Player Sessions</span>
+          <span class="card-title">Avg Play Sessions</span>
           <h2>{{ sessPlayer }} min</h2>
         </div>
         <div>

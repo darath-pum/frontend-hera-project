@@ -2,7 +2,7 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>Daily Active Player (DAP)</span>
+        <span>Active Players (Last 24 hours)</span>
       </div>
       <div class="input-date">
         <span>Total: {{ playerTotal }}</span>

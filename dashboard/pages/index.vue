@@ -5,7 +5,7 @@
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
             <span v-if="authStore.role === 'admin'" class="card-title">User Total:</span>
-            <span v-else class="card-title">Player Total:</span>
+            <span v-else class="card-title">Total Players</span>
             <h2 v-if="authStore.role === 'admin'">{{ userTotal }}</h2>
             <h2 v-else>{{ playerTotal }}</h2>
           </div>
@@ -26,7 +26,7 @@
       <div class="card-item item2 flex flex-col justify-between" v-if="authStore.role === 'customer'">
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
-            <span class="card-title">Game Total:</span>
+            <span class="card-title">Total Games</span>
             <h2>{{ gameTotal }}</h2>
           </div>
           <div>
@@ -38,7 +38,7 @@
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
             <span v-if="authStore.role === 'admin'" class="card-title">Active User</span>
-            <span v-else class="card-title">Active Player</span>
+            <span v-else class="card-title">Active Players</span>
             <h2 v-if="authStore.role === 'customer'">{{ activeTotal }}</h2>
             <h2 v-else>{{ acUserTotal }}</h2>
           </div>
@@ -60,7 +60,7 @@
       <div class="card-item item4 flex flex-col justify-between" v-if="authStore.role === 'customer'">
         <div class="title-image flex flex-row justify-between">
           <div class="flex flex-col gap-2">
-            <span class="card-title">Player Session</span>
+            <span class="card-title">Player Sessions</span>
             <h2>{{ sessTotal }}</h2>
           </div>
           <div>

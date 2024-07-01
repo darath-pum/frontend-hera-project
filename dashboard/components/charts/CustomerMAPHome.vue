@@ -2,7 +2,7 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>Montly Active Player (MAP)</span>
+        <span>Active Players (Last 30 days)</span>
       </div>
       <div class="input-date">
         <span>Total: {{ playerTotal }}</span>
