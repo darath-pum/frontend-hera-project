@@ -2,10 +2,10 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>Session(DAP)</span>
+        <span>Daily Play Session</span>
       </div>
       <div class="input-date">
-        <span>Player Total: {{ playerTotal }}</span>
+        <span>Total: {{ playerTotal }}</span>
       </div>
     </div>
     <canvas id="customerDAPSessDateTime"></canvas>

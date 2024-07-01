@@ -2,10 +2,10 @@
     <div class="chart">
         <div class="header mb-5 flex flex-row items-center justify-between">
             <div class="title">
-                <span>MAP</span>
+                <span>Monthly Active Player (MAP)</span>
             </div>
             <div class="input-date">
-                <span>Player Total: {{ totalPlayer }}</span>
+                <span>Total: {{ totalPlayer }}</span>
             </div>
         </div>
         <canvas class="" id=" customerMAP"></canvas>

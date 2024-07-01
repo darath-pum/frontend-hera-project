@@ -2,10 +2,10 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>DAU</span>
+        <span>Daily Active User (DAU)</span>
       </div>
       <div class="input-date">
-        <span>User Total: {{ userTotal }}</span>
+        <span>Total: {{ userTotal }}</span>
       </div>
     </div>
     <canvas id="AdminDAU" class="h-full"></canvas>
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { Chart } from "chart.js/auto";
-import { onMounted,ref } from "vue";
+import { onMounted, ref } from "vue";
 import { format } from "date-fns";
 const userTotal = ref();
 const counts: number[] = [];
@@ -28,7 +28,7 @@ const data = {
       backgroundColor: "blue",
       borderColor: "blue",
       data: counts,
-      tension:0.3
+      tension: 0.3
     },
   ],
 };
@@ -38,9 +38,9 @@ const config: any = {
   data: data,
   options: {
     ticks: {
-          // forces step size to be 50 units
-          stepSize: 1
-        }
+      // forces step size to be 50 units
+      stepSize: 1
+    }
   },
 };
 onMounted(async () => {
@@ -59,9 +59,9 @@ const getDAU = async () => {
   const adminDAU = response.data.user_counts;
   userTotal.value = response.data.total_users;
   for (let i = 0; i < adminDAU.length; i++) {
-      counts.push(adminDAU[i].user_count);
-      const dateTime = format(new Date(adminDAU[i].time), 'p')
-      times.push(dateTime);
+    counts.push(adminDAU[i].user_count);
+    const dateTime = format(new Date(adminDAU[i].time), 'p')
+    times.push(dateTime);
   }
 };
 </script>
