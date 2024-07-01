@@ -2,10 +2,10 @@
     <div class="chart">
         <div class="header mb-5 flex flex-row items-center justify-between">
             <div class="title">
-                <span>Session(MAP)</span>
+                <span>Montly Play Session</span>
             </div>
             <div class="input-date">
-                <span>Average Player Session: {{ avgTotalMAP }}</span>
+                <span>Avg: {{ avgTotalMAP }}</span>
             </div>
         </div>
         <canvas id="sessionMAP"></canvas>
@@ -29,7 +29,7 @@ const data = {
         backgroundColor: "blue",
         borderColor: "blue",
         data: avgPlayTime,
-        tension:0.3
+        tension: 0.3
     }]
 };
 

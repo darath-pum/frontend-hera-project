@@ -1,53 +1,32 @@
 <template>
-  <div
-    class="form-container  flex justify-center items-center w-screen  h-screen">
-    <form
-      action=""
-      class="w-full h-full lg:h-[73%] md:h-[70%] xl:h-[73%] px-5 lg:px-8 pb-16 pt-12 md:max-w-[500px]" :style="{background:games.color}"
-    >
+  <div class="form-container flex justify-center items-center w-screen h-screen bg-cover bg-center"
+    :style="{ 'background-image': `url(${games.banner_url})` }">
+    <form action=""
+      class="glass w-full h-full lg:h-[73%] md:h-[70%] xl:h-[73%] px-5 lg:px-8 pb-16 pt-12 md:max-w-[500px]"
+      :style="{ background: `${games.color}B3` }">
       <h2 class="text-4xl text-center mb-3 text-white">Register</h2>
       <div class="flex justify-center items-center">
-        <img :src="games.img_url" alt="" />
+        <img :src="games.img_url" alt="" class="rounded-md object-cover" />
       </div>
       <div>
-        <span class="text-red-500 ml-1">{{ firstNameErr }}</span
-        ><br />
+        <span class="text-red-500 ml-1">{{ firstNameErr }}</span><br />
         <i class="material-icons absolute mt-2 ml-2 select-none text-gray-500">person</i>
-        <input
-          @focus="clearErrFirst()"
-          v-model="firstName"
-          class="p-2 w-full pl-10"
-          type="text"
-          placeholder="First name"
-        />
+        <input @focus="clearErrFirst()" v-model="firstName" class="p-2 w-full pl-10" type="text"
+          placeholder="First name" />
         <div class="mt-3">
-          <span class="text-red-500 ml-1">{{ lastNameErr }}</span
-          ><br />
+          <span class="text-red-500 ml-1">{{ lastNameErr }}</span><br />
           <i class="material-icons absolute mt-2 ml-2 select-none text-gray-500">person</i>
-          <input
-            @focus="clearErrlast()"
-            v-model="lastName"
-            class="p-2 w-full pl-10"
-            type="text"
-            placeholder="Last name"
-          />
+          <input @focus="clearErrlast()" v-model="lastName" class="p-2 w-full pl-10" type="text"
+            placeholder="Last name" />
         </div>
         <div class="mt-3">
-          <span class="text-red-500 ml-1">{{ phoneNumberErr }}</span
-          ><br />
+          <span class="text-red-500 ml-1">{{ phoneNumberErr }}</span><br />
           <i class="material-icons absolute mt-2 ml-2 select-none text-gray-500">call</i>
-          <input
-            @focus="clearErrPhone()"
-            v-model="phoneNumber"
-            class="p-2 w-full pl-10"
-            type="text"
-            placeholder="Phone number"
-          />
+          <input @focus="clearErrPhone()" v-model="phoneNumber" class="p-2 w-full pl-10" type="text"
+            placeholder="Phone number" />
         </div>
         <div @click.prevent="playerLogin" class="mt-9">
-          <button
-            class="bg-black text-white rounded-md select-none p-2 w-full"
-          >
+          <button class="bg-black text-white rounded-md select-none p-2 w-full">
             Submit
           </button>
         </div>
@@ -56,8 +35,9 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
-import { ref,onMounted } from "vue";
+import { ref, onMounted } from "vue";
 const route = useRoute();
 const firstName = ref("");
 const lastName = ref("");
@@ -65,7 +45,7 @@ const phoneNumber = ref("");
 const firstNameErr = ref("");
 const lastNameErr = ref("");
 const phoneNumberErr = ref("");
-const games = ref<any>('');
+const games = ref<any>({});
 const playerLogin = async () => {
   const players = {
     user_game_id: Number(route.query.game_id),
@@ -88,17 +68,17 @@ const playerLogin = async () => {
     window.location.href = res.data;
   } catch (err) {
     if (firstName.value === "") {
-      firstNameErr.value = "First name is require*";
+      firstNameErr.value = "First name is required*";
     }
     if (lastName.value === "") {
-      lastNameErr.value = "Last name is require*";
+      lastNameErr.value = "Last name is required*";
     }
     const phoneRegex = /^0\d{8,9}$/;
     if (!phoneRegex.test(phoneNumber.value)) {
       phoneNumberErr.value = "Phone number is invalid*";
     }
     if (phoneNumber.value === "") {
-      phoneNumberErr.value = "Phone number is require*";
+      phoneNumberErr.value = "Phone number is required*";
     }
   }
 };
@@ -114,9 +94,7 @@ const getGamebyId = async () => {
       }
     );
     games.value = res.data;
-
-    
-  } catch (err) {}
+  } catch (err) { }
 };
 const clearErrFirst = () => {
   firstNameErr.value = "";
@@ -133,11 +111,13 @@ onMounted(() => {
 });
 </script>
 
+
 <style scoped>
 h1,
 img {
   user-select: none;
 }
+
 img {
   width: 150px;
   height: 150px;
@@ -148,5 +128,18 @@ img {
 input {
   background-color: white;
   border-radius: 5px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(87, 87, 87, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+}
+
+.bg-login {
+  background-attachment: fixed;
+  background-size: cover;
 }
 </style>

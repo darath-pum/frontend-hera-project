@@ -2,10 +2,10 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>DAP</span>
+        <span>Daily Active Player (DAP)</span>
       </div>
       <div class="input-date">
-        <span>Player Total: {{ playerTotal }}</span>
+        <span>Total: {{ playerTotal }}</span>
       </div>
     </div>
     <canvas id="customerDAP"></canvas>
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { Chart } from "chart.js/auto";
-import { onMounted,ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { format } from "date-fns";
 
@@ -35,7 +35,7 @@ const data = {
       backgroundColor: "blue",
       borderColor: "blue",
       data: counts,
-      tension:0.3
+      tension: 0.3
     },
   ],
 };
@@ -45,9 +45,9 @@ const config: any = {
   data: data,
   options: {
     ticks: {
-          // forces step size to be 50 units
-          stepSize: 1
-        }
+      // forces step size to be 50 units
+      stepSize: 1
+    }
   },
 };
 

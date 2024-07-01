@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="gameLists.length === 0 && !isLoading"
-    class="flex justify-center mt-[10rem]"
-  >
+  <div v-if="gameLists.length === 0 && !isLoading" class="flex justify-center mt-[10rem]">
     <div>
       <EmptyData :contain="'Game'"></EmptyData>
     </div>
@@ -14,84 +11,44 @@
         <div class="select-icon">
           <span class="material-symbols-outlined">arrow_drop_down</span>
         </div>
-        <select
-          name="games"
-          id="game-select"
-          @change.prevent="handleGameSelect($event)"
-          class="border bord cursor-pointer"
-        >
+        <select name="games" id="game-select" @change.prevent="handleGameSelect($event)"
+          class="border bord cursor-pointer">
           <option value="Select game" disabled selected>Select game</option>
-          <option
-            v-for="game in gameLists"
-            :key="game.id"
-            :value="game.id"
-            :selected="
-              typeof $route.query.gameId === 'string' &&
-              parseInt($route.query.gameId) === game.id
-            "
-          >
+          <option v-for="game in gameLists" :key="game.id" :value="game.id" :selected="typeof $route.query.gameId === 'string' &&
+            parseInt($route.query.gameId) === game.id
+            ">
             {{ game.title }}
           </option>
         </select>
         <div class="mt-5">
           <AnalyticCard />
         </div>
-        <div
-          class="flex-none min-md:flex lg:flex-none xl:flex flex-row items-end justify-between"
-        >
+        <div class="flex-none min-md:flex lg:flex-none xl:flex flex-row items-end justify-between">
           <div class="flex mt-10 items-center">
             <div class="from-date-time">
-              <p
-                for="fromDate"
-                class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl"
-              >
-                From DateTime:
+              <p for="fromDate" class="select-none text-sm md:text-md lg:text-lg xl:text-xl">
+                From:
               </p>
               <div>
-                <input
-                  type="date"
-                  v-model="fromDate"
-                  id="fromDate"
-                  :style="{
-                    border: isError ? '1px solid red' : '1px solid black',
-                  }"
-                  class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                  :max="maxEndDate"
-                />
-                <input
-                  type="time"
-                  v-model="fromTime"
-                  id="fromTime"
-                  style="border: 1px solid"
-                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                />
+                <input type="date" v-model="fromDate" id="fromDate" :style="{
+                  border: isError ? '1px solid red' : '1px solid black',
+                }" class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :max="maxEndDate" />
+                <input type="time" v-model="fromTime" id="fromTime" style="border: 1px solid"
+                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded" />
               </div>
             </div>
             <div class="to-date-time ml-12">
-              <p
-                for="toDate"
-                class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl"
-              >
-                To DateTime:
+              <p for="toDate" class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl">
+                To:
               </p>
               <div>
-                <input
-                  type="date"
-                  v-model="toDate"
-                  id="toDate"
-                  :style="{
-                    border: isError ? '1px solid red' : '1px solid black',
-                  }"
-                  class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                  :min="minStartDate"
-                />
-                <input
-                  type="time"
-                  v-model="toTime"
-                  id="toTime"
-                  style="border: 1px solid"
-                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                />
+                <input type="date" v-model="toDate" id="toDate" :style="{
+                  border: isError ? '1px solid red' : '1px solid black',
+                }" class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :min="minStartDate" />
+                <input type="time" v-model="toTime" id="toTime" style="border: 1px solid"
+                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded" />
               </div>
             </div>
           </div>
@@ -189,7 +146,7 @@ const getGame = async () => {
   );
   const games = response.data;
   for (let i = 0; i < games.length; i++) {
-    
+
     gameLists.value.push(games[i]);
     gameId.value = games[0].id;
   }
@@ -343,11 +300,13 @@ const maxEndDate = computed(() => {
   @apply grid grid-cols-1 xl:grid-cols-2 gap-3 md:gap-3 lg:gap-5;
   margin-top: 20px;
 }
+
 label {
   font-family: sans-serif;
   font-size: 1.5rem;
   padding-right: 16px;
 }
+
 select {
   font-size: 1rem;
   padding: 8px;
@@ -358,6 +317,7 @@ select {
   @apply shadow-sm;
   z-index: 10;
 }
+
 .select-icon {
   display: flex;
   padding-right: 5px;
@@ -370,6 +330,7 @@ select {
   z-index: 100 !important;
   border-radius: var(--radius);
 }
+
 button {
   border-radius: var(--radius);
 }

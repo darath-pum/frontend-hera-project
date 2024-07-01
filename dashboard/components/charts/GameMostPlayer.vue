@@ -2,7 +2,7 @@
     <div class="chart">
         <div class="header mb-5 flex flex-row items-center justify-between">
             <div class="title">
-                <span>DAU</span>
+                <span>Daily Active Player (DAP)</span>
             </div>
             <div class="input-date">
                 <span class="material-symbols-outlined">
