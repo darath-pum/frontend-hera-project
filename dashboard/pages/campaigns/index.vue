@@ -1,10 +1,6 @@
 <template>
     <div class="prize-setting container" @click="showBtnAction(0)" @click.stop>
         <h1 class="page-title">Campaigns</h1>
-        <!-- <p class="desc page-description">
-            Campaign management involves strategic planning, execution, and analysis of marketing campaigns to achieve
-            specific objectives, targeting the right audience, and optimizing performance for desired results.
-        </p> -->
         <div class="flex flex-row justify-end mt-15 items-center">
             <div class="campaign-btn">
                 <NuxtLink to="/campaigns/new">
@@ -49,30 +45,6 @@
                         </div>
 
                     </a>
-                    <!-- <div id="action-menu" v-if="isBtn && campaignId == item.id" @click.stop>
-                                <NuxtLink :to='`/campaigns/edit?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
-                                    <div class="cursor-pointer">
-
-                                        <span class="material-symbols-outlined cursor-pointer">
-                                            edit
-                                        </span>
-                                        <span>Edit</span>
-                                    </div>
-                                </NuxtLink>
-                                <NuxtLink :to='`/prizes-pool?campaign=${item.id}`' class="w-full p-1 hover:bg-[#686D76] rounded hover:text-white">
-                                    <div class="cursor-pointer">
-
-                                        <span class="material-symbols-outlined">
-                                            rewarded_ads
-                                        </span>
-                                        <span>Prize pool</span>
-                                    </div>
-
-                                </NuxtLink>
-                              
-                                <DeleteItem :itemName="'Campaign'" :campaignId="item.id" class="w-full p-1  hover:bg-[#686D76] rounded hover:text-white"
-                                    :functionName="'deleteCampaign'" :getAllCampaigns="getAllCampaigns"></DeleteItem>
-                                </div> -->
                     <div id="more-action">
                         <span class="material-symbols-outlined cursor-pointer select-none hover:text-red mt-[5px]"
                             @click="showBtnAction(item.id)" @click.stop>

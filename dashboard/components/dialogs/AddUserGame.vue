@@ -115,7 +115,7 @@ const addUsersGame = async () => {
     if (res.status == 200) {
         loading.value = false
         isAddUserGameCalled = false
-        window.location.reload()
+        window.location.href=`/users_game?user=${user_id.value}`
     }else{
         loading.value = false
 
@@ -128,7 +128,7 @@ const addUsersGame = async () => {
 
 
 const getAllGamesUser = async () => {
-    if(!route.query.use){
+    if(!route.query.user){
         return;
     }
     const res = await callAPI(`/api/game/user/getUserGames/${route.query.user}`)
@@ -139,6 +139,7 @@ const getAllGamesUser = async () => {
         for (let index = 0; index < gameData.length; index++) {
 
             arrGameId.value.push(gameData[index].game_id)
+            
             
         }
     }

@@ -500,7 +500,7 @@ const addGame = async () => {
 
     if (res.status == 200) {
         loading.value = false
-        // window.location.href = '/game-admin'
+        window.location.href = '/game-admin'
         isAddGameCalled = false;
     } else {
         Swal.fire({
