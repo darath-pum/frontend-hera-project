@@ -43,11 +43,11 @@
                 <div class="qr-code flex flex-col gap-5 justify-center items-center sm:items-start pb-24">
                     <h1 class="text-xl font-semibold">Game QR Code</h1>
                     <div>
-                        <qrcode-vue :value="`http://192.168.11.122:3001/players/login?game_id=${game.id}`" :size="200"
+                        <qrcode-vue :value="`https://gameportal.direxplaylab.com/player?game_id=${game.id}`" :size="200"
                             level="H"></qrcode-vue>
                     </div>
 
-                    <a :href="`http://192.168.11.122:3000/players/login?game_id=${game.id}`" download>
+                    <a :href="`https://gameportal.direxplaylab.com/player?game_id=${game.id}`" download>
 
                         <button class="secondary-btn mt-1">Download QR Code</button>
                     </a>
@@ -85,7 +85,7 @@ const getGameDetail = async () => {
     const res = await callAPI(`/api/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
     categories.value = (res.data.categories)
-    link.value = `http://192.168.11.122:3000/players/login?game_id=${res.data.id}`
+    link.value = `https://gameportal.direxplaylab.com/player?game_id=${res.data.id}`
 
 }
 const updateGameStatus = async (id: number, isEniable: boolean) => {
