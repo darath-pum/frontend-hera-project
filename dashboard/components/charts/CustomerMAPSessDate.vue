@@ -15,19 +15,16 @@
 <script setup lang="ts">
 import { Chart } from "chart.js/auto";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
 import { format } from "date-fns";
 import { useFormDataStore } from "@/store/formData";
 const fromDate = ref("");
 const fromTime = ref("");
 const toDate = ref("");
 const toTime = ref("");
-const gameID = useRoute().query.gameId;
+const gameID = ref();
 const playerTotal = ref();
 const counts: number[] = [];
 const times: string[] = [];
-const currentDate = new Date();
-const pastDate = new Date();
 const emits = defineEmits(["event-emits"]);
 const data = {
   labels: times,
@@ -52,7 +49,7 @@ const config: any = {
   },
 };
 
-//======== Function find From input date and To input date =======//
+//======== Get data from local storage =======//
 const formDataStore = useFormDataStore();
 onMounted(() => {
   formDataStore.loadFromStorage();
@@ -60,27 +57,17 @@ onMounted(() => {
   toDate.value = formDataStore.toDate;
   fromTime.value = formDataStore.fromTime;
   toTime.value = formDataStore.toTime;
+  gameID.value = formDataStore.userGameId;
 });
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-pastDate.setDate(currentDate.getDate() - 6);
 
 //================= Get MAP customer  by datatime ==============//
 const getSessMAPDateTime = async () => {
-  const fromTimeValue = fromTime.value || "00:00";
-  const toTimeValue = toTime.value || "23:59";
-  const fromDateValue = fromDate.value || formatDate(pastDate);
-  const toDateValue = toDate.value || formatDate(currentDate);
   const dateTime = {
-    from: new Date(`${fromDateValue}T${fromTimeValue}+07:00`).toISOString(),
-    to: new Date(`${toDateValue}T${toTimeValue}+07:00`).toISOString(),
+    from: new Date(`${fromDate.value}T${fromTime.value}+07:00`).toISOString(),
+    to: new Date(`${toDate.value}T${toTime.value}+07:00`).toISOString(),
   };
   const response = await callAPI(
-    `/api/analytics/customer/getMGPSByDate/${gameID}`,
+    `/api/analytics/customer/getMGPSByDate/${gameID.value}`,
     "POST",
     dateTime
   );
@@ -105,6 +92,7 @@ onMounted(async () => {
   }
 });
 
+//====================== emit data ==================//
 const handleData = (data: any, total: number) => {
   emits("event-emits", data, total);
 };
