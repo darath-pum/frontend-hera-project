@@ -4,7 +4,7 @@
             class="pf-g flex flex-row items-center gap-3 cursor-pointer hover:bg-gray-200 py-1 px-2 rounded-md transition-all">
             <span class="hidden md:block">{{ authStore.first_name }}</span>
             <div class="cursor-pointer">
-                <img id="profile-image" :src="!pf_image?profileDefault:pf_image" alt="">
+                <img id="profile-image" :src="!pf_image ? profileDefault : pf_image" alt="">
             </div>
             <span class="material-symbols-outlined cursor-pointer select-none">
                 arrow_drop_down
@@ -15,7 +15,7 @@
         <div v-if="isShow" class="profile-dialog transition-all" @click="isShow = false"
             :class="[isShow ? 'active' : '']">
             <div class="flex pf-popup flex-col gap-2">
-                <img :src="pf_image" alt="">
+                <img :src="!pf_image ? profileDefault : pf_image" alt="">
 
                 <h1>{{ authStore.first_name }}</h1>
                 <p class="">{{ authStore.email }}</p>

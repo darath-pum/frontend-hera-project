@@ -2,10 +2,10 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>DAP</span>
+        <span>Daily Active Player (DAP)</span>
       </div>
       <div class="input-date">
-        <span>Player Total: {{ playerTotal }}</span>
+        <span>Total: {{ playerTotal }}</span>
       </div>
     </div>
     <canvas id="customerDAPDateTime"></canvas>

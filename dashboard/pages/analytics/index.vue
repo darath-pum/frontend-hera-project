@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="gameLists.length === 0 && !isLoading"
-    class="flex justify-center mt-[10rem]"
-  >
+  <div v-if="gameLists.length === 0 && !isLoading" class="flex justify-center mt-[10rem]">
     <div>
       <EmptyData :contain="'Game'"></EmptyData>
     </div>
@@ -14,12 +11,8 @@
         <div class="select-icon">
           <span class="material-symbols-outlined">arrow_drop_down</span>
         </div>
-        <select
-          name="games"
-          id="game-select"
-          @change.prevent="handleGameSelect($event)"
-          class="border bord cursor-pointer"
-        >
+        <select name="games" id="game-select" @change.prevent="handleGameSelect($event)"
+          class="border bord cursor-pointer">
           <option value="Select game" disabled selected>Select game</option>
           <option
             v-for="game in gameLists"
@@ -35,16 +28,11 @@
         <div class="mt-5">
           <AnalyticCard />
         </div>
-        <div
-          class="flex-none min-md:flex lg:flex-none xl:flex flex-row items-end justify-between"
-        >
+        <div class="flex-none min-md:flex lg:flex-none xl:flex flex-row items-end justify-between">
           <div class="flex mt-10 items-center">
             <div class="from-date-time">
-              <p
-                for="fromDate"
-                class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl"
-              >
-                From DateTime:
+              <p for="fromDate" class="select-none text-sm md:text-md lg:text-lg xl:text-xl">
+                From:
               </p>
               <div>
                 <input
@@ -68,11 +56,8 @@
               </div>
             </div>
             <div class="to-date-time ml-12">
-              <p
-                for="toDate"
-                class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl"
-              >
-                To DateTime:
+              <p for="toDate" class="select-none text-[1.2rem] md:text-[1.2rem] lg:[2rem] xl:text-2xl">
+                To:
               </p>
               <div>
                 <input
@@ -365,11 +350,13 @@ const maxEndDate = computed(() => {
   @apply grid grid-cols-1 xl:grid-cols-2 gap-3 md:gap-3 lg:gap-5;
   margin-top: 20px;
 }
+
 label {
   font-family: sans-serif;
   font-size: 1.5rem;
   padding-right: 16px;
 }
+
 select {
   font-size: 1rem;
   padding: 8px;
@@ -380,6 +367,7 @@ select {
   @apply shadow-sm;
   z-index: 10;
 }
+
 .select-icon {
   display: flex;
   padding-right: 5px;
@@ -392,6 +380,7 @@ select {
   z-index: 100 !important;
   border-radius: var(--radius);
 }
+
 button {
   border-radius: var(--radius);
 }

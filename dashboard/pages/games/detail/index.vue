@@ -14,7 +14,7 @@
             <span></span>
         </div>
         <div class="detail-info flex flex-col sm:flex-row gap-10 xl:gap-20 sm:justify-center">
-            <div class="flex flex-col items-center gap-10">
+            <div class="flex flex-col  gap-10">
                 <div class="w-48 h-48 lg:w-64 lg:h-64 rounded-md overflow-hidden">
                     <img :src="game.img_url" alt="" class="w-full h-full object-cover">
                 </div>
@@ -40,25 +40,36 @@
                     </div>
                     <p class="text-lg text-gray-600 max-w-[500px]">{{ game.description }}</p>
                 </div>
-                <div class="qr-code flex flex-col gap-5 justify-center items-center sm:items-start pb-24">
+                <div class="qr-code flex flex-col gap-5 justify-center sm:items-start">
                     <h1 class="text-xl font-semibold">Game QR Code</h1>
                     <div>
-                        <qrcode-vue :value="`http://192.168.11.122:3001/players/login?game_id=${game.id}`" :size="200"
-                            level="H"></qrcode-vue>
+                        <qrcode-vue :value="value" :level="level" :render-as="renderAs" :size="200" />
+
                     </div>
 
-                    <a :href="`http://192.168.11.122:3000/players/login?game_id=${game.id}`" download>
 
-                        <button class="secondary-btn mt-1">Download QR Code</button>
-                    </a>
+                    <button class="border rounded-md px-5 mt-1 h-[3rem]" @click="downloadQr">Download QR Code</button>
+
 
                     <div class="flex flex-row gap-2">
-                        <input type="text" v-model="link" class="p-[0.4rem] rounded w-[25rem]"
+                        <input type="text" v-model="link" class="p-[0.4rem] rounded-md w-[25rem] h-[3rem]"
                             :style="isCopy == true ? 'border:1px solid gray; color:gray' : 'border:1px solid var(--primary-color);'">
-                        <button :class="isCopy == true ? 'disable-btn w-20' : 'primary-btn w-20'" @click="copyText">
+                        <button class="h-[3rem] w-20 rounded-md"
+                            :class="isCopy == true ? 'bg-gray-600 text-white' : 'bg-black'" @click="copyText">
                             <span v-if="isCopy == false">Copy</span>
                             <span v-else>Copied</span>
                         </button>
+                    </div>
+                </div>
+                <div class="space-y-5">
+                    <h1 class="text-xl font-semibold">Game Banner</h1>
+                    <img :src="game.banner_url" alt="" class="max-w-[500px] w-full h-auto object-cover rounded-md" />
+                </div>
+                <div class="space-y-5">
+                    <h1 class="text-xl font-semibold">Game Screenshots</h1>
+                    <div class=" space-y-3">
+                        <img v-for="(screenshot, index) in screenshotUrls" :src="screenshot" alt=""
+                            class="max-w-[500px] w-full h-auto object-cover rounded-md" />
                     </div>
                 </div>
             </div>
@@ -70,7 +81,12 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from '~/store/auth'
-import QrcodeVue from "qrcode.vue";
+
+import QrcodeVue, { type Level, type RenderAs } from 'qrcode.vue'
+
+const value = ref('qrcode')
+const level = ref<Level>('M')
+const renderAs = ref<RenderAs>('svg')
 
 const isCopy = ref(false)
 const authStore = useAuthStore()
@@ -79,13 +95,54 @@ const route = useRoute()
 const gameId: any = (route.query.gameId)
 const link = ref('')
 const categories = ref()
+const screenshotUrls = ref([])
+
+
+const downloadQr = () => {
+    const qrcodeRef = document.querySelector('svg'); // Change this if using canvas
+
+    if (!qrcodeRef) {
+        console.error('No QR code found');
+        return;
+    }
+
+    const svgData = new XMLSerializer().serializeToString(qrcodeRef);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+        console.error('No canvas context found');
+        return;
+    }
+
+    const img = new Image();
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+
+    img.onload = () => {
+        canvas.width = 600;
+        canvas.height = 600;
+        ctx.drawImage(img, 0, 0, 600, 600);
+
+        const pngDataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = pngDataUrl;
+        link.download = 'qrcode.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+};
+
+
 
 const getGameDetail = async () => {
 
     const res = await callAPI(`/api/game/user/detail/${parseInt(gameId)}`)
     game.value = res.data
     categories.value = (res.data.categories)
-    link.value = `http://192.168.11.122:3000/players/login?game_id=${res.data.id}`
+    link.value = `https://gameportal.direxplaylab.com/player?game_id=${res.data.id}`
+    screenshotUrls.value = JSON.parse(res.data.screenshots)
+    value.value = `https://gameportal.direxplaylab.com/player?game_id=${res.data.id}`
 
 }
 const updateGameStatus = async (id: number, isEniable: boolean) => {

@@ -2,10 +2,10 @@
     <div class="chart">
         <div class="header mb-5 flex flex-row items-center justify-between">
             <div class="title">
-                <span>Session(DAP)</span>
+                <span>Daily Play Session</span>
             </div>
             <div class="input-date">
-                <span>Average Player Session: {{ avgTotalDAP }}</span>
+                <span>Avg: {{ avgTotalDAP }}</span>
             </div>
         </div>
         <canvas id="sessionDAP"></canvas>
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { Chart } from 'chart.js/auto';
-import { onMounted,ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { ChartConfiguration } from 'chart.js/auto';
 import { useRoute } from 'vue-router';
 import { format } from "date-fns";
@@ -30,7 +30,7 @@ const data = {
         backgroundColor: "blue",
         borderColor: "blue",
         data: avgPlayTimes,
-        tension:0.3
+        tension: 0.3
     }]
 };
 

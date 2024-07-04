@@ -5,13 +5,19 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (process.client) return;
   const authStore = useAuthStore();
   // const token = localStorage.getItem('token');
-  const token = useCookie('token');
-  if (to.path !== "/login" && to.path !== "/activate-account" && to.path !== "/send-email" && to.path !== "/reset-password") {
+  const token = useCookie("token");
+  if (
+    to.path !== "/login" &&
+    to.path !== "/activate-account" &&
+    to.path !== "/send-email" &&
+    to.path !== "/player" &&
+    to.path !== "/reset-password"
+  ) {
     try {
       const res = await $fetch<any>(getAPIURL("/api/user/getUserSession"), {
-        headers: { 
-          "Content-Type": "application/json", 
-          "Authorization": "Bearer " + token.value,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.value,
         },
         cache: "no-cache",
         ignoreResponseError: true,
@@ -20,7 +26,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       // if(res.data){
       //   if(to.path === "/" || to.path ===""){
       //     return navigateTo("/");
-  
+
       //   }
       // }
       // if (to.path === "/manage-users" && to.path ==="/manage-games" && to.path === "/manage-account") {
@@ -28,10 +34,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       //       return navigateTo("/");
       //     }
       //   }
-      } catch (err) {
-        console.error("Error: " + err);
-        return navigateTo("/login");
-
+    } catch (err) {
+      console.error("Error: " + err);
+      return navigateTo("/login");
     }
-    }
+  }
 });

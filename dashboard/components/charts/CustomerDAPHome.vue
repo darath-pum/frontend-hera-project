@@ -2,10 +2,10 @@
   <div class="chart">
     <div class="header mb-5 flex flex-row items-center justify-between">
       <div class="title">
-        <span>DAP</span>
+        <span>Active Players (Last 24 hours)</span>
       </div>
       <div class="input-date">
-        <span>Player Total: {{ playerTotal }}</span>
+        <span>Total: {{ playerTotal }}</span>
       </div>
     </div>
     <canvas id="CustomerDAUHome"></canvas>
@@ -16,7 +16,7 @@
 import { Chart } from "chart.js/auto";
 import { format } from "date-fns";
 import { callAPI } from "../../composables/callAPI";
-import {ref,onMounted} from "vue";
+import { ref, onMounted } from "vue";
 const playerTotal = ref();
 const counts: number[] = [];
 const times: string[] = [];
@@ -39,9 +39,9 @@ const config: any = {
   data: data,
   options: {
     ticks: {
-          // forces step size to be 50 units
-          stepSize: 1
-        }
+      // forces step size to be 50 units
+      stepSize: 1
+    }
   },
 };
 
