@@ -3,7 +3,7 @@
     <div class="card-item flex flex-col justify-between">
       <div class="title-image flex flex-row justify-between">
         <div class="flex flex-col gap-2">
-          <span class="card-title">Total Players</span>
+          <span class="card-title">Player Total:</span>
           <h2>{{ playerTotal }}</h2>
         </div>
         <div>
@@ -13,14 +13,14 @@
       <div class="desc flex flex-row items-center">
         <span class="material-symbols-outlined text-green"> north </span>
         <p>
-          <span class="text-green">%{{ playerPercent }}</span> from last month
+          <span class="text-green">% {{ playerPercent }}</span> from last month
         </p>
       </div>
     </div>
     <div class="card-item item3 flex flex-col justify-between">
       <div class="title-image flex flex-row justify-between">
         <div class="flex flex-col gap-2">
-          <span>Active Players</span>
+          <span>Active player</span>
           <h2>{{ acPlayer }}</h2>
         </div>
         <div>
@@ -37,7 +37,7 @@
     <div class="card-item item4 flex flex-col justify-between">
       <div class="title-image flex flex-row justify-between">
         <div class="flex flex-col gap-2">
-          <span class="card-title">Avg Play Sessions</span>
+          <span class="card-title">Player session</span>
           <h2>{{ sessPlayer }} min</h2>
         </div>
         <div>
@@ -56,31 +56,41 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { callAPI } from "../composables/callAPI";
-import { useRoute } from 'vue-router';
-
-const userGameId = useRoute().query.gameId
+import { useFormDataStore } from "@/store/formData";
+const userGameId = ref();
 const playerPercent = ref("");
 const playerTotal = ref("");
-const acPlayer = ref("")
+const acPlayer = ref("");
 const activePercent = ref("");
 const sessPlayer = ref("");
 const acSessPlayer = ref("");
+const formDataStore = useFormDataStore();
+onMounted(() => {
+  formDataStore.loadFromStorage();
+  userGameId.value = formDataStore.userGameId;
+});
 
 const getPlayer = async () => {
-  const response = await callAPI(`/api/analytics/customer/getSummaryOfPlayersByUserGameId/${userGameId}`);
+  const response = await callAPI(
+    `/api/analytics/customer/getSummaryOfPlayersByUserGameId/${userGameId.value}`
+  );
   playerTotal.value = response.data.total;
   playerPercent.value = response.data.percentage;
 };
 const getAcPlayer = async () => {
-  const response = await callAPI(`/api/analytics/customer/getSummaryOfAPByUserGameId/${userGameId}`);
+  const response = await callAPI(
+    `/api/analytics/customer/getSummaryOfAPByUserGameId/${userGameId.value}`
+  );
   acPlayer.value = response.data.total;
   activePercent.value = response.data.percentage;
-}
+};
 const getSessPlayer = async () => {
-  const response = await callAPI(`/api/analytics/customer/getGamePlaySessionsByUserGameId/${userGameId}`);
+  const response = await callAPI(
+    `/api/analytics/customer/getGamePlaySessionsByUserGameId/${userGameId.value}`
+  );
   sessPlayer.value = response.data.total;
   acSessPlayer.value = response.data.percentage;
-}
+};
 onMounted(() => {
   getPlayer();
   getAcPlayer();

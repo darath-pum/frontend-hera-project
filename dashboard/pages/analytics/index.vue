@@ -14,9 +14,14 @@
         <select name="games" id="game-select" @change.prevent="handleGameSelect($event)"
           class="border bord cursor-pointer">
           <option value="Select game" disabled selected>Select game</option>
-          <option v-for="game in gameLists" :key="game.id" :value="game.id" :selected="typeof $route.query.gameId === 'string' &&
-            parseInt($route.query.gameId) === game.id
-            ">
+          <option
+            v-for="game in gameLists"
+            :key="game.id"
+            :value="game.id"
+            :selected="
+              typeof gameID === 'string' && parseInt(gameID) === game.id
+            "
+          >
             {{ game.title }}
           </option>
         </select>
@@ -30,12 +35,24 @@
                 From:
               </p>
               <div>
-                <input type="date" v-model="fromDate" id="fromDate" :style="{
-                  border: isError ? '1px solid red' : '1px solid black',
-                }" class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                  :max="maxEndDate" />
-                <input type="time" v-model="fromTime" id="fromTime" style="border: 1px solid"
-                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded" />
+                <input
+                  type="date"
+                  v-model="fromDate"
+                  id="fromDate"
+                  :style="{
+                    border: fromDateErr ? '1px solid red' : '1px solid black',
+                  }"
+                  class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :max="maxEndDate"
+                   @change="clearFromDateErr"
+                />
+                <input
+                  type="time"
+                  v-model="fromTime"
+                  id="fromTime"
+                  style="border: 1px solid"
+                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                />
               </div>
             </div>
             <div class="to-date-time ml-12">
@@ -43,12 +60,24 @@
                 To:
               </p>
               <div>
-                <input type="date" v-model="toDate" id="toDate" :style="{
-                  border: isError ? '1px solid red' : '1px solid black',
-                }" class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
-                  :min="minStartDate" />
-                <input type="time" v-model="toTime" id="toTime" style="border: 1px solid"
-                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded" />
+                <input
+                  type="date"
+                  v-model="toDate"
+                  id="toDate"
+                  :style="{
+                    border: toDateErr ? '1px solid red' : '1px solid black',
+                  }"
+                  class="mr-5 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                  :min="minStartDate"
+                   @change="clearToDateErr"
+                />
+                <input
+                  type="time"
+                  v-model="toTime"
+                  id="toTime"
+                  style="border: 1px solid"
+                  class="mt-3 cursor-pointer w-[8rem] md:w-[14rem] lg:w-[14rem] xl:w-[14rem] p-[0.4rem] rounded"
+                />
               </div>
             </div>
           </div>
@@ -92,23 +121,21 @@ import AnalyticCard from "~/components/AnalyticCard.vue";
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "~/store/auth";
 import { callAPI } from "../../composables/callAPI";
-import { useRoute } from "vue-router";
 import CustomerDAPDateTime from "~/components/charts/CustomerDAPDateTime.vue";
 import CustomerMAPDateTime from "~/components/charts/CustomerMAPDateTime.vue";
 import CustomerDAPSessDate from "~/components/charts/CustomerDAPSessDate.vue";
 import CustomerMAPSessDate from "~/components/charts/CustomerMAPSessDate.vue";
 import { useFormDataStore } from "@/store/formData";
+import { useDateValidation } from "~/composables/useDateValidation";
 const formDataStore = useFormDataStore();
 const fromDate = ref("");
 const fromTime = ref("");
 const toDate = ref("");
 const toTime = ref("");
-const gameId = ref("");
 const totalPlayersDAP = ref(0);
 const totalPlayersMAP = ref(0);
 const playerSessDAP = ref(0);
 const playerSessMAP = ref(0);
-const route = useRoute();
 const gameLists = ref<IGame[]>([]);
 const DAPData = ref<any>([]);
 const MAPData = ref<any>([]);
@@ -116,47 +143,86 @@ const DAPDataSess = ref<any>([]);
 const MAPDataSess = ref<any>([]);
 const authStore = useAuthStore();
 const isLoading = ref(true);
-const isError = ref(false);
+const gameIdSelect = ref();
+const gameID = ref();
+const { fromDateErr, toDateErr, validateFromDate,validateToDate, showAlert,validateDates } = useDateValidation();
+const clearFromDateErr = () => {
+  validateFromDate(fromDate.value);
+  validateDates(fromDate.value,toDate.value)
+  if (!fromDateErr.value) {
+    fromDateErr.value = false;
+  }else {
+    fromDateErr.value = true;
+  }
+};
+
+const clearToDateErr = () => {
+  validateToDate(toDate.value);
+  validateDates(fromDate.value,toDate.value);
+  if (!toDateErr.value) {
+    toDateErr.value = false;
+  }else {
+    toDateErr.value = true;
+  }
+};
+
 const submitForm = async () => {
-  const minDate = new Date("2020-01-01");
-  if (new Date(fromDate.value) < minDate || new Date(toDate.value) < minDate) {
-    isError.value = true;
-    alert("Date is invalid");
+  const result1 = validateFromDate(fromDate.value);
+  const result2 = validateToDate(toDate.value);
+  const result3 = validateDates(fromDate.value,toDate.value);
+  if(!result1.valid) {
+    showAlert(result1.message || 'Date input is invalid.');
     return;
   }
-  if (fromDate.value > toDate.value) {
-    isError.value = true;
-    alert("Date is invalid");
+  if (!result2.valid) {
+    showAlert(result2.message || 'Date input is invalid.');
     return;
-  }
+  } 
+  if (!result3.validFromDate || !result3.validToDate) {
+    showAlert(result3.message || 'Date input is invalid.');
+    return;
+  } 
+ 
   await formDataStore.setFormData({
     fromDate: fromDate.value,
     fromTime: fromTime.value,
     toDate: toDate.value,
     toTime: toTime.value,
+    userGameId: gameIdSelect.value || gameID.value,
   });
-
   window.location.reload();
 };
 
 //===================== Get user's game data ==================//
 const getGame = async () => {
-  const response = await callAPI(
-    `/api/game/user/getUserGames/${authStore.id}`
-  );
+  const response = await callAPI(`/api/game/user/getUserGames/${authStore.id}`);
   const games = response.data;
   for (let i = 0; i < games.length; i++) {
-
     gameLists.value.push(games[i]);
-    gameId.value = games[0].id;
   }
   isLoading.value = false;
 };
 
 //=================== Select game option ===================//
-const handleGameSelect = (event: any) => {
+const handleGameSelect = async (event: any) => {
   const selectedGameId = event.target.value;
-  window.location.href = `/analytics?gameId=${selectedGameId}`;
+  gameIdSelect.value = selectedGameId;
+  const result1 = validateFromDate(fromDate.value);
+  const result2 = validateToDate(toDate.value);
+  const result3 = validateDates(fromDate.value,toDate.value);
+  
+  if(result1.valid && result2.valid && result3.validFromDate && result3.validToDate) {
+    await formDataStore.setFormData({
+    fromDate: fromDate.value,
+    fromTime: fromTime.value,
+    toDate: toDate.value,
+    toTime: toTime.value,
+    userGameId: gameIdSelect.value || gameID.value,
+  });
+    window.location.reload();
+  }else {
+    return;
+  } 
 };
 
 //================== Function to export CSV file  =====================//
@@ -180,10 +246,6 @@ const handleDataMAPSess = (data: any, total: number) => {
 };
 
 const exportDataToCsv = () => {
-  if (DAPData.value.length === 0 && MAPData.value.length === 0) {
-    console.warn("No data to export");
-    return;
-  }
   const csvContentDAP = convertToCSVDAP(DAPData.value);
   const csvContentMAP = convertToCSVMAP(MAPData.value);
   const csvContentDAPSess = convertToCSVDAPSess(DAPDataSess.value);
@@ -261,24 +323,12 @@ const convertToCSVMAPSess = (myData: any[]) => {
 
 onMounted(async () => {
   await getGame();
-  if (!route.query.gameId && gameLists.value.length !== 0) {
-    window.location.href = `/analytics?gameId=${gameId.value}`;
-  }
-
   await formDataStore.loadFromStorage();
-  fromDate.value =
-    formDataStore.fromDate ||
-    new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0];
-
-  fromTime.value = formDataStore.fromTime || "00:00";
-
-  toDate.value =
-    formDataStore.toDate ||
-    new Date(new Date().getTime()).toISOString().split("T")[0];
-
-  toTime.value = formDataStore.toTime || "23:59";
+  fromDate.value = formDataStore.fromDate;
+  fromTime.value = formDataStore.fromTime;
+  toDate.value = formDataStore.toDate;
+  toTime.value = formDataStore.toTime;
+  gameID.value = formDataStore.userGameId;
 });
 
 const minStartDate = computed(() => {
