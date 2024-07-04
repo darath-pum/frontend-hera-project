@@ -55,11 +55,11 @@ const config: any = {
 const formDataStore = useFormDataStore();
 onMounted(() => {
   formDataStore.loadFromStorage();
-  fromDate.value = formDataStore.fromDate;
-  toDate.value = formDataStore.toDate;
-  fromTime.value = formDataStore.fromTime;
-  toTime.value = formDataStore.toTime;
-  gameID.value = formDataStore.userGameId;
+  fromDate.value = formDataStore.fromDate || new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  toDate.value = formDataStore.toDate || new Date(new Date().getTime()).toISOString().split("T")[0];
+  fromTime.value = formDataStore.fromTime || '00:00';
+  toTime.value = formDataStore.toTime || '23:59';
+  gameID.value = formDataStore.userGameId || '1';
 });
 
 //================= DAP customer page by datatime ==============//
