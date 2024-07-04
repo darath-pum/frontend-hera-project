@@ -324,11 +324,11 @@ const convertToCSVMAPSess = (myData: any[]) => {
 onMounted(async () => {
   await getGame();
   await formDataStore.loadFromStorage();
-  fromDate.value = formDataStore.fromDate;
-  fromTime.value = formDataStore.fromTime;
-  toDate.value = formDataStore.toDate;
-  toTime.value = formDataStore.toTime;
-  gameID.value = formDataStore.userGameId;
+  fromDate.value = formDataStore.fromDate || new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  fromTime.value = formDataStore.fromTime || '00:00';
+  toDate.value = formDataStore.toDate || new Date(new Date().getTime()).toISOString().split("T")[0];
+  toTime.value = formDataStore.toTime || '23:59';
+  gameID.value = formDataStore.userGameId || '1';
 });
 
 const minStartDate = computed(() => {

@@ -67,7 +67,7 @@ const acSessPlayer = ref("");
 const formDataStore = useFormDataStore();
 onMounted(() => {
   formDataStore.loadFromStorage();
-  userGameId.value = formDataStore.userGameId;
+  userGameId.value = formDataStore.userGameId || '1';
 });
 
 const getPlayer = async () => {
