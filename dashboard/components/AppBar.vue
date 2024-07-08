@@ -97,15 +97,34 @@
                         <span>Prizes</span>
                     </NuxtLink>
                 </div>
-                <div v-if="authStore.role === 'customer'">
-                    <NuxtLink to="/analytics" class="menu-btn">
-                        <span class="material-symbols-outlined">
-                            trending_up
+       
+                <div class="dropdown" v-if="authStore.role == 'customer'">
+                    <div class="dropdown-btn cursor-pointer cursor-pointer flex flex-row justify-between"
+                        @click="showAnalytic">
+                        <div class="flex flex-row items-center gap-2">
+                            <span class="material-symbols-outlined">
+                                trending_up
+                            </span>
+                            <span class="sidebar-hidden">Analytics</span>
+                        </div>
+                        <span class="material-symbols-outlined" :class="{ 'rotate-180': isAnalytic }">
+                            arrow_drop_down
                         </span>
-                        <span class="sidebar-hidden">Analytics</span>
+                    </div>
+                    <NuxtLink to="/overview" v-if="isAnalytic" class="menu-btn dropdown-item"
+                        :class="$route.path == '/overview' ? 'router-link-active' : ''">
+                        <span class="material-symbols-outlined">
+                            campaign
+                        </span>
+                        <span>Overview</span>
+                    </NuxtLink>
+                    <NuxtLink to="/luckydraw_analytic" v-if="isAnalytic" class="menu-btn dropdown-item">
+                        <span class="material-symbols-outlined">
+                            rewarded_ads
+                        </span>
+                        <span>Lucky draw</span>
                     </NuxtLink>
                 </div>
-
             </div>
         </div>
         <div>
@@ -139,6 +158,7 @@ const authStore = useAuthStore()
 
 
 const isLd = ref(false);
+const isAnalytic= ref(false);
 
 const isSideBarShow = ref(false);
 
@@ -154,6 +174,9 @@ const isGame = ref(false);
 
 const showGame = () => {
     isGame.value = !isGame.value
+}
+const showAnalytic = () => {
+    isAnalytic.value = !isAnalytic.value
 }
 
 

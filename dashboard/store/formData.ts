@@ -46,6 +46,13 @@ export const useFormDataStore = defineStore('formData', {
       this.toTime = '23:59';
       this.userGameId = '1';
       this.saveToStorage();
+    },
+    clearStorage() {
+      setTimeout(() => {
+        localStorage.removeItem('formData');  // Remove data from localStorage
+        this.setDefaultValues();  
+      }, 1000);  
     }
+
   }
 });
