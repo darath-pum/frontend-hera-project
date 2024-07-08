@@ -322,6 +322,7 @@ const convertToCSVMAPSess = (myData: any[]) => {
 };
 
 onMounted(async () => {
+  formDataStore.clearStorage();
   await getGame();
   await formDataStore.loadFromStorage();
   fromDate.value = formDataStore.fromDate || new Date(new Date().getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];

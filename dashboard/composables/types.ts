@@ -53,3 +53,12 @@ interface IPrize{
     image:string;
 }
 
+interface UserWon {
+    id:number,
+    img_url:string,
+    name_kh:string,
+    name_en:string,
+    phone_number:number;
+    created_at:any;
+}
+
